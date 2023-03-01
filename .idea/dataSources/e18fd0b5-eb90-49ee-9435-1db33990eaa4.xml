@@ -792,8 +792,10 @@ false Zulu
     <database id="2" parent="1" name="gamehub">
       <ObjectId>16398</ObjectId>
       <Owner>postgres</Owner>
-      <IntrospectionStateNumber>779</IntrospectionStateNumber>
+      <IntrospectionStateNumber>826</IntrospectionStateNumber>
       <Current>1</Current>
+      <Relations>sequence|table|16435|16436|1
+</Relations>
     </database>
     <database id="3" parent="1" name="postgres">
       <ObjectId>5</ObjectId>
@@ -863,7 +865,7 @@ false Zulu
     <schema id="20" parent="2" name="public">
       <ObjectId>2200</ObjectId>
       <Comment>standard public schema</Comment>
-      <StateNumber>767</StateNumber>
+      <StateNumber>786</StateNumber>
       <Owner>pg_database_owner</Owner>
       <Current>1</Current>
     </schema>
@@ -934,28 +936,100 @@ false Zulu
     <language id="30" parent="2" name="internal"/>
     <language id="31" parent="2" name="plpgsql"/>
     <language id="32" parent="2" name="sql"/>
-    <table id="33" parent="20" name="users">
-      <ObjectId>16400</ObjectId>
+    <sequence id="33" parent="20" name="hibernate_sequence">
+      <ObjectId>16434</ObjectId>
       <Owner>postgres</Owner>
-      <StateNumber>776</StateNumber>
+      <StateNumber>818</StateNumber>
+      <DataType>bigint|0s</DataType>
+    </sequence>
+    <sequence id="34" parent="20" name="tutorials_id_seq">
+      <ObjectId>16435</ObjectId>
+      <Owner>postgres</Owner>
+      <StateNumber>819</StateNumber>
+      <DataType>integer|0s</DataType>
+    </sequence>
+    <table id="35" parent="20" name="tutorials">
+      <ObjectId>16436</ObjectId>
+      <Owner>postgres</Owner>
+      <StateNumber>825</StateNumber>
     </table>
-    <column id="34" parent="33" name="username">
+    <table id="36" parent="20" name="users">
+      <ObjectId>16429</ObjectId>
+      <Owner>postgres</Owner>
+      <StateNumber>817</StateNumber>
+    </table>
+    <column id="37" parent="35" name="id">
       <Position>1</Position>
+      <DataType>integer|0s</DataType>
+      <NotNull>1</NotNull>
+      <StateNumber>819</StateNumber>
+      <DefaultExpression>nextval(&apos;tutorials_id_seq&apos;::regclass)</DefaultExpression>
+      <TypeId>23</TypeId>
+    </column>
+    <column id="38" parent="35" name="title">
+      <Position>2</Position>
       <DataType>varchar(50)|0s</DataType>
-      <StateNumber>776</StateNumber>
+      <StateNumber>819</StateNumber>
       <TypeId>1043</TypeId>
     </column>
-    <index id="35" parent="33" name="users_username_key">
-      <ObjectId>16403</ObjectId>
-      <StateNumber>776</StateNumber>
-      <ColNames>username</ColNames>
+    <column id="39" parent="35" name="description">
+      <Position>3</Position>
+      <DataType>varchar(50)|0s</DataType>
+      <StateNumber>819</StateNumber>
+      <TypeId>1043</TypeId>
+    </column>
+    <column id="40" parent="35" name="published">
+      <Position>4</Position>
+      <DataType>boolean|0s</DataType>
+      <StateNumber>825</StateNumber>
+      <TypeId>16</TypeId>
+    </column>
+    <index id="41" parent="35" name="tutorials_id_uindex">
+      <ObjectId>16440</ObjectId>
+      <StateNumber>825</StateNumber>
+      <ColNames>id</ColNames>
       <Unique>1</Unique>
     </index>
-    <key id="36" parent="33" name="users_username_key">
-      <ObjectId>16404</ObjectId>
-      <StateNumber>776</StateNumber>
-      <ColNames>username</ColNames>
-      <UnderlyingIndexName>users_username_key</UnderlyingIndexName>
+    <index id="42" parent="35" name="tutorials_pk">
+      <ObjectId>16441</ObjectId>
+      <StateNumber>825</StateNumber>
+      <ColNames>id</ColNames>
+      <Unique>1</Unique>
+      <Primary>1</Primary>
+    </index>
+    <key id="43" parent="35" name="tutorials_pk">
+      <ObjectId>16442</ObjectId>
+      <StateNumber>821</StateNumber>
+      <ColNames>id</ColNames>
+      <Primary>1</Primary>
+      <UnderlyingIndexName>tutorials_pk</UnderlyingIndexName>
+    </key>
+    <column id="44" parent="36" name="id">
+      <Position>1</Position>
+      <DataType>bigint|0s</DataType>
+      <NotNull>1</NotNull>
+      <StateNumber>817</StateNumber>
+      <TypeId>20</TypeId>
+    </column>
+    <column id="45" parent="36" name="username">
+      <Position>2</Position>
+      <DataType>varchar(255)|0s</DataType>
+      <StateNumber>817</StateNumber>
+      <TypeId>1043</TypeId>
+    </column>
+    <index id="46" parent="36" name="users_pkey">
+      <ObjectId>16432</ObjectId>
+      <StateNumber>817</StateNumber>
+      <ColNames>id</ColNames>
+      <Unique>1</Unique>
+      <Primary>1</Primary>
+    </index>
+    <key id="47" parent="36" name="users_pkey">
+      <ObjectId>16433</ObjectId>
+      <StateNumber>817</StateNumber>
+      <ColNames>id</ColNames>
+      <Primary>1</Primary>
+      <UnderlyingIndexName>users_pkey</UnderlyingIndexName>
     </key>
   </database-model>
 </dataSource>
