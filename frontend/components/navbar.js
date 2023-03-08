@@ -1,6 +1,7 @@
 import { Fragment, useState } from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
+import Image from "next/image";
 import Link from "next/link";
 
 function classNames(...classes) {
@@ -10,8 +11,8 @@ function classNames(...classes) {
 export default function Navbar(props) {
   const [elements, setElements] = useState(props.elements);
 
-  function login() {
-    props.setLogin(true);
+  function openLogin() {
+    props.childSetModal("login");
   }
 
   function changeNavigation(name) {
@@ -20,7 +21,7 @@ export default function Navbar(props) {
       else elements[index].current = false;
     });
     setElements((elements) => [...elements]);
-    props.parentCallback(name);
+    props.selectGame(name);
   }
 
   return (
@@ -43,15 +44,19 @@ export default function Navbar(props) {
               <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
                 <div className="flex flex-shrink-0 items-center">
                   <Link href="/">
-                    <img
-                      className="block h-10 w-auto lg:hidden"
-                      src="images/logo.png"
+                    <Image
+                      className="block lg:hidden"
+                      src="/images/logo.png"
                       alt="GameHub Company"
+                      height={35}
+                      width={40}
                     />
-                    <img
-                      className="hidden h-10 w-auto lg:block"
-                      src="images/logo.png"
+                    <Image
+                      className="hidden lg:block"
+                      src="/images/logo.png"
                       alt="GameHub Company"
+                      height={35}
+                      width={40}
                     />
                   </Link>
                 </div>
@@ -66,7 +71,7 @@ export default function Navbar(props) {
                           item.current
                             ? "bg-gray-900 text-white"
                             : "text-gray-300 hover:bg-gray-700 hover:text-white",
-                          "px-3 py-2 rounded-md text-sm font-medium"
+                          "px-3 py-2 rounded-md text-sm font-medium transition-all ease-in duration-200"
                         )}
                         aria-current={item.current ? "page" : undefined}>
                         {item.name}
@@ -81,10 +86,12 @@ export default function Navbar(props) {
                     <div>
                       <Menu.Button className="flex rounded-full bg-gray-800 text-sm">
                         <span className="sr-only">Open user menu</span>
-                        <img
-                          className="h-8 w-8 rounded-full"
-                          src="images/profile.jpg"
+                        <Image
+                          className="rounded-full"
+                          src="/images/profile.jpg"
                           alt="My Profile"
+                          width={40}
+                          height={40}
                         />
                       </Menu.Button>
                     </div>
@@ -139,9 +146,9 @@ export default function Navbar(props) {
                 ) : (
                   <>
                     <button
-                      onClick={login}
+                      onClick={openLogin}
                       className="text-xs relative inline-flex items-center justify-center p-0.5 overflow-hidden font-medium text-white rounded-lg bg-gradient-to-br group from-cyan-500 to-blue-500 group-hover:from-cyan-500 group-hover:to-blue-500 hover:text-white focus:ring-4 focus:outline-none focus:ring-cyan-200 dark:focus:ring-cyan-800">
-                      <span className="relative px-5 py-2 transition-all ease-in duration-250 bg-white dark:bg-gray-800 rounded-md group-hover:bg-opacity-0">
+                      <span className="relative px-5 py-2 transition-all ease-in duration-300 bg-white dark:bg-gray-800 rounded-md group-hover:bg-opacity-0">
                         Login
                       </span>
                     </button>

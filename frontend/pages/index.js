@@ -5,6 +5,7 @@ import React, { useState, useEffect, useRef } from "react";
 import Window from "../components/window";
 import { setCookie, getCookie, hasCookie } from "cookies-next";
 import AuthModal from "../components/auth_modal";
+import RegisterModal from "../components/register_modal";
 
 const elements = [
   { name: "Dashboard", current: true },
@@ -16,17 +17,18 @@ const elements = [
 export default function Home() {
   const [currentElement, setCurrentElement] = useState("Dashboard");
   const [userSession, setUserSession] = useState();
-  const [showModal, setShowModal] = useState(true);
+  const [modal, setModal] = useState("none");
 
   const selectedGame = (game) => {
     setCurrentElement(game);
   };
 
-  const setLogin = (state) => {
-    setShowModal(state);
+  const childSetModal = (modal) => {
+    setModal(modal);
   };
 
   useEffect(() => {
+    //verify cookie validity
     hasCookie("user_session") ? setUserSession(true) : setUserSession(false);
 
     // axios.get("/api/tutorials").then((response) => {
@@ -44,9 +46,18 @@ export default function Home() {
         elements={elements}
         session={userSession}
         selectGame={selectedGame}
-        setLogin={setLogin}></Navbar>
+        childSetModal={childSetModal}></Navbar>
       <Window window={currentElement}></Window>
-      {showModal == true ? <AuthModal setLogin={setLogin}></AuthModal> : <></>}
+      {modal == "login" ? (
+        <AuthModal childSetModal={childSetModal}></AuthModal>
+      ) : (
+        <></>
+      )}
+      {modal == "register" ? (
+        <RegisterModal childSetModal={childSetModal}></RegisterModal>
+      ) : (
+        <></>
+      )}
     </>
   );
 }
