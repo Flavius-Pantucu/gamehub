@@ -1,7 +1,7 @@
 import React, { useRef, useEffect } from "react";
 import Image from "next/image";
 
-export default function AuthModal(props) {
+export default function PasswordModal(props) {
   function handleClick(event) {
     if (dropdown.current && !dropdown.current.contains(event.target)) {
       props.childSetModal("none");
@@ -44,13 +44,7 @@ export default function AuthModal(props) {
           </button>
           <div className="px-6 py-6 lg:px-8 w-full">
             <h3 className="flex justify-center mb-4 text-xl font-medium text-gray-900 dark:text-white">
-              Sign up to GameHub
-              <Image
-                src="/images/logo.png"
-                alt="Logo"
-                width={30}
-                height={25}
-                className="mx-1"></Image>
+              Recover password
             </h3>
             <form className="space-y-5" action="#">
               <div>
@@ -68,33 +62,18 @@ export default function AuthModal(props) {
                   required
                 />
               </div>
-              <div>
-                <label
-                  htmlFor="password"
-                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                  Password
-                </label>
-                <input
-                  type="password"
-                  name="password"
-                  id="password"
-                  placeholder="••••••••"
-                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"
-                  required
-                />
-              </div>
               <button
                 type="submit"
                 className="w-full text-white bg-gradient-to-r from-cyan-500 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2">
-                Create an account
+                Recover password
               </button>
               <div className="flex justify-center text-sm font-medium text-gray-500 dark:text-gray-300">
-                Already have an account?
+                Accidentaly got there?
                 <a
                   onClick={login}
                   href="#"
                   className=" px-1 text-blue-700 hover:underline dark:text-blue-500">
-                  Sign in.
+                  Go back.
                 </a>
               </div>
             </form>

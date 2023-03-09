@@ -4,27 +4,26 @@ import axios from "axios";
 import React, { useState, useEffect, useRef } from "react";
 import Window from "../components/window";
 import { setCookie, getCookie, hasCookie } from "cookies-next";
-import AuthModal from "../components/auth_modal";
-import RegisterModal from "../components/register_modal";
+import Modal from "../components/modal";
 
 const elements = [
   { name: "Dashboard", current: true },
   { name: "TicTacToe", current: false },
   { name: "Sudoku", current: false },
-  { name: "Poker", current: false },
+  { name: "Chess", current: false },
 ];
 
 export default function Home() {
   const [currentElement, setCurrentElement] = useState("Dashboard");
   const [userSession, setUserSession] = useState();
-  const [modal, setModal] = useState("none");
+  const [currentModal, setCurrentModal] = useState("");
 
   const selectedGame = (game) => {
     setCurrentElement(game);
   };
 
   const childSetModal = (modal) => {
-    setModal(modal);
+    setCurrentModal(modal);
   };
 
   useEffect(() => {
@@ -48,16 +47,7 @@ export default function Home() {
         selectGame={selectedGame}
         childSetModal={childSetModal}></Navbar>
       <Window window={currentElement}></Window>
-      {modal == "login" ? (
-        <AuthModal childSetModal={childSetModal}></AuthModal>
-      ) : (
-        <></>
-      )}
-      {modal == "register" ? (
-        <RegisterModal childSetModal={childSetModal}></RegisterModal>
-      ) : (
-        <></>
-      )}
+      <Modal modal={currentModal} childSetModal={childSetModal}></Modal>
     </>
   );
 }
