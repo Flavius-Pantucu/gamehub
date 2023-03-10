@@ -1,4 +1,4 @@
-import TicTacToe from "./games/tictactoe";
+import TicTacToe from "./games/tictactoe/tictactoe";
 import Sudoku from "./games/sudoku";
 import NoPage from "../pages/nopage";
 
