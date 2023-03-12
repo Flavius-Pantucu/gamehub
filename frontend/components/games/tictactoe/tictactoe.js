@@ -1,25 +1,56 @@
-import Image from "next/image";
 import Square from "./square";
 import React, { useState } from "react";
-import ReactCSSTransitionGroup from "react-transition-group";
 
 export default function TicTacToe(props) {
   const [blockStates, setBlockStates] = useState(new Array(9));
   const [move, setMove] = useState("x");
   const [turn, setTurn] = useState(1);
 
+  const winConditions = [
+        [0, 1, 2],
+        [0, 3, 6],
+        [0, 4, 8],
+        [1, 4, 7],
+        [2, 4, 6],
+        [2, 5, 8],
+        [3, 4, 5],
+        [6, 7, 8] 
+      ]
+
   function chooseBlock(block) {
     if (blockStates[block] != undefined) return;
+
     blockStates[block] = move;
     setBlockStates((blockStates) => [...blockStates]);
     setTurn(turn + 1);
-    if (turn == 9) {
-      setBlockStates(new Array(9));
-      setMove("x");
-      setTurn(1);
-      return;
-    }
     move == "x" ? setMove("o") : setMove("x");
+    
+    const result = checkEndgame(move, turn);
+    if (result != null) {
+      alert(result);
+      restartGame();
+    }
+  }
+
+  function checkEndgame(player, turn){
+    var result = null;
+    
+    winConditions.forEach(condition => {
+      if(condition.every(index => blockStates[index] == player)){
+        result = player + " won!";
+      }
+    }, result);
+    
+    if (turn == 9)
+      result = "draw!";
+
+    return result;
+  }
+
+  function restartGame(){
+    setBlockStates(new Array(9));
+    setMove("x");
+    setTurn(1);
   }
 
   return (
