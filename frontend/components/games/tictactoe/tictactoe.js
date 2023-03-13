@@ -1,14 +1,17 @@
 import Square from "./square";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Dropdown } from "flowbite-react";
 
 export default function TicTacToe(props) {
+  var computerMove = useRef(false);
+  var move = useRef("x");
+  var turn = useRef(1);
+
+  const [toast, setToast] = useState({ type: null, message: null });
   const [blockStates, setBlockStates] = useState(new Array(9));
-  const [move, setMove] = useState("x");
-  const [turn, setTurn] = useState(1);
   const [score, setScore] = useState({ x: 0, tie: 0, y: 0 });
-  const [gameState, setGameState] = useState(true);
   const [gameMode, setGameMode] = useState("computer");
+  const [gameState, setGameState] = useState(true);
 
   const winConditions = [
     [0, 1, 2],
@@ -22,8 +25,21 @@ export default function TicTacToe(props) {
   ];
 
   useEffect(() => {
-    setTimeout(() => generateComputerMove(), 300);
-  });
+    toast.type != null
+      ? setTimeout(() => setToast({ type: null, message: null }), 2500)
+      : "";
+  }, [toast]);
+
+  useEffect(() => {
+    if (move.current == "o" && gameMode == "computer" && gameState != false) {
+      computerMove.current = true;
+      setTimeout(() => {
+        var block = generateComputerMove();
+        computerMove.current = false;
+        chooseBlock(block);
+      }, 500);
+    }
+  }, [move.current]);
 
   function chooseGameMode(gameMode) {
     setGameMode(gameMode);
@@ -32,20 +48,24 @@ export default function TicTacToe(props) {
   }
 
   function chooseBlock(block) {
+    if (computerMove.current == true) return;
     if (gameState == false) {
       restartGame();
       return;
     }
 
     if (blockStates[block] != undefined) return;
-
-    blockStates[block] = move;
+    blockStates[block] = move.current;
     setBlockStates((blockStates) => [...blockStates]);
-    setTurn(turn + 1);
-    move == "x" ? setMove("o") : setMove("x");
+    turn.current += 1;
 
-    const status = checkEndgame(move, turn);
-    if (status.result === null) return;
+    const status = checkEndgame(move.current, turn.current);
+    if (status.result == null) {
+      move.current == "x" ? (move.current = "o") : (move.current = "x");
+      return;
+    }
+
+    setToast({ type: "success", message: "Tap the board to start a new game" });
 
     if (status.result === "draw") score.tie += 1;
     else if (status.result === "won")
@@ -74,18 +94,22 @@ export default function TicTacToe(props) {
   function restartGame() {
     setBlockStates(new Array(9));
     setGameState(true);
-    setMove((score.x + score.y + score.tie) % 2 ? "o" : "x");
-    setTurn(1);
+    move.current = (score.x + score.y + score.tie) % 2 ? "o" : "x";
+    turn.current = 1;
   }
 
   function generateComputerMove() {
-    if (move != "o" || gameMode != "computer" || gameState == false) return;
-
+    if (move.current != "o" || gameMode != "computer" || gameState == false)
+      return;
     var randblock = Math.floor(Math.random() * 9);
     while (blockStates[randblock] != undefined) {
       randblock = Math.floor(Math.random() * 9);
     }
-    chooseBlock(randblock);
+    return randblock;
+  }
+
+  function closeToast() {
+    setToast({ type: null, message: null });
   }
 
   return (
@@ -109,6 +133,11 @@ export default function TicTacToe(props) {
             onClick={() => chooseGameMode("multiplayer")}
             className="text-white hover:bg-gray-500">
             Multiplayer (online)
+          </Dropdown.Item>
+          <Dropdown.Item
+            onClick={() => chooseGameMode({ gameMode })}
+            className="text-white hover:bg-gray-500">
+            Reset score
           </Dropdown.Item>
         </Dropdown>
       </h1>
@@ -177,6 +206,28 @@ export default function TicTacToe(props) {
           </div>
           <div className="flex w-32 items-center justify-center">{score.y}</div>
         </div>
+      </div>
+      <div
+        id="toast-top-right"
+        onClick={closeToast}
+        className={`absolute flex items-center justify-between w-72 max-w-xs p-4 rounded-lg shadow top-5 right-5 text-cyan-400 divide-gray-700 space-x bg-gray-700 transition-opacity ease-in-out duration-500 ${
+          toast.type == "success" ? " opacity-100" : "opacity-0"
+        }`}
+        role="alert">
+        <div className="text-sm font-normal">{toast.message}</div>
+        <svg
+          aria-hidden="true"
+          className="w-4 h-4 text-cyan-400"
+          focusable="false"
+          data-prefix="fas"
+          data-icon="paper-plane"
+          role="img"
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 512 512">
+          <path
+            fill="currentColor"
+            d="M48 80a48 48 0 1 1 96 0A48 48 0 1 1 48 80zM0 224c0-17.7 14.3-32 32-32H96c17.7 0 32 14.3 32 32V448h32c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H64V256H32c-17.7 0-32-14.3-32-32z"></path>
+        </svg>
       </div>
     </div>
   );

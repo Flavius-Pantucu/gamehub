@@ -9,8 +9,7 @@ export default function Square(props) {
         src="/images/tictactoe-x.png"
         alt="X"
         width={75}
-        height={75}
-        className="opacity-90"></Image>
+        height={75}></Image>
     );
   else if (state == "o")
     return (
@@ -18,8 +17,7 @@ export default function Square(props) {
         src="/images/tictactoe-o.png"
         alt="O"
         width={85}
-        height={85}
-        className="opacity-90"></Image>
+        height={85}></Image>
     );
   else return "";
 }
