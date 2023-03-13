@@ -147,8 +147,8 @@ export default function Navbar(props) {
                   <>
                     <button
                       onClick={openLogin}
-                      className="text-xs relative inline-flex items-center justify-center p-0.5 overflow-hidden font-medium text-white rounded-lg bg-gradient-to-br group from-cyan-500 to-blue-500 group-hover:from-cyan-500 group-hover:to-blue-500 hover:text-white focus:ring-4 focus:outline-none focus:ring-cyan-200 dark:focus:ring-cyan-800">
-                      <span className="relative px-5 py-2 transition-all ease-in duration-300 bg-white dark:bg-gray-800 rounded-md group-hover:bg-opacity-0">
+                      className="text-xs relative inline-flex items-center justify-center p-0.5 overflow-hidden font-medium text-white rounded-lg bg-gradient-to-br group from-cyan-500 to-blue-500 group-hover:from-cyan-500 group-hover:to-blue-500 hover:text-white focus:ring-4 focus:outline-non focus:ring-cyan-800">
+                      <span className="relative px-5 py-2 transition-all ease-in duration-300 bg-gray-800 rounded-md group-hover:bg-opacity-0">
                         Login
                       </span>
                     </button>
