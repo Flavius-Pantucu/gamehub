@@ -5,7 +5,7 @@ import { Dropdown } from "flowbite-react";
 export default function TicTacToe(props) {
   var computerMove = useRef(false);
   var move = useRef("x");
-  var turn = useRef(1);
+  var turn = useRef(0);
 
   const [toast, setToast] = useState({ type: null, message: null });
   const [blockStates, setBlockStates] = useState(new Array(9));
