@@ -1,5 +1,6 @@
 import React, { useRef, useEffect } from "react";
 import Image from "next/image";
+import Link from "next/link";
 
 export default function PasswordModal(props) {
   function handleClick(event) {
@@ -69,12 +70,12 @@ export default function PasswordModal(props) {
               </button>
               <div className="flex justify-center text-sm font-medium text-gray-300">
                 Accidentaly got there?
-                <a
+                <Link
                   onClick={login}
-                  href="#"
+                  href="/"
                   className=" px-1 hover:underline text-blue-500">
                   Go back.
-                </a>
+                </Link>
               </div>
             </form>
           </div>

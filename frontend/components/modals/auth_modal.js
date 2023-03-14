@@ -1,5 +1,6 @@
 import React, { useRef, useEffect } from "react";
 import Image from "next/image";
+import Link from "next/link";
 
 export default function AuthModal(props) {
   function handleClick(event) {
@@ -104,12 +105,12 @@ export default function AuthModal(props) {
                     Remember me
                   </label>
                 </div>
-                <a
+                <Link
                   onClick={password}
-                  href="#"
+                  href="/"
                   className="text-sm hover:underline text-blue-500">
                   Forgot password?
-                </a>
+                </Link>
               </div>
               <button
                 type="submit"
@@ -118,12 +119,12 @@ export default function AuthModal(props) {
               </button>
               <div className="flex justify-center text-sm font-medium text-gray-300">
                 Don't have an account?
-                <a
+                <Link
                   onClick={register}
-                  href="#"
+                  href="/"
                   className=" px-1 hover:underline text-blue-500">
                   Create yours now.
-                </a>
+                </Link>
               </div>
             </form>
           </div>

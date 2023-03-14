@@ -115,8 +115,8 @@ export default function TicTacToe(props) {
           label="TicTacToe"
           inline="true"
           className={`${
-            theme == "dark" ? "bg-slate-900" : "bg-slate-100"
-          } transition-all ease-in-out duration-500`}>
+            theme == "dark" ? "bg-slate-900/100" : "bg-slate-100"
+          } border-0 ml-4 transition-all ease-in-out duration-500`}>
           <Dropdown.Item
             onClick={() => chooseGameMode("singleplayer")}
             className={` transition-colors ease-in-out duration-300 ${

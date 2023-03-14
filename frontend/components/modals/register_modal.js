@@ -1,5 +1,6 @@
 import React, { useRef, useEffect } from "react";
 import Image from "next/image";
+import Link from "next/link";
 
 export default function RegisterModal(props) {
   function handleClick(event) {
@@ -120,12 +121,12 @@ export default function RegisterModal(props) {
               </button>
               <div className="flex justify-center text-sm font-medium text-gray-300">
                 Already have an account?
-                <a
+                <Link
                   onClick={login}
-                  href="#"
+                  href="/"
                   className=" px-1 hover:underline text-blue-500">
                   Sign in.
-                </a>
+                </Link>
               </div>
             </form>
           </div>
