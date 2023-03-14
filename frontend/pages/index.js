@@ -5,6 +5,8 @@ import React, { useState, useEffect, useRef } from "react";
 import Window from "../components/window";
 import { setCookie, getCookie, hasCookie } from "cookies-next";
 import Modal from "../components/modal";
+import Toast from "../components/toast";
+import Container from "../components/container";
 
 const elements = [
   { name: "Dashboard", current: true },
@@ -17,6 +19,8 @@ export default function Home() {
   const [currentElement, setCurrentElement] = useState("Dashboard");
   const [userSession, setUserSession] = useState();
   const [currentModal, setCurrentModal] = useState("");
+  const [toast, setToast] = useState({ type: null, message: null });
+  const [theme, setTheme] = useState("dark");
 
   const selectedGame = (game) => {
     setCurrentElement(game);
@@ -25,6 +29,16 @@ export default function Home() {
   const childSetModal = (modal) => {
     setCurrentModal(modal);
   };
+
+  const closeToast = () => {
+    setToast({ type: null, message: null });
+  };
+
+  useEffect(() => {
+    toast.type != null
+      ? setTimeout(() => setToast({ type: null, message: null }), 2500)
+      : "";
+  }, [toast]);
 
   useEffect(() => {
     //verify cookie validity
@@ -41,13 +55,21 @@ export default function Home() {
         <title>GameHub</title>
         <link rel="shortcut icon" href="/images/favicon.ico" />
       </Head>
-      <Navbar
-        elements={elements}
-        session={userSession}
-        selectGame={selectedGame}
-        childSetModal={childSetModal}></Navbar>
-      <Window window={currentElement}></Window>
-      <Modal modal={currentModal} childSetModal={childSetModal}></Modal>
+      <Container theme={theme}>
+        <Navbar
+          theme={theme}
+          elements={elements}
+          session={userSession}
+          selectGame={selectedGame}
+          childSetModal={childSetModal}
+          childSetTheme={setTheme}></Navbar>
+        <Window
+          window={currentElement}
+          setToast={setToast}
+          theme={theme}></Window>
+        <Modal modal={currentModal} childSetModal={childSetModal}></Modal>
+        <Toast toast={toast} closeToast={closeToast}></Toast>
+      </Container>
     </>
   );
 }

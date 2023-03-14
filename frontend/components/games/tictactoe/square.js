@@ -2,12 +2,15 @@ import Image from "next/image";
 
 export default function Square(props) {
   const state = props.state;
+  const theme = props.theme;
 
   if (state == "x")
     return (
       <svg
         aria-hidden="true"
-        className="w-20 h-20 text-rose-500 flex"
+        className={`xl:w-20 md:w-16 sm:w-12 w-6 xl:h-20 md:h-16 sm:h-12 h-6 flex transition-all ease-in duration-200 ${
+          theme == "dark" ? "text-rose-500" : "text-rose-900"
+        }`}
         focusable="false"
         data-prefix="fas"
         data-icon="paper-plane"
@@ -23,7 +26,9 @@ export default function Square(props) {
     return (
       <svg
         aria-hidden="true"
-        className="w-20 h-20 text-cyan-300 flex"
+        className={`xl:w-20 md:w-16 sm:w-12 w-6 xl:h-20 md:h-16 sm:h-12 h-6  flex transition-all ease-in duration-200 ${
+          theme == "dark" ? "text-cyan-300" : "text-cyan-900"
+        }`}
         focusable="false"
         data-prefix="fas"
         data-icon="paper-plane"

@@ -5,7 +5,9 @@ import NoPage from "../pages/nopage";
 export default function Window(props) {
   const current = props.window;
 
-  if (current == "TicTacToe") return <TicTacToe />;
-  else if (current == "Sudoku") return <Sudoku />;
+  if (current == "TicTacToe")
+    return <TicTacToe theme={props.theme} setToast={props.setToast} />;
+  else if (current == "Sudoku")
+    return <Sudoku theme={props.theme} setToast={props.setToast} />;
   else return <NoPage />;
 }
