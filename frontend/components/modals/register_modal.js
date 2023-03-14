@@ -10,7 +10,7 @@ export default function RegisterModal(props) {
   }
 
   function exit() {
-    props.setLogin(false);
+    props.childSetModal("none");
   }
 
   function login() {
