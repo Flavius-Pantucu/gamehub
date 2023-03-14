@@ -9,5 +9,5 @@ export default function Window(props) {
     return <TicTacToe theme={props.theme} setToast={props.setToast} />;
   else if (current == "Sudoku")
     return <Sudoku theme={props.theme} setToast={props.setToast} />;
-  else return <NoPage />;
+  else return <NoPage theme={props.theme} />;
 }

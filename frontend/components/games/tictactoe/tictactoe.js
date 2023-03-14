@@ -115,14 +115,14 @@ export default function TicTacToe(props) {
           label="TicTacToe"
           inline="true"
           className={`${
-            theme == "dark" ? "bg-slate-900" : "bg-zinc-300"
-          } border-0 ml-4 mb-0 transition-all ease-in-out duration-500`}>
+            theme == "dark" ? "bg-slate-900" : "bg-slate-100"
+          } transition-all ease-in-out duration-500`}>
           <Dropdown.Item
             onClick={() => chooseGameMode("singleplayer")}
             className={` transition-colors ease-in-out duration-300 ${
               theme == "dark"
-                ? "text-white hover:bg-slate-500"
-                : "text-neutral-600 hover:text-neutral-900 hover:hover:bg-zinc-400"
+                ? "text-white hover:bg-gray-700"
+                : "text-neutral-600 hover:text-neutral-900 hover:bg-slate-300"
             }`}>
             Single-player (2P)
           </Dropdown.Item>
@@ -130,8 +130,8 @@ export default function TicTacToe(props) {
             onClick={() => chooseGameMode("computer")}
             className={` transition-colors ease-in-out duration-300 ${
               theme == "dark"
-                ? "text-white hover:bg-slate-500"
-                : "text-neutral-600 hover:text-neutral-900 hover:bg-zinc-400"
+                ? "text-white hover:bg-gray-700"
+                : "text-neutral-600 hover:text-neutral-900 hover:bg-slate-300"
             }`}>
             Single-player (1P)
           </Dropdown.Item>
@@ -139,8 +139,8 @@ export default function TicTacToe(props) {
             onClick={() => chooseGameMode("multiplayer")}
             className={` transition-colors ease-in-out duration-300 ${
               theme == "dark"
-                ? "text-white hover:bg-slate-500"
-                : "text-neutral-600 hover:text-neutral-900 hover:bg-zinc-400"
+                ? "text-white hover:bg-gray-700"
+                : "text-neutral-600 hover:text-neutral-900 hover:bg-slate-300"
             }`}>
             Multiplayer (online)
           </Dropdown.Item>
@@ -148,8 +148,8 @@ export default function TicTacToe(props) {
             onClick={() => chooseGameMode({ gameMode })}
             className={` transition-colors ease-in-out duration-300 ${
               theme == "dark"
-                ? "text-white hover:bg-slate-500"
-                : "text-neutral-600 hover:text-neutral-900 hover:hover:bg-zinc-400"
+                ? "text-white hover:bg-gray-700"
+                : "text-neutral-600 hover:text-neutral-900 hover:bg-slate-300"
             }`}>
             Reset score
           </Dropdown.Item>
@@ -221,10 +221,10 @@ export default function TicTacToe(props) {
         </div>
       </div>
       <div
-        className={`flex justify-center mt-4 transition-all ease-in duration-200 ${
+        className={`flex justify-center transition-all ease-in duration-200 ${
           theme == "dark" ? "text-white" : "text-neutral-900"
         }`}>
-        <div className="grid grid-cols-3 gap-y-1">
+        <div className="absolute bottom-5 grid grid-cols-3 gap-y-1">
           <div className="flex w-32 items-center justify-center">Player X</div>
           <div className="flex w-32 items-center justify-center">Tie</div>
           <div className="flex w-32 items-center justify-center">

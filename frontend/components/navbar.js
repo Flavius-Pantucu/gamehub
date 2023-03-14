@@ -82,10 +82,10 @@ export default function Navbar(props) {
                           item.current
                             ? theme == "dark"
                               ? "bg-gray-900 text-white"
-                              : "bg-zinc-400 text-neutral-900"
+                              : "bg-gray-900 text-white"
                             : theme == "dark"
                             ? "text-gray-300 hover:bg-gray-700 hover:text-white"
-                            : "text-neutral-600 hover:bg-zinc-300 hover:text-neutral-900",
+                            : "text-neutral-600 hover:bg-gray-300 hover:text-neutral-900",
                           "px-3 py-2 rounded-md text-sm font-medium transition-all ease-in duration-200"
                         )}
                         aria-current={item.current ? "page" : undefined}>
