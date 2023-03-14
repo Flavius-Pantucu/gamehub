@@ -115,7 +115,7 @@ export default function TicTacToe(props) {
           label="TicTacToe"
           inline="true"
           className={`${
-            theme == "dark" ? "bg-slate-900/100" : "bg-slate-100"
+            theme == "dark" ? "bg-slate-800" : "bg-slate-100"
           } border-0 ml-4 transition-all ease-in-out duration-500`}>
           <Dropdown.Item
             onClick={() => chooseGameMode("singleplayer")}
@@ -166,55 +166,55 @@ export default function TicTacToe(props) {
         <div className="grid grid-cols-3 xl:h-96 md:h-72 sm:h-48 self-center">
           <div
             onClick={() => chooseBlock(0)}
-            className={`flex transition-all ease-in duration-200 xl:h-32 md:h-24 sm:h-16 xl:w-32 md:w-24 sm:w-16 w-8 h-8 items-center justify-center border-r-2 border-b-2 cursor-pointer">
+            className={`flex transition-all ease-in duration-200 xl:h-32 md:h-24 sm:h-16 xl:w-32 md:w-24 sm:w-16 w-16 h-16 items-center justify-center border-r-2 border-b-2 cursor-pointer">
             ${theme == "dark" ? "border-slate-300" : "border-neutral-700"}`}>
             <Square state={blockStates[0]} theme={theme}></Square>
           </div>
           <div
             onClick={() => chooseBlock(1)}
-            className={`flex transition-all ease-in duration-200 xl:h-32 md:h-24 sm:h-16 xl:w-32 md:w-24 sm:w-16 w-8 h-8 items-center justify-center border-r-2 border-l-2 border-b-2 cursor-pointer">
+            className={`flex transition-all ease-in duration-200 xl:h-32 md:h-24 sm:h-16 xl:w-32 md:w-24 sm:w-16 w-16 h-16 items-center justify-center border-r-2 border-l-2 border-b-2 cursor-pointer">
             ${theme == "dark" ? "border-slate-300" : "border-neutral-700"}`}>
             <Square state={blockStates[1]} theme={theme}></Square>
           </div>
           <div
             onClick={() => chooseBlock(2)}
-            className={`flex transition-all ease-in duration-200 xl:h-32 md:h-24 sm:h-16 xl:w-32 md:w-24 sm:w-16 w-8 h-8 items-center justify-center border-l-2 border-b-2 cursor-pointer">
+            className={`flex transition-all ease-in duration-200 xl:h-32 md:h-24 sm:h-16 xl:w-32 md:w-24 sm:w-16 w-16 h-16 items-center justify-center border-l-2 border-b-2 cursor-pointer">
             ${theme == "dark" ? "border-slate-300" : "border-neutral-700"}`}>
             <Square state={blockStates[2]} theme={theme}></Square>
           </div>
           <div
             onClick={() => chooseBlock(3)}
-            className={`flex transition-all ease-in duration-200 xl:h-32 md:h-24 sm:h-16 xl:w-32 md:w-24 sm:w-16 w-8 h-8 items-center justify-center border-t-2 border-r-2 border-b-2 cursor-pointer">
+            className={`flex transition-all ease-in duration-200 xl:h-32 md:h-24 sm:h-16 xl:w-32 md:w-24 sm:w-16 w-16 h-16 items-center justify-center border-t-2 border-r-2 border-b-2 cursor-pointer">
             ${theme == "dark" ? "border-slate-300" : "border-neutral-700"}`}>
             <Square state={blockStates[3]} theme={theme}></Square>
           </div>
           <div
             onClick={() => chooseBlock(4)}
-            className={`flex transition-all ease-in duration-200 xl:h-32 md:h-24 sm:h-16 xl:w-32 md:w-24 sm:w-16 w-8 h-8 items-center justify-center border-2 cursor-pointer">
+            className={`flex transition-all ease-in duration-200 xl:h-32 md:h-24 sm:h-16 xl:w-32 md:w-24 sm:w-16 w-16 h-16 items-center justify-center border-2 cursor-pointer">
             ${theme == "dark" ? "border-slate-300" : "border-neutral-700"}`}>
             <Square state={blockStates[4]} theme={theme}></Square>
           </div>
           <div
             onClick={() => chooseBlock(5)}
-            className={`flex transition-all ease-in duration-200 xl:h-32 md:h-24 sm:h-16 xl:w-32 md:w-24 sm:w-16 w-8 h-8 items-center justify-center border-l-2 border-t-2 border-b-2 cursor-pointer 
+            className={`flex transition-all ease-in duration-200 xl:h-32 md:h-24 sm:h-16 xl:w-32 md:w-24 sm:w-16 w-16 h-16 items-center justify-center border-l-2 border-t-2 border-b-2 cursor-pointer 
             ${theme == "dark" ? "border-slate-300" : "border-neutral-700"}`}>
             <Square state={blockStates[5]} theme={theme}></Square>
           </div>
           <div
             onClick={() => chooseBlock(6)}
-            className={`flex transition-all ease-in duration-200 xl:h-32 md:h-24 sm:h-16 xl:w-32 md:w-24 sm:w-16 w-8 h-8 items-center justify-center border-t-2 border-r-2 cursor-pointer"
+            className={`flex transition-all ease-in duration-200 xl:h-32 md:h-24 sm:h-16 xl:w-32 md:w-24 sm:w-16 w-16 h-16 items-center justify-center border-t-2 border-r-2 cursor-pointer"
             ${theme == "dark" ? "border-slate-300" : "border-neutral-700"}`}>
             <Square state={blockStates[6]} theme={theme}></Square>
           </div>
           <div
             onClick={() => chooseBlock(7)}
-            className={`flex transition-all ease-in duration-200 xl:h-32 md:h-24 sm:h-16 xl:w-32 md:w-24 sm:w-16 w-8 h-8 items-center justify-center border-t-2 border-l-2 border-r-2 cursor-pointer"
+            className={`flex transition-all ease-in duration-200 xl:h-32 md:h-24 sm:h-16 xl:w-32 md:w-24 sm:w-16 w-16 h-16 items-center justify-center border-t-2 border-l-2 border-r-2 cursor-pointer"
             ${theme == "dark" ? "border-slate-300" : "border-neutral-700"}`}>
             <Square state={blockStates[7]} theme={theme}></Square>
           </div>
           <div
             onClick={() => chooseBlock(8)}
-            className={`flex transition-all ease-in duration-200 xl:h-32 md:h-24 sm:h-16 xl:w-32 md:w-24 sm:w-16 w-8 h-8 items-center justify-center border-l-2 border-t-2 cursor-pointer"
+            className={`flex transition-all ease-in duration-200 xl:h-32 md:h-24 sm:h-16 xl:w-32 md:w-24 sm:w-16 w-16 h-16 items-center justify-center border-l-2 border-t-2 cursor-pointer"
             ${theme == "dark" ? "border-slate-300" : "border-neutral-700"}`}>
             <Square state={blockStates[8]} theme={theme}></Square>
           </div>
