@@ -1,6 +1,6 @@
 import Image from "next/image";
 
-export default function Square(props) {
+export default function TicTacToeSquare(props) {
   const state = props.state;
   const theme = props.theme;
 

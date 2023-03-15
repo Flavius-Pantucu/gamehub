@@ -1,5 +1,5 @@
 import TicTacToe from "./games/tictactoe/tictactoe";
-import Sudoku from "./games/sudoku";
+import Sudoku from "./games/sudoku/sudoku";
 import NoPage from "../pages/nopage";
 import Dashboard from "./dashboard";
 

@@ -9,14 +9,14 @@ import Toast from "../components/toast";
 import Container from "../components/container";
 
 const elements = [
-  { name: "Dashboard", current: true },
+  { name: "Dashboard", current: false },
   { name: "TicTacToe", current: false },
-  { name: "Sudoku", current: false },
+  { name: "Sudoku", current: true },
   { name: "Chess", current: false },
 ];
 
 export default function Home() {
-  const [currentElement, setCurrentElement] = useState("Dashboard");
+  const [currentElement, setCurrentElement] = useState("Sudoku");
   const [userSession, setUserSession] = useState();
   const [currentModal, setCurrentModal] = useState("");
   const [toast, setToast] = useState({ type: null, message: null });
