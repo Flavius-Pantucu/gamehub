@@ -1,7 +1,6 @@
 import Square from "./square";
 import React, { Fragment, useState, useEffect, useRef } from "react";
-import { Dropdown } from "flowbite-react";
-import { Disclosure, Menu, Transition } from "@headlessui/react";
+import { Menu, Transition } from "@headlessui/react";
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
 
 export default function TicTacToe(props) {

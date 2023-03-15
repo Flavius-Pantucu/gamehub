@@ -1,5 +1,6 @@
 export default function Toast(props) {
   const toast = props.toast;
+  const theme = props.theme;
 
   function closeToast() {
     props.closeToast();
@@ -9,14 +10,21 @@ export default function Toast(props) {
     <div
       id="toast-top-right"
       onClick={closeToast}
-      className={`absolute flex items-center justify-between w-72 max-w-xs p-4 rounded-lg shadow bottom-5 right-5 text-cyan-400 divide-gray-700 space-x bg-gray-700 transition-opacity ease-in-out duration-500 ${
+      className={`absolute flex items-center justify-between w-72 max-w-xs p-4 rounded-lg shadow-lg bottom-5 right-5 transition-all ease-in-out duration-300 ${
         toast.type == "success" ? " opacity-100" : "opacity-0"
       }`}
       role="alert">
-      <div className="text-sm font-normal">{toast.message}</div>
+      <div
+        className={`text-sm font-normal ${
+          theme == "dark" ? "text-cyan-400" : "text-gray-900"
+        }`}>
+        {toast.message}
+      </div>
       <svg
         aria-hidden="true"
-        className="w-4 h-4 text-cyan-400"
+        className={`w-4 h-4 ${
+          theme == "dark" ? "text-cyan-400" : "text-gray-900"
+        }`}
         focusable="false"
         data-prefix="fas"
         data-icon="paper-plane"
