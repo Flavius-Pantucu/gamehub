@@ -3,12 +3,18 @@ import { Menu } from "@headlessui/react";
 import SudokuSquare from "./sudoku-square";
 
 export default function Sudoku(props) {
+  const [currentColumn, setCurrentColumn] = useState(null);
   const [currentSquare, setCurrentSquare] = useState(null);
   const [currentCell, setCurrentCell] = useState(null);
+  const [currentRow, setCurrentRow] = useState(null);
 
   const theme = props.theme;
-  const selectCell = (cell, square) => {
-    setCurrentCell(cell), setCurrentSquare(square);
+
+  const selectCell = (cell, square, row, col) => {
+    setCurrentCell(cell);
+    setCurrentSquare(square);
+    setCurrentRow(row);
+    setCurrentColumn(col);
   };
 
   return (
@@ -23,91 +29,136 @@ export default function Sudoku(props) {
           </Menu.Button>
         </div>
       </Menu>
-      <div className="flex h-5/6 justify-center mt-4 gap-x-4">
+      <div className="flex h-5/6 justify-center mt-4 gap-x-4 md:flex-row flex-col">
         <div className="grid grid-cols-3 self-center">
           <div
-            className={`flex border-l-2 border-t-2 transition-all ease-in duration-200 xl:h-36 md:h-28 sm:h-20 xl:w-36 md:w-28 sm:w-20 w-16 h-16 items-center justify-center cursor-pointer">
+            className={`flex border-l-2 border-t-2 transition-all ease-in duration-200 xl:h-36 md:h-28 xl:w-36 md:w-28 w-28 h-28 items-center justify-center cursor-pointer">
             ${theme == "dark" ? "border-slate-300" : "border-neutral-700"}`}>
             <SudokuSquare
               theme={theme}
               square={1}
               selectCell={selectCell}
-              currentCell={[currentCell, currentSquare]}></SudokuSquare>
+              current={[
+                currentCell,
+                currentSquare,
+                currentRow,
+                currentColumn,
+              ]}></SudokuSquare>
           </div>
           <div
-            className={`flex border-l-2 border-t-2 border-r-2 transition-all ease-in duration-200 xl:h-36 md:h-28 sm:h-20 xl:w-36 md:w-28 sm:w-20 w-16 h-16 items-center justify-center cursor-pointer">
+            className={`flex border-l-2 border-t-2 border-r-2 transition-all ease-in duration-200 xl:h-36 md:h-28 xl:w-36 md:w-28 w-28 h-28 items-center justify-center cursor-pointer">
             ${theme == "dark" ? "border-slate-300" : "border-neutral-700"}`}>
             <SudokuSquare
               theme={theme}
               square={2}
               selectCell={selectCell}
-              currentCell={[currentCell, currentSquare]}></SudokuSquare>
+              current={[
+                currentCell,
+                currentSquare,
+                currentRow,
+                currentColumn,
+              ]}></SudokuSquare>
           </div>
           <div
-            className={`flex border-t-2 border-r-2 transition-all ease-in duration-200 xl:h-36 md:h-28 sm:h-20 xl:w-36 md:w-28 sm:w-20 w-16 h-16 items-center justify-center cursor-pointer">
+            className={`flex border-t-2 border-r-2 transition-all ease-in duration-200 xl:h-36 md:h-28 xl:w-36 md:w-28 w-28 h-28 items-center justify-center cursor-pointer">
             ${theme == "dark" ? "border-slate-300" : "border-neutral-700"}`}>
             <SudokuSquare
               theme={theme}
               square={3}
               selectCell={selectCell}
-              currentCell={[currentCell, currentSquare]}></SudokuSquare>
+              current={[
+                currentCell,
+                currentSquare,
+                currentRow,
+                currentColumn,
+              ]}></SudokuSquare>
           </div>
           <div
-            className={`flex border-l-2 border-t-2 border-b-2 transition-all ease-in duration-200 xl:h-36 md:h-28 sm:h-20 xl:w-36 md:w-28 sm:w-20 w-16 h-16 items-center justify-center cursor-pointer">
+            className={`flex border-l-2 border-t-2 border-b-2 transition-all ease-in duration-200 xl:h-36 md:h-28 xl:w-36 md:w-28 w-28 h-28 items-center justify-center cursor-pointer">
             ${theme == "dark" ? "border-slate-300" : "border-neutral-700"}`}>
             <SudokuSquare
               theme={theme}
               square={4}
               selectCell={selectCell}
-              currentCell={[currentCell, currentSquare]}></SudokuSquare>
+              current={[
+                currentCell,
+                currentSquare,
+                currentRow,
+                currentColumn,
+              ]}></SudokuSquare>
           </div>
           <div
-            className={`flex border-2 transition-all ease-in duration-200 xl:h-36 md:h-28 sm:h-20 xl:w-36 md:w-28 sm:w-20 w-16 h-16 items-center justify-center cursor-pointer">
+            className={`flex border-2 transition-all ease-in duration-200 xl:h-36 md:h-28 xl:w-36 md:w-28 w-28 h-28 items-center justify-center cursor-pointer">
             ${theme == "dark" ? "border-slate-300" : "border-neutral-700"}`}>
             <SudokuSquare
               theme={theme}
               square={5}
               selectCell={selectCell}
-              currentCell={[currentCell, currentSquare]}></SudokuSquare>
+              current={[
+                currentCell,
+                currentSquare,
+                currentRow,
+                currentColumn,
+              ]}></SudokuSquare>
           </div>
           <div
-            className={`flex border-t-2 border-r-2 border-b-2 transition-all ease-in duration-200 xl:h-36 md:h-28 sm:h-20 xl:w-36 md:w-28 sm:w-20 w-16 h-16 items-center justify-center cursor-pointer 
+            className={`flex border-t-2 border-r-2 border-b-2 transition-all ease-in duration-200 xl:h-36 md:h-28 xl:w-36 md:w-28 w-28 h-28 items-center justify-center cursor-pointer 
             ${theme == "dark" ? "border-slate-300" : "border-neutral-700"}`}>
             <SudokuSquare
               theme={theme}
               square={6}
               selectCell={selectCell}
-              currentCell={[currentCell, currentSquare]}></SudokuSquare>
+              current={[
+                currentCell,
+                currentSquare,
+                currentRow,
+                currentColumn,
+              ]}></SudokuSquare>
           </div>
           <div
-            className={`flex border-l-2 border-b-2 transition-all ease-in duration-200 xl:h-36 md:h-28 sm:h-20 xl:w-36 md:w-28 sm:w-20 w-16 h-16 items-center justify-center cursor-pointer"
+            className={`flex border-l-2 border-b-2 transition-all ease-in duration-200 xl:h-36 md:h-28 xl:w-36 md:w-28 w-28 h-28 items-center justify-center cursor-pointer"
             ${theme == "dark" ? "border-slate-300" : "border-neutral-700"}`}>
             <SudokuSquare
               theme={theme}
               square={7}
               selectCell={selectCell}
-              currentCell={[currentCell, currentSquare]}></SudokuSquare>
+              current={[
+                currentCell,
+                currentSquare,
+                currentRow,
+                currentColumn,
+              ]}></SudokuSquare>
           </div>
           <div
-            className={`flex border-l-2 border-r-2 border-b-2 transition-all ease-in duration-200 xl:h-36 md:h-28 sm:h-20 xl:w-36 md:w-28 sm:w-20 w-16 h-16 items-center justify-center cursor-pointer"
+            className={`flex border-l-2 border-r-2 border-b-2 transition-all ease-in duration-200 xl:h-36 md:h-28 xl:w-36 md:w-28 w-28 h-28 items-center justify-center cursor-pointer"
             ${theme == "dark" ? "border-slate-300" : "border-neutral-700"}`}>
             <SudokuSquare
               theme={theme}
               square={8}
               selectCell={selectCell}
-              currentCell={[currentCell, currentSquare]}></SudokuSquare>
+              current={[
+                currentCell,
+                currentSquare,
+                currentRow,
+                currentColumn,
+              ]}></SudokuSquare>
           </div>
           <div
-            className={`flex border-r-2 border-b-2 transition-all ease-in duration-200 xl:h-36 md:h-28 sm:h-20 xl:w-36 md:w-28 sm:w-20 w-16 h-16 items-center justify-center cursor-pointer"
+            className={`flex border-r-2 border-b-2 transition-all ease-in duration-200 xl:h-36 md:h-28 xl:w-36 md:w-28 w-28 h-28 items-center justify-center cursor-pointer"
             ${theme == "dark" ? "border-slate-300" : "border-neutral-700"}`}>
             <SudokuSquare
               theme={theme}
               square={9}
               selectCell={selectCell}
-              currentCell={[currentCell, currentSquare]}></SudokuSquare>
+              current={[
+                currentCell,
+                currentSquare,
+                currentRow,
+                currentColumn,
+              ]}></SudokuSquare>
           </div>
         </div>
-        <div className="text-white">Second div for actions</div>
+        <div className="text-white self-center">Second div for actions</div>
       </div>
     </div>
   );
