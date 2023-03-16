@@ -13,6 +13,12 @@ export default function Sudoku(props) {
 
   useEffect(() => {
     startTimer();
+
+    document.addEventListener("keyup", fillCell);
+
+    return () => {
+      document.removeEventListener("keyup", fillCell);
+    };
   }, []);
 
   const theme = props.theme;
@@ -30,6 +36,12 @@ export default function Sudoku(props) {
     setCurrentSquare(square);
     setCurrentRow(row);
     setCurrentColumn(col);
+  };
+
+  const fillCell = (event) => {
+    const number = parseInt(event.key);
+    console.log(number);
+    if (number == NaN) return;
   };
 
   const insertValue = (value) => {
@@ -142,9 +154,9 @@ export default function Sudoku(props) {
           </Menu.Items>
         </Transition>
       </Menu>
-      <div className="flex md:h-5/6 md:mt-4 md:gap-x-4 mt-8 h-4/6 gap-y-4 justify-center items-center">
-        <div className="grid md:grid-cols-2 grid-cols-1">
-          <div className="md:col-span-2 col-span-1 h-8">
+      <div className="flex md:h-5/6 md:mt-0 md:gap-x-4 mt-8 h-4/6 gap-y-4 justify-center">
+        <div className="grid lg:grid-cols-2 grid-cols-1">
+          <div className="lg:col-span-2 col-span-1 h-8 self-end">
             <div className="flex w-full justify-between">
               <div className="flex">
                 <h1
@@ -168,9 +180,9 @@ export default function Sudoku(props) {
               </div>
             </div>
           </div>
-          <div className="col-span-1 grid grid-cols-3 self-center">
+          <div className="col-span-1 grid grid-cols-3 self-start overflow">
             <div
-              className={`flex border-l-2 border-t-2 transition-all ease-in duration-200 xl:h-40 md:h-32 xl:w-40 md:w-32 w-28 h-28 items-center justify-center cursor-pointer">
+              className={`flex border-l-2 border-t-2 transition-all ease-in duration-200 2xl:h-48 xl:h-44 lg:h-40 md:h-36 sm:h-32 2xl:w-48 xl:w-44 lg:w-40 md:w-36 sm:w-32 w-28 h-28 items-center justify-center cursor-pointer">
             ${theme == "dark" ? "border-slate-300" : "border-neutral-700"}`}>
               <SudokuSquare
                 theme={theme}
@@ -185,7 +197,7 @@ export default function Sudoku(props) {
                 ]}></SudokuSquare>
             </div>
             <div
-              className={`flex border-l-2 border-t-2 border-r-2 transition-all ease-in duration-200 xl:h-40 md:h-32 xl:w-40 md:w-32 w-28 h-28 items-center justify-center cursor-pointer">
+              className={`flex border-l-2 border-t-2 border-r-2 transition-all ease-in duration-200 2xl:h-48 xl:h-44 lg:h-40 md:h-36 sm:h-32 2xl:w-48 xl:w-44 lg:w-40 md:w-36 sm:w-32 w-28 h-28 items-center justify-center cursor-pointer">
             ${theme == "dark" ? "border-slate-300" : "border-neutral-700"}`}>
               <SudokuSquare
                 theme={theme}
@@ -200,7 +212,7 @@ export default function Sudoku(props) {
                 ]}></SudokuSquare>
             </div>
             <div
-              className={`flex border-t-2 border-r-2 transition-all ease-in duration-200 xl:h-40 md:h-32 xl:w-40 md:w-32 w-28 h-28 items-center justify-center cursor-pointer">
+              className={`flex border-t-2 border-r-2 transition-all ease-in duration-200 2xl:h-48 xl:h-44 lg:h-40 md:h-36 sm:h-32 2xl:w-48 xl:w-44 lg:w-40 md:w-36 sm:w-32 w-28 h-28 items-center justify-center cursor-pointer">
             ${theme == "dark" ? "border-slate-300" : "border-neutral-700"}`}>
               <SudokuSquare
                 theme={theme}
@@ -215,7 +227,7 @@ export default function Sudoku(props) {
                 ]}></SudokuSquare>
             </div>
             <div
-              className={`flex border-l-2 border-t-2 border-b-2 transition-all ease-in duration-200 xl:h-40 md:h-32 xl:w-40 md:w-32 w-28 h-28 items-center justify-center cursor-pointer">
+              className={`flex border-l-2 border-t-2 border-b-2 transition-all ease-in duration-200 2xl:h-48 xl:h-44 lg:h-40 md:h-36 sm:h-32 2xl:w-48 xl:w-44 lg:w-40 md:w-36 sm:w-32 w-28 h-28 items-center justify-center cursor-pointer">
             ${theme == "dark" ? "border-slate-300" : "border-neutral-700"}`}>
               <SudokuSquare
                 theme={theme}
@@ -230,7 +242,7 @@ export default function Sudoku(props) {
                 ]}></SudokuSquare>
             </div>
             <div
-              className={`flex border-2 transition-all ease-in duration-200 xl:h-40 md:h-32 xl:w-40 md:w-32 w-28 h-28 items-center justify-center cursor-pointer">
+              className={`flex border-2 transition-all ease-in duration-200 2xl:h-48 xl:h-44 lg:h-40 md:h-36 sm:h-32 2xl:w-48 xl:w-44 lg:w-40 md:w-36 sm:w-32 w-28 h-28 items-center justify-center cursor-pointer">
             ${theme == "dark" ? "border-slate-300" : "border-neutral-700"}`}>
               <SudokuSquare
                 theme={theme}
@@ -245,7 +257,7 @@ export default function Sudoku(props) {
                 ]}></SudokuSquare>
             </div>
             <div
-              className={`flex border-t-2 border-r-2 border-b-2 transition-all ease-in duration-200 xl:h-40 md:h-32 xl:w-40 md:w-32 w-28 h-28 items-center justify-center cursor-pointer 
+              className={`flex border-t-2 border-r-2 border-b-2 transition-all ease-in duration-200 2xl:h-48 xl:h-44 lg:h-40 md:h-36 sm:h-32 2xl:w-48 xl:w-44 lg:w-40 md:w-36 sm:w-32 w-28 h-28 items-center justify-center cursor-pointer 
             ${theme == "dark" ? "border-slate-300" : "border-neutral-700"}`}>
               <SudokuSquare
                 theme={theme}
@@ -260,7 +272,7 @@ export default function Sudoku(props) {
                 ]}></SudokuSquare>
             </div>
             <div
-              className={`flex border-l-2 border-b-2 transition-all ease-in duration-200 xl:h-40 md:h-32 xl:w-40 md:w-32 w-28 h-28 items-center justify-center cursor-pointer"
+              className={`flex border-l-2 border-b-2 transition-all ease-in duration-200 2xl:h-48 xl:h-44 lg:h-40 md:h-36 sm:h-32 2xl:w-48 xl:w-44 lg:w-40 md:w-36 sm:w-32 w-28 h-28 items-center justify-center cursor-pointer"
             ${theme == "dark" ? "border-slate-300" : "border-neutral-700"}`}>
               <SudokuSquare
                 theme={theme}
@@ -275,7 +287,7 @@ export default function Sudoku(props) {
                 ]}></SudokuSquare>
             </div>
             <div
-              className={`flex border-l-2 border-r-2 border-b-2 transition-all ease-in duration-200 xl:h-40 md:h-32 xl:w-40 md:w-32 w-28 h-28 items-center justify-center cursor-pointer"
+              className={`flex border-l-2 border-r-2 border-b-2 transition-all ease-in duration-200 2xl:h-48 xl:h-44 lg:h-40 md:h-36 sm:h-32 2xl:w-48 xl:w-44 lg:w-40 md:w-36 sm:w-32 w-28 h-28 items-center justify-center cursor-pointer"
             ${theme == "dark" ? "border-slate-300" : "border-neutral-700"}`}>
               <SudokuSquare
                 theme={theme}
@@ -290,7 +302,7 @@ export default function Sudoku(props) {
                 ]}></SudokuSquare>
             </div>
             <div
-              className={`flex border-r-2 border-b-2 transition-all ease-in duration-200 xl:h-40 md:h-32 xl:w-40 md:w-32 w-28 h-28 items-center justify-center cursor-pointer"
+              className={`flex border-r-2 border-b-2 transition-all ease-in duration-200 2xl:h-48 xl:h-44 lg:h-40 md:h-36 sm:h-32 2xl:w-48 xl:w-44 lg:w-40 md:w-36 sm:w-32 w-28 h-28 items-center justify-center cursor-pointer"
             ${theme == "dark" ? "border-slate-300" : "border-neutral-700"}`}>
               <SudokuSquare
                 theme={theme}
@@ -306,8 +318,13 @@ export default function Sudoku(props) {
             </div>
           </div>
           <div className="col-span-1 text-white justify-self-center self-center">
-            Second div for actions{" "}
-            <button onClick={() => insertValue(0)}>random</button>
+            <button
+              onClick={() => insertValue(0)}
+              className={` border rounded ${
+                theme == "dark" ? "texit-white" : "text-neutral-900"
+              }`}>
+              add random value
+            </button>
           </div>
         </div>
       </div>

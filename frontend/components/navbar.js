@@ -211,26 +211,33 @@ export default function Navbar(props) {
               </div>
             </div>
           </div>
-
-          <Disclosure.Panel className="sm:hidden">
-            <div className="space-y-1 px-2 pt-2 pb-3">
-              {elements.map((item) => (
-                <Disclosure.Button
-                  key={item.name}
-                  as="a"
-                  onClick={() => changeNavigation(item.name)}
-                  className={classNames(
-                    item.current
-                      ? "bg-gray-900 text-white"
-                      : "text-gray-300 hover:bg-gray-700 hover:text-white",
-                    "block px-3 py-2 rounded-md text-base font-medium cursor-pointer"
-                  )}
-                  aria-current={item.current ? "page" : undefined}>
-                  {item.name}
-                </Disclosure.Button>
-              ))}
-            </div>
-          </Disclosure.Panel>
+          <Transition
+            as={Fragment}
+            className="transition-all duration-700 overflow-hidden"
+            enterFrom="transform scale-0 opacity-0 max-h-0"
+            enterTo="transform scale-100 opacity-100 max-h-[200px]"
+            leaveFrom="transform scale-100 opacity-100 max-h-[200px]"
+            leaveTo="transform scale-0 opacity-0 max-h-0">
+            <Disclosure.Panel className="sm:hidden origin-top">
+              <div className="space-y-1 px-2 pt-2 pb-3">
+                {elements.map((item) => (
+                  <Disclosure.Button
+                    key={item.name}
+                    as="a"
+                    onClick={() => changeNavigation(item.name)}
+                    className={classNames(
+                      item.current
+                        ? "bg-gray-900 text-white"
+                        : "text-gray-300 hover:bg-gray-700 hover:text-white",
+                      "block px-3 py-2 rounded-md text-base font-medium cursor-pointer"
+                    )}
+                    aria-current={item.current ? "page" : undefined}>
+                    {item.name}
+                  </Disclosure.Button>
+                ))}
+              </div>
+            </Disclosure.Panel>
+          </Transition>
         </>
       )}
     </Disclosure>
