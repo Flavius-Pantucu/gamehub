@@ -8,7 +8,7 @@ export default function TicTacToeSquare(props) {
     return (
       <svg
         aria-hidden="true"
-        className={`xl:w-20 md:w-16 sm:w-12 w-12 xl:h-20 md:h-16 sm:h-12 h-12 flex transition-all ease-in duration-200 ${
+        className={`xl:w-24 md:w-20 sm:w-16 w-16 xl:h-24 md:h-20 sm:h-16 h-16 flex transition-all ease-in duration-200 ${
           theme == "dark" ? "text-rose-500" : "text-rose-900"
         }`}
         focusable="false"
@@ -26,7 +26,7 @@ export default function TicTacToeSquare(props) {
     return (
       <svg
         aria-hidden="true"
-        className={`xl:w-20 md:w-16 sm:w-12 w-12 xl:h-20 md:h-16 sm:h-12 h-12  flex transition-all ease-in duration-200 ${
+        className={`xl:w-24 md:w-20 sm:w-16 w-16 xl:h-24 md:h-20 sm:h-16 h-16 flex transition-all ease-in duration-200 ${
           theme == "dark" ? "text-cyan-300" : "text-cyan-900"
         }`}
         focusable="false"

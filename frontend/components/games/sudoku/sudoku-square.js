@@ -2,10 +2,9 @@ import { useEffect, useState } from "react";
 
 export default function SudokuSquare(props) {
   const [currentCell, currentSquare, currentRow, currentColumn] = props.current;
-  const [cells, setCells] = useState(new Array(9));
-  const [coords, setCoords] = useState([]);
   const square = props.square;
   const theme = props.theme;
+  const cells = props.cells;
 
   const selectCell = (cell) => {
     const column = 3 * ((square - 1) % 3) + (((cell - 1) % 3) + 1);
@@ -14,18 +13,20 @@ export default function SudokuSquare(props) {
     props.selectCell(cell, square, row, column);
   };
 
-  useEffect(() => {
+  const getCoords = () => {
+    var aux = [];
     for (var i = 1; i <= 3; i++) {
       for (var j = 1; j <= 3; j++) {
         var cell = 3 * (i - 1) + ((j - 1) % 3) + 1;
         var column = 3 * ((square - 1) % 3) + (((cell - 1) % 3) + 1);
         var row =
           3 * Math.floor((square - 1) / 3) + (Math.floor((cell - 1) / 3) + 1);
-        coords.push({ row: row, column: column });
+        aux.push({ row: row, column: column });
       }
     }
-    setCoords([...coords]);
-  }, []);
+    return aux;
+  };
+  const coords = getCoords();
 
   return (
     <div className="w-full h-full">
@@ -39,14 +40,10 @@ export default function SudokuSquare(props) {
               ? currentCell == 1
                 ? "bg-gray-600/80"
                 : "bg-gray-700/40"
-              : ""
-          } ${
-            coords == []
-              ? ""
-              : currentRow == coords[1].row && currentColumn == coords[1].column
+              : currentRow == coords[0].row || currentColumn == coords[0].column
               ? "bg-gray-700/40"
               : ""
-          }`}>
+          } `}>
           {cells[0]}
         </div>
         <div
@@ -60,8 +57,10 @@ export default function SudokuSquare(props) {
               ? currentCell == 2
                 ? "bg-gray-600/80"
                 : "bg-gray-700/40"
+              : currentRow == coords[1].row || currentColumn == coords[1].column
+              ? "bg-gray-700/40"
               : ""
-          } `}>
+          }`}>
           {cells[1]}
         </div>
         <div
@@ -73,8 +72,10 @@ export default function SudokuSquare(props) {
               ? currentCell == 3
                 ? "bg-gray-600/80"
                 : "bg-gray-700/40"
+              : currentRow == coords[2].row || currentColumn == coords[2].column
+              ? "bg-gray-700/40"
               : ""
-          }`}>
+          } `}>
           {cells[2]}
         </div>
         <div
@@ -88,8 +89,10 @@ export default function SudokuSquare(props) {
               ? currentCell == 4
                 ? "bg-gray-600/80"
                 : "bg-gray-700/40"
+              : currentRow == coords[3].row || currentColumn == coords[3].column
+              ? "bg-gray-700/40"
               : ""
-          }`}>
+          } `}>
           {cells[3]}
         </div>
         <div
@@ -103,6 +106,8 @@ export default function SudokuSquare(props) {
               ? currentCell == 5
                 ? "bg-gray-600/80"
                 : "bg-gray-700/40"
+              : currentRow == coords[4].row || currentColumn == coords[4].column
+              ? "bg-gray-700/40"
               : ""
           } `}>
           {cells[4]}
@@ -118,6 +123,8 @@ export default function SudokuSquare(props) {
               ? currentCell == 6
                 ? "bg-gray-600/80"
                 : "bg-gray-700/40"
+              : currentRow == coords[5].row || currentColumn == coords[5].column
+              ? "bg-gray-700/40"
               : ""
           } `}>
           {cells[5]}
@@ -131,8 +138,10 @@ export default function SudokuSquare(props) {
               ? currentCell == 7
                 ? "bg-gray-600/80"
                 : "bg-gray-700/40"
+              : currentRow == coords[6].row || currentColumn == coords[6].column
+              ? "bg-gray-700/40"
               : ""
-          }`}>
+          } `}>
           {cells[6]}
         </div>
         <div
@@ -146,8 +155,10 @@ export default function SudokuSquare(props) {
               ? currentCell == 8
                 ? "bg-gray-600/80"
                 : "bg-gray-700/40"
+              : currentRow == coords[7].row || currentColumn == coords[7].column
+              ? "bg-gray-700/40"
               : ""
-          }`}>
+          } `}>
           {cells[7]}
         </div>
         <div
@@ -159,8 +170,10 @@ export default function SudokuSquare(props) {
               ? currentCell == 9
                 ? "bg-gray-600/80"
                 : "bg-gray-700/40"
+              : currentRow == coords[8].row || currentColumn == coords[8].column
+              ? "bg-gray-700/40"
               : ""
-          }`}>
+          } `}>
           {cells[8]}
         </div>
       </div>
