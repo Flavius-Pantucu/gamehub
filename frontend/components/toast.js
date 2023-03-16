@@ -10,9 +10,9 @@ export default function Toast(props) {
     <div
       id="toast-top-right"
       onClick={closeToast}
-      className={`absolute flex items-center justify-between w-72 max-w-xs p-4 rounded-lg shadow-lg bottom-5 right-5 transition-all ease-in-out duration-300 ${
+      className={`absolute flex items-center justify-between w-72 max-w-xs p-4 rounded-lg shadow-lg top-20 right-5 transition-all ease-in-out duration-300 ${
         toast.type == "success" ? " opacity-100" : "opacity-0"
-      }`}
+      } `}
       role="alert">
       <div
         className={`text-sm font-normal ${

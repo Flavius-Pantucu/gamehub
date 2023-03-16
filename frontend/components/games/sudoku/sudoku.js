@@ -73,19 +73,21 @@ export default function Sudoku(props) {
 
   const showTime = () => {
     const hour =
-      timer.hour < 9 ? "0" + timer.hour.toString() : timer.hour.toString();
+      timer.hour <= 9 ? "0" + timer.hour.toString() : timer.hour.toString();
     const minute =
-      timer.minute < 9
+      timer.minute <= 9
         ? "0" + timer.minute.toString()
         : timer.minute.toString();
     const second =
-      timer.second < 9
+      timer.second <= 9
         ? "0" + timer.second.toString()
         : timer.second.toString();
     const time =
       hour == "00" ? minute + ":" + second : hour + ":" + minute + ":" + second;
     return time;
   };
+
+  const chooseDifficulty = (difficulty) => setDifficulty(difficulty);
 
   return (
     <div className="mx-auto h-5/6 w-5/6 max-w-7xl px-2 mt-4 sm:px-6 lg:px-8">
@@ -112,6 +114,7 @@ export default function Sudoku(props) {
               theme == "dark" ? "bg-slate-800" : "bg-slate-100"
             }`}>
             <Menu.Item
+              onClick={() => chooseDifficulty("Easy")}
               className={` w-full cursor-pointer text-left rounded transition-colors ease-in-out duration-300 ${
                 theme == "dark"
                   ? "text-white hover:bg-gray-700"
@@ -120,6 +123,7 @@ export default function Sudoku(props) {
               <button className="text-sm font-normal">Easy</button>
             </Menu.Item>
             <Menu.Item
+              onClick={() => chooseDifficulty("Medium")}
               className={` w-full cursor-pointer text-left rounded transition-colors ease-in-out duration-300 ${
                 theme == "dark"
                   ? "text-white hover:bg-gray-700"
@@ -128,6 +132,7 @@ export default function Sudoku(props) {
               <button className="text-sm font-normal">Medium</button>
             </Menu.Item>
             <Menu.Item
+              onClick={() => chooseDifficulty("Hard")}
               className={` w-full cursor-pointer text-left rounded transition-colors ease-in-out duration-300 ${
                 theme == "dark"
                   ? "text-white hover:bg-gray-700"
@@ -136,6 +141,7 @@ export default function Sudoku(props) {
               <button className="text-sm font-normal">Hard</button>
             </Menu.Item>
             <Menu.Item
+              onClick={() => chooseDifficulty("Extreme")}
               className={` w-full cursor-pointer text-left rounded transition-colors ease-in-out duration-300 ${
                 theme == "dark"
                   ? "text-white hover:bg-gray-700"
@@ -144,6 +150,7 @@ export default function Sudoku(props) {
               <button className="text-sm font-normal">Extreme</button>
             </Menu.Item>
             <Menu.Item
+              onClick={() => chooseDifficulty("Evil")}
               className={` w-full cursor-pointer text-left rounded transition-colors ease-in-out duration-300 ${
                 theme == "dark"
                   ? "text-white hover:bg-gray-700"
