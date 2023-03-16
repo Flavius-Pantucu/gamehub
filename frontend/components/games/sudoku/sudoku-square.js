@@ -38,10 +38,16 @@ export default function SudokuSquare(props) {
           } ${
             currentSquare == square
               ? currentCell == 1
-                ? "bg-gray-600/80"
-                : "bg-gray-700/40"
+                ? theme == "dark"
+                  ? "bg-gray-500/50"
+                  : "bg-gray-400/30"
+                : theme == "dark"
+                ? "bg-gray-600/40"
+                : "bg-gray-300/40"
               : currentRow == coords[0].row || currentColumn == coords[0].column
-              ? "bg-gray-700/40"
+              ? theme == "dark"
+                ? "bg-gray-600/40"
+                : "bg-gray-300/40"
               : ""
           } `}>
           {cells[0]}
@@ -51,14 +57,20 @@ export default function SudokuSquare(props) {
           className={`flex text-3xl items-center justify-center transition-all ease-in duration-75 cursor-default border-x ${
             theme == "dark"
               ? "text-white/70 border-x-gray-200/30"
-              : "text-neutral-900 border-x-gray-400/50"
+              : "text-neutral-900 border-x-gray-500/50"
           } ${
             currentSquare == square
               ? currentCell == 2
-                ? "bg-gray-600/80"
-                : "bg-gray-700/40"
+                ? theme == "dark"
+                  ? "bg-gray-500/50"
+                  : "bg-gray-400/30"
+                : theme == "dark"
+                ? "bg-gray-600/40"
+                : "bg-gray-300/40"
               : currentRow == coords[1].row || currentColumn == coords[1].column
-              ? "bg-gray-700/40"
+              ? theme == "dark"
+                ? "bg-gray-600/40"
+                : "bg-gray-300/40"
               : ""
           }`}>
           {cells[1]}
@@ -70,10 +82,16 @@ export default function SudokuSquare(props) {
           } ${
             currentSquare == square
               ? currentCell == 3
-                ? "bg-gray-600/80"
-                : "bg-gray-700/40"
+                ? theme == "dark"
+                  ? "bg-gray-500/50"
+                  : "bg-gray-400/30"
+                : theme == "dark"
+                ? "bg-gray-600/40"
+                : "bg-gray-300/40"
               : currentRow == coords[2].row || currentColumn == coords[2].column
-              ? "bg-gray-700/40"
+              ? theme == "dark"
+                ? "bg-gray-600/40"
+                : "bg-gray-300/40"
               : ""
           } `}>
           {cells[2]}
@@ -83,14 +101,20 @@ export default function SudokuSquare(props) {
           className={`flex text-3xl items-center justify-center transition-all ease-in duration-75 cursor-default border-y ${
             theme == "dark"
               ? "text-white/70 border-y-gray-200/30"
-              : "text-neutral-900 border-y-gray-400/50"
+              : "text-neutral-900 border-y-gray-500/50"
           } ${
             currentSquare == square
               ? currentCell == 4
-                ? "bg-gray-600/80"
-                : "bg-gray-700/40"
+                ? theme == "dark"
+                  ? "bg-gray-500/50"
+                  : "bg-gray-400/30"
+                : theme == "dark"
+                ? "bg-gray-600/40"
+                : "bg-gray-300/40"
               : currentRow == coords[3].row || currentColumn == coords[3].column
-              ? "bg-gray-700/40"
+              ? theme == "dark"
+                ? "bg-gray-600/40"
+                : "bg-gray-300/40"
               : ""
           } `}>
           {cells[3]}
@@ -100,14 +124,20 @@ export default function SudokuSquare(props) {
           className={`flex text-3xl items-center justify-center transition-all ease-in duration-75 cursor-default border ${
             theme == "dark"
               ? "text-white/70 border-gray-200/30"
-              : "text-neutral-900 border-gray-400/50"
+              : "text-neutral-900 border-gray-500/50"
           } ${
             currentSquare == square
               ? currentCell == 5
-                ? "bg-gray-600/80"
-                : "bg-gray-700/40"
+                ? theme == "dark"
+                  ? "bg-gray-500/50"
+                  : "bg-gray-400/30"
+                : theme == "dark"
+                ? "bg-gray-600/40"
+                : "bg-gray-300/40"
               : currentRow == coords[4].row || currentColumn == coords[4].column
-              ? "bg-gray-700/40"
+              ? theme == "dark"
+                ? "bg-gray-600/40"
+                : "bg-gray-300/40"
               : ""
           } `}>
           {cells[4]}
@@ -117,14 +147,20 @@ export default function SudokuSquare(props) {
           className={`flex text-3xl items-center justify-center transition-all ease-in duration-75 cursor-default border-y ${
             theme == "dark"
               ? "text-white/70 border-y-gray-200/30"
-              : "text-neutral-900 border-y-gray-400/50"
+              : "text-neutral-900 border-y-gray-500/50"
           } ${
             currentSquare == square
               ? currentCell == 6
-                ? "bg-gray-600/80"
-                : "bg-gray-700/40"
+                ? theme == "dark"
+                  ? "bg-gray-500/50"
+                  : "bg-gray-400/30"
+                : theme == "dark"
+                ? "bg-gray-600/40"
+                : "bg-gray-300/40"
               : currentRow == coords[5].row || currentColumn == coords[5].column
-              ? "bg-gray-700/40"
+              ? theme == "dark"
+                ? "bg-gray-600/40"
+                : "bg-gray-300/40"
               : ""
           } `}>
           {cells[5]}
@@ -136,10 +172,16 @@ export default function SudokuSquare(props) {
           } ${
             currentSquare == square
               ? currentCell == 7
-                ? "bg-gray-600/80"
-                : "bg-gray-700/40"
+                ? theme == "dark"
+                  ? "bg-gray-500/50"
+                  : "bg-gray-400/30"
+                : theme == "dark"
+                ? "bg-gray-600/40"
+                : "bg-gray-300/40"
               : currentRow == coords[6].row || currentColumn == coords[6].column
-              ? "bg-gray-700/40"
+              ? theme == "dark"
+                ? "bg-gray-600/40"
+                : "bg-gray-300/40"
               : ""
           } `}>
           {cells[6]}
@@ -149,14 +191,20 @@ export default function SudokuSquare(props) {
           className={`flex text-3xl items-center justify-center transition-all ease-in duration-75 cursor-default border-x ${
             theme == "dark"
               ? "text-white/70 border-x-gray-200/30"
-              : "text-neutral-900 border-x-gray-400/50"
+              : "text-neutral-900 border-x-gray-500/50"
           } ${
             currentSquare == square
               ? currentCell == 8
-                ? "bg-gray-600/80"
-                : "bg-gray-700/40"
+                ? theme == "dark"
+                  ? "bg-gray-500/50"
+                  : "bg-gray-400/30"
+                : theme == "dark"
+                ? "bg-gray-600/40"
+                : "bg-gray-300/40"
               : currentRow == coords[7].row || currentColumn == coords[7].column
-              ? "bg-gray-700/40"
+              ? theme == "dark"
+                ? "bg-gray-600/40"
+                : "bg-gray-300/40"
               : ""
           } `}>
           {cells[7]}
@@ -168,10 +216,16 @@ export default function SudokuSquare(props) {
           } ${
             currentSquare == square
               ? currentCell == 9
-                ? "bg-gray-600/80"
-                : "bg-gray-700/40"
+                ? theme == "dark"
+                  ? "bg-gray-500/50"
+                  : "bg-gray-400/30"
+                : theme == "dark"
+                ? "bg-gray-600/40"
+                : "bg-gray-300/40"
               : currentRow == coords[8].row || currentColumn == coords[8].column
-              ? "bg-gray-700/40"
+              ? theme == "dark"
+                ? "bg-gray-600/40"
+                : "bg-gray-300/40"
               : ""
           } `}>
           {cells[8]}
