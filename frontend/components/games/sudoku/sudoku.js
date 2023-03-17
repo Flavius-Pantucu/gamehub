@@ -68,9 +68,10 @@ export default function Sudoku(props) {
       currentElement.currentColumn == null
     )
       return;
-    const val = Math.ceil(Math.random() * 9);
+    if(isNaN(parseInt(value))) return;
+    if(value < 0 || value > 9) return;
     grid[currentElement.currentSquare - 1][currentElement.currentCell - 1] =
-      val;
+      value;
     setGrid([...grid]);
   };
 
@@ -210,7 +211,7 @@ export default function Sudoku(props) {
               </div>
             </div>
           </div>
-          <div className="col-span-3 grid grid-cols-3 self-start justify-self-start">
+          <div className="lg:col-span-3 col-span-1 grid grid-cols-3 self-start justify-self-start">
             <div
               className={`flex border-l-2 border-t-2 transition-all ease-in duration-200 2xl:h-48 xl:h-44 lg:h-40 md:h-40 sm:h-36 2xl:w-48 xl:w-44 lg:w-40 md:w-40 sm:w-36 w-32 h-32 items-center justify-center cursor-pointer">
             ${theme == "dark" ? "border-slate-300" : "border-neutral-700"}`}>
@@ -346,18 +347,32 @@ export default function Sudoku(props) {
                   currentElement.currentColumn,
                 ]}></SudokuSquare>
             </div>
-          </div>
-          <div className="col-span-2 text-white lg:justify-self-end justify-self-center self-start">
-            <div className="lg:flex hidden flex-col 2xl:gap-y-4 xl:gap-y-6 lg:gap-y-6 ml-4">
-              <div className="2xl:h-20 xl:h-20 lg:h-20 md:h-16 sm:h-14 h-12 2xl:w-96 xl:w-80 lg:w-72 border rounded transition-all ease-in duration-200 "></div>
-              <div className="2xl:h-96 xl:h-80 lg:h-72 md:h-64 sm:h-64 h-60 2xl:w-96 xl:w-80 lg:w-72 border rounded transition-all ease-in duration-200 ">
-                <div></div>
+        </div>
+          <div className="lg:col-span-2 col-span-1 text-white lg:justify-self-end justify-self-center self-start">
+            <div className="flex flex-col lg:gap-y-6 gap-y-4 lg:ml-4 lg:mt-0 mt-4">
+              <div className="grid grid-cols-4 content-center lg:order-1 order-2 h-20 2xl:w-96 xl:w-80 lg:w-72 md:w-[480px] sm:w-[432px] w-[384px] border rounded transition-all ease-in duration-200">
+                <div className={`flex justify-center font-mono ${ theme == "dark" ? "text-gray-300" : "text-neutral-900"}`}>Hint</div>
+                <div className={`flex justify-center font-mono ${ theme == "dark" ? "text-gray-300" : "text-neutral-900"}`}>Notes</div>
+                <div className={`flex justify-center font-mono ${ theme == "dark" ? "text-gray-300" : "text-neutral-900"}`}>Erase</div>
+                <div className={`flex justify-center font-mono ${ theme == "dark" ? "text-gray-300" : "text-neutral-900"}`}>Undo</div>
               </div>
-              <div className="2xl:h-20 xl:h-20 lg:h-16 md:h-16 sm:h-14 h-12 2xl:w-96 xl:w-80 lg:w-72 border rounded transition-all ease-in duration-200 "></div>
-            </div>
-            <div className="lg:hidden flex flex-col gap-y-2 mt-2">
-              <div className="lg:hidden h-20 md:w-[480px] sm:w-[432px] w-96 border rounded mt-1 transition-all ease-in duration-200"></div>
-              <div className="lg:hidden h-20 md:w-[480px] sm:w-[432px] w-96 border rounded mt-1 transition-all ease-in duration-200"></div>
+              <div className="lg:order-2 order-1 2xl:h-96 xl:h-80 lg:h-72 2xl:w-96 h-20 xl:w-80 lg:w-72 md:w-[480px] sm:w-[432px] w-[384px] transition-all ease-in duration-200 ">
+                <div className="grid grid-cols-9 lg:grid-cols-3 lg:grid-rows-3 lg:gap-2 h-full content-center items-center">
+                  <div onClick={() => insertValue(1)} className={`flex justify-center items-center font-mono text-5xl cursor-pointer lg:rounded h-full w-full ${ theme == "dark" ? "text-cyan-500 lg:bg-cyan-500 lg:text-white" : "text-cyan-600 lg:bg-gray-400/30"} `}>1</div>
+                  <div onClick={() => insertValue(2)} className={`flex justify-center items-center font-mono text-5xl cursor-pointer lg:rounded h-full w-full ${ theme == "dark" ? "text-cyan-500 lg:bg-cyan-500 lg:text-white" : "text-cyan-600 lg:bg-gray-400/30"} `}>2</div>
+                  <div onClick={() => insertValue(3)} className={`flex justify-center items-center font-mono text-5xl cursor-pointer lg:rounded h-full w-full ${ theme == "dark" ? "text-cyan-500 lg:bg-cyan-500 lg:text-white" : "text-cyan-600 lg:bg-gray-400/30"} `}>3</div>
+                  <div onClick={() => insertValue(4)} className={`flex justify-center items-center font-mono text-5xl cursor-pointer lg:rounded h-full w-full ${ theme == "dark" ? "text-cyan-500 lg:bg-cyan-500 lg:text-white" : "text-cyan-600 lg:bg-gray-400/30"} `}>4</div>
+                  <div onClick={() => insertValue(5)} className={`flex justify-center items-center font-mono text-5xl cursor-pointer lg:rounded h-full w-full ${ theme == "dark" ? "text-cyan-500 lg:bg-cyan-500 lg:text-white" : "text-cyan-600 lg:bg-gray-400/30"} `}>5</div>
+                  <div onClick={() => insertValue(6)} className={`flex justify-center items-center font-mono text-5xl cursor-pointer lg:rounded h-full w-full ${ theme == "dark" ? "text-cyan-500 lg:bg-cyan-500 lg:text-white" : "text-cyan-600 lg:bg-gray-400/30"} `}>6</div>
+                  <div onClick={() => insertValue(7)} className={`flex justify-center items-center font-mono text-5xl cursor-pointer lg:rounded h-full w-full ${ theme == "dark" ? "text-cyan-500 lg:bg-cyan-500 lg:text-white" : "text-cyan-600 lg:bg-gray-400/30"} `}>7</div>
+                  <div onClick={() => insertValue(8)} className={`flex justify-center items-center font-mono text-5xl cursor-pointer lg:rounded h-full w-full ${ theme == "dark" ? "text-cyan-500 lg:bg-cyan-500 lg:text-white" : "text-cyan-600 lg:bg-gray-400/30"} `}>8</div>
+                  <div onClick={() => insertValue(9)} className={`flex justify-center items-center font-mono text-5xl cursor-pointer lg:rounded h-full w-full ${ theme == "dark" ? "text-cyan-500 lg:bg-cyan-500 lg:text-white" : "text-cyan-600 lg:bg-gray-400/30"} `}>9</div>
+                </div>
+              </div>
+              <div className="hidden order-3 lg:grid grid-cols-2 content-center 2xl:h-20 xl:h-20 lg:h-16 2xl:w-96 xl:w-80 lg:w-72 border rounded transition-all ease-in duration-200 ">
+                <div className={`flex justify-center font-mono ${ theme == "dark" ? "text-gray-300" : "text-neutral-900"}`}>New game</div>
+                <div className={`flex justify-center font-mono ${ theme == "dark" ? "text-gray-300" : "text-neutral-900"}`}>Reset game</div>
+              </div>
             </div>
           </div>
         </div>
