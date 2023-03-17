@@ -36,7 +36,7 @@ export default function Navbar(props) {
           <div className="border-b border-slate-300/30">
             <div className="mx-auto w-5/6 max-w-7xl px-2 sm:px-6 lg:px-8">
               <div className="relative flex h-16 items-center justify-between">
-                <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
+                <div className="absolute inset-y-0 left-0 flex items-center lg:hidden">
                   <Disclosure.Button
                     className={`inline-flex items-center justify-center rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-inset
                  ${
@@ -52,18 +52,18 @@ export default function Navbar(props) {
                     )}
                   </Disclosure.Button>
                 </div>
-                <div className="flex flex-1 items-center ml-12 sm:ml-0 justify-start sm:items-stretch sm:justify-start">
+                <div className="flex flex-1 items-center ml-12 lg:ml-0 justify-start sm:items-stretch sm:justify-start">
                   <div className="flex flex-shrink-0 items-center">
                     <Link href="/">
                       <Image
-                        className="block lg:hidden"
+                        className="block md:hidden"
                         src="/images/logo.png"
                         alt="GameHub Company"
                         height={35}
                         width={40}
                       />
                       <Image
-                        className="hidden lg:block"
+                        className="hidden md:block"
                         src="/images/logo.png"
                         alt="GameHub Company"
                         height={35}
@@ -71,7 +71,7 @@ export default function Navbar(props) {
                       />
                     </Link>
                   </div>
-                  <div className="hidden sm:ml-6 sm:block">
+                  <div className="hidden sm:ml-6 lg:block">
                     <div className="flex space-x-4">
                       {elements.map((item) => (
                         <Link

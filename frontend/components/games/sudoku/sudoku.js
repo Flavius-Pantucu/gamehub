@@ -113,7 +113,7 @@ export default function Sudoku(props) {
   const chooseDifficulty = (difficulty) => setDifficulty(difficulty);
 
   return (
-    <div className="mx-auto h-5/6 w-5/6 max-w-7xl px-2 mt-4 sm:px-6 lg:px-8">
+    <div className="mx-auto h-5/6 w-full md:w-5/6 max-w-7xl px-2 mt-4 sm:px-6 lg:px-8">
       <Menu as="div" className="relative inline-block">
         <div>
           <Menu.Button
@@ -184,7 +184,7 @@ export default function Sudoku(props) {
           </Menu.Items>
         </Transition>
       </Menu>
-      <div className="flex md:h-5/6 md:mt-0 md:gap-x-4 mt-8 h-4/6 gap-y-4 justify-center">
+      <div className="flex lg:h-5/6 lg:mt-0 mt-8 h-4/6 justify-center">
         <div className="grid lg:grid-cols-5 grid-cols-1">
           <div className="lg:col-span-5 col-span-1 h-8 self-end">
             <div className="flex w-full justify-between">
@@ -212,7 +212,7 @@ export default function Sudoku(props) {
           </div>
           <div className="col-span-3 grid grid-cols-3 self-start justify-self-start">
             <div
-              className={`flex border-l-2 border-t-2 transition-all ease-in duration-200 2xl:h-48 xl:h-44 lg:h-40 md:h-36 sm:h-32 2xl:w-48 xl:w-44 lg:w-40 md:w-36 sm:w-32 w-28 h-28 items-center justify-center cursor-pointer">
+              className={`flex border-l-2 border-t-2 transition-all ease-in duration-200 2xl:h-48 xl:h-44 lg:h-40 md:h-40 sm:h-36 2xl:w-48 xl:w-44 lg:w-40 md:w-40 sm:w-36 w-32 h-32 items-center justify-center cursor-pointer">
             ${theme == "dark" ? "border-slate-300" : "border-neutral-700"}`}>
               <SudokuSquare
                 theme={theme}
@@ -227,7 +227,7 @@ export default function Sudoku(props) {
                 ]}></SudokuSquare>
             </div>
             <div
-              className={`flex border-l-2 border-t-2 border-r-2 transition-all ease-in duration-200 2xl:h-48 xl:h-44 lg:h-40 md:h-36 sm:h-32 2xl:w-48 xl:w-44 lg:w-40 md:w-36 sm:w-32 w-28 h-28 items-center justify-center cursor-pointer">
+              className={`flex border-l-2 border-t-2 border-r-2 transition-all ease-in duration-200 2xl:h-48 xl:h-44 lg:h-40 md:h-40 sm:h-36 2xl:w-48 xl:w-44 lg:w-40 md:w-40 sm:w-36 w-32 h-32 items-center justify-center cursor-pointer">
             ${theme == "dark" ? "border-slate-300" : "border-neutral-700"}`}>
               <SudokuSquare
                 theme={theme}
@@ -242,7 +242,7 @@ export default function Sudoku(props) {
                 ]}></SudokuSquare>
             </div>
             <div
-              className={`flex border-t-2 border-r-2 transition-all ease-in duration-200 2xl:h-48 xl:h-44 lg:h-40 md:h-36 sm:h-32 2xl:w-48 xl:w-44 lg:w-40 md:w-36 sm:w-32 w-28 h-28 items-center justify-center cursor-pointer">
+              className={`flex border-t-2 border-r-2 transition-all ease-in duration-200 2xl:h-48 xl:h-44 lg:h-40 md:h-40 sm:h-36 2xl:w-48 xl:w-44 lg:w-40 md:w-40 sm:w-36 w-32 h-32 items-center justify-center cursor-pointer">
             ${theme == "dark" ? "border-slate-300" : "border-neutral-700"}`}>
               <SudokuSquare
                 theme={theme}
@@ -257,7 +257,7 @@ export default function Sudoku(props) {
                 ]}></SudokuSquare>
             </div>
             <div
-              className={`flex border-l-2 border-t-2 border-b-2 transition-all ease-in duration-200 2xl:h-48 xl:h-44 lg:h-40 md:h-36 sm:h-32 2xl:w-48 xl:w-44 lg:w-40 md:w-36 sm:w-32 w-28 h-28 items-center justify-center cursor-pointer">
+              className={`flex border-l-2 border-t-2 border-b-2 transition-all ease-in duration-200 2xl:h-48 xl:h-44 lg:h-40 md:h-40 sm:h-36 2xl:w-48 xl:w-44 lg:w-40 md:w-40 sm:w-36 w-32 h-32 items-center justify-center cursor-pointer">
             ${theme == "dark" ? "border-slate-300" : "border-neutral-700"}`}>
               <SudokuSquare
                 theme={theme}
@@ -272,7 +272,7 @@ export default function Sudoku(props) {
                 ]}></SudokuSquare>
             </div>
             <div
-              className={`flex border-2 transition-all ease-in duration-200 2xl:h-48 xl:h-44 lg:h-40 md:h-36 sm:h-32 2xl:w-48 xl:w-44 lg:w-40 md:w-36 sm:w-32 w-28 h-28 items-center justify-center cursor-pointer">
+              className={`flex border-2 transition-all ease-in duration-200 2xl:h-48 xl:h-44 lg:h-40 md:h-40 sm:h-36 2xl:w-48 xl:w-44 lg:w-40 md:w-40 sm:w-36 w-32 h-32 items-center justify-center cursor-pointer">
             ${theme == "dark" ? "border-slate-300" : "border-neutral-700"}`}>
               <SudokuSquare
                 theme={theme}
@@ -287,7 +287,7 @@ export default function Sudoku(props) {
                 ]}></SudokuSquare>
             </div>
             <div
-              className={`flex border-t-2 border-r-2 border-b-2 transition-all ease-in duration-200 2xl:h-48 xl:h-44 lg:h-40 md:h-36 sm:h-32 2xl:w-48 xl:w-44 lg:w-40 md:w-36 sm:w-32 w-28 h-28 items-center justify-center cursor-pointer 
+              className={`flex border-t-2 border-r-2 border-b-2 transition-all ease-in duration-200 2xl:h-48 xl:h-44 lg:h-40 md:h-40 sm:h-36 2xl:w-48 xl:w-44 lg:w-40 md:w-40 sm:w-36 w-32 h-32 items-center justify-center cursor-pointer 
             ${theme == "dark" ? "border-slate-300" : "border-neutral-700"}`}>
               <SudokuSquare
                 theme={theme}
@@ -302,7 +302,7 @@ export default function Sudoku(props) {
                 ]}></SudokuSquare>
             </div>
             <div
-              className={`flex border-l-2 border-b-2 transition-all ease-in duration-200 2xl:h-48 xl:h-44 lg:h-40 md:h-36 sm:h-32 2xl:w-48 xl:w-44 lg:w-40 md:w-36 sm:w-32 w-28 h-28 items-center justify-center cursor-pointer"
+              className={`flex border-l-2 border-b-2 transition-all ease-in duration-200 2xl:h-48 xl:h-44 lg:h-40 md:h-40 sm:h-36 2xl:w-48 xl:w-44 lg:w-40 md:w-40 sm:w-36 w-32 h-32 items-center justify-center cursor-pointer"
             ${theme == "dark" ? "border-slate-300" : "border-neutral-700"}`}>
               <SudokuSquare
                 theme={theme}
@@ -317,7 +317,7 @@ export default function Sudoku(props) {
                 ]}></SudokuSquare>
             </div>
             <div
-              className={`flex border-l-2 border-r-2 border-b-2 transition-all ease-in duration-200 2xl:h-48 xl:h-44 lg:h-40 md:h-36 sm:h-32 2xl:w-48 xl:w-44 lg:w-40 md:w-36 sm:w-32 w-28 h-28 items-center justify-center cursor-pointer"
+              className={`flex border-l-2 border-r-2 border-b-2 transition-all ease-in duration-200 2xl:h-48 xl:h-44 lg:h-40 md:h-40 sm:h-36 2xl:w-48 xl:w-44 lg:w-40 md:w-40 sm:w-36 w-32 h-32 items-center justify-center cursor-pointer"
             ${theme == "dark" ? "border-slate-300" : "border-neutral-700"}`}>
               <SudokuSquare
                 theme={theme}
@@ -332,7 +332,7 @@ export default function Sudoku(props) {
                 ]}></SudokuSquare>
             </div>
             <div
-              className={`flex border-r-2 border-b-2 transition-all ease-in duration-200 2xl:h-48 xl:h-44 lg:h-40 md:h-36 sm:h-32 2xl:w-48 xl:w-44 lg:w-40 md:w-36 sm:w-32 w-28 h-28 items-center justify-center cursor-pointer"
+              className={`flex border-r-2 border-b-2 transition-all ease-in duration-200 2xl:h-48 xl:h-44 lg:h-40 md:h-40 sm:h-36 2xl:w-48 xl:w-44 lg:w-40 md:w-40 sm:w-36 w-32 h-32 items-center justify-center cursor-pointer"
             ${theme == "dark" ? "border-slate-300" : "border-neutral-700"}`}>
               <SudokuSquare
                 theme={theme}
@@ -350,10 +350,15 @@ export default function Sudoku(props) {
           <div className="col-span-2 text-white lg:justify-self-end justify-self-center self-start">
             <div className="lg:flex hidden flex-col 2xl:gap-y-4 xl:gap-y-6 lg:gap-y-6 ml-4">
               <div className="2xl:h-20 xl:h-20 lg:h-20 md:h-16 sm:h-14 h-12 2xl:w-96 xl:w-80 lg:w-72 border rounded transition-all ease-in duration-200 "></div>
-              <div className="2xl:h-96 xl:h-80 lg:h-72 md:h-64 sm:h-64 h-60 2xl:w-96 xl:w-80 lg:w-72 border rounded transition-all ease-in duration-200 "></div>
+              <div className="2xl:h-96 xl:h-80 lg:h-72 md:h-64 sm:h-64 h-60 2xl:w-96 xl:w-80 lg:w-72 border rounded transition-all ease-in duration-200 ">
+                <div></div>
+              </div>
               <div className="2xl:h-20 xl:h-20 lg:h-16 md:h-16 sm:h-14 h-12 2xl:w-96 xl:w-80 lg:w-72 border rounded transition-all ease-in duration-200 "></div>
             </div>
-            <div className="lg:hidden h-20 sm:w-96 w-72 border rounded mt-1 transition-all ease-in duration-200"></div>
+            <div className="lg:hidden flex flex-col gap-y-2 mt-2">
+              <div className="lg:hidden h-20 md:w-[480px] sm:w-[432px] w-96 border rounded mt-1 transition-all ease-in duration-200"></div>
+              <div className="lg:hidden h-20 md:w-[480px] sm:w-[432px] w-96 border rounded mt-1 transition-all ease-in duration-200"></div>
+            </div>
           </div>
         </div>
       </div>
