@@ -169,7 +169,7 @@ export default function Navbar(props) {
                           : "text-neutral-900 from-teal-400 to-blue-500"
                       }`}>
                         <span
-                          className={`relative px-5 py-2 transition-all ease-in duration-300 rounded-md group-hover:bg-opacity-0
+                          className={`relative px-5 py-2 transition-all ease-in duration-200 rounded-md group-hover:bg-opacity-0
                       ${theme == "dark" ? "bg-gray-800" : "bg-slate-100"}`}>
                           Login
                         </span>

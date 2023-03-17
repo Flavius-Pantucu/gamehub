@@ -4,22 +4,25 @@ import SudokuSquare from "./sudoku-square";
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
 
 export default function Sudoku(props) {
-  const [currentColumn, setCurrentColumn] = useState(null);
-  const [currentSquare, setCurrentSquare] = useState(null);
-  const [currentCell, setCurrentCell] = useState(null);
-  const [currentRow, setCurrentRow] = useState(null);
+  const [currentElement, setCurrentElement] = useState({
+    currentCell: null,
+    currentSquare: null,
+    currentRow: null,
+    currentColumn: null,
+  });
   const [difficulty, setDifficulty] = useState("Easy");
   const [timer, setTimer] = useState({ hour: 0, minute: 0, second: 0 });
 
   useEffect(() => {
     startTimer();
+  }, []);
 
+  useEffect(() => {
     document.addEventListener("keyup", fillCell);
-
     return () => {
       document.removeEventListener("keyup", fillCell);
     };
-  }, []);
+  }, [currentElement]);
 
   const theme = props.theme;
 
@@ -32,22 +35,42 @@ export default function Sudoku(props) {
 
   const selectCell = (cell, square, row, col) => {
     if (cell == null || square == null || row == null || col == null) return;
-    setCurrentCell(cell);
-    setCurrentSquare(square);
-    setCurrentRow(row);
-    setCurrentColumn(col);
+
+    setCurrentElement({
+      currentCell: cell,
+      currentSquare: square,
+      currentRow: row,
+      currentColumn: col,
+    });
   };
 
   const fillCell = (event) => {
+    if (
+      currentElement.currentSquare == null ||
+      currentElement.currentCell == null ||
+      currentElement.currentRow == null ||
+      currentElement.currentColumn == null
+    )
+      return;
     const number = parseInt(event.key);
+    if (isNaN(number)) return;
     console.log(number);
-    if (number == NaN) return;
+    grid[currentElement.currentSquare - 1][currentElement.currentCell - 1] =
+      number;
+    setGrid([...grid]);
   };
 
   const insertValue = (value) => {
-    if (currentSquare == null || currentCell == null) return;
+    if (
+      currentElement.currentSquare == null ||
+      currentElement.currentCell == null ||
+      currentElement.currentRow == null ||
+      currentElement.currentColumn == null
+    )
+      return;
     const val = Math.ceil(Math.random() * 9);
-    grid[currentSquare - 1][currentCell - 1] = val;
+    grid[currentElement.currentSquare - 1][currentElement.currentCell - 1] =
+      val;
     setGrid([...grid]);
   };
 
@@ -162,8 +185,8 @@ export default function Sudoku(props) {
         </Transition>
       </Menu>
       <div className="flex md:h-5/6 md:mt-0 md:gap-x-4 mt-8 h-4/6 gap-y-4 justify-center">
-        <div className="grid lg:grid-cols-2 grid-cols-1">
-          <div className="lg:col-span-2 col-span-1 h-8 self-end">
+        <div className="grid lg:grid-cols-5 grid-cols-1">
+          <div className="lg:col-span-5 col-span-1 h-8 self-end">
             <div className="flex w-full justify-between">
               <div className="flex">
                 <h1
@@ -187,7 +210,7 @@ export default function Sudoku(props) {
               </div>
             </div>
           </div>
-          <div className="col-span-1 grid grid-cols-3 self-start overflow">
+          <div className="col-span-3 grid grid-cols-3 self-start justify-self-start">
             <div
               className={`flex border-l-2 border-t-2 transition-all ease-in duration-200 2xl:h-48 xl:h-44 lg:h-40 md:h-36 sm:h-32 2xl:w-48 xl:w-44 lg:w-40 md:w-36 sm:w-32 w-28 h-28 items-center justify-center cursor-pointer">
             ${theme == "dark" ? "border-slate-300" : "border-neutral-700"}`}>
@@ -197,10 +220,10 @@ export default function Sudoku(props) {
                 cells={grid[0]}
                 selectCell={selectCell}
                 current={[
-                  currentCell,
-                  currentSquare,
-                  currentRow,
-                  currentColumn,
+                  currentElement.currentCell,
+                  currentElement.currentSquare,
+                  currentElement.currentRow,
+                  currentElement.currentColumn,
                 ]}></SudokuSquare>
             </div>
             <div
@@ -212,10 +235,10 @@ export default function Sudoku(props) {
                 cells={grid[1]}
                 selectCell={selectCell}
                 current={[
-                  currentCell,
-                  currentSquare,
-                  currentRow,
-                  currentColumn,
+                  currentElement.currentCell,
+                  currentElement.currentSquare,
+                  currentElement.currentRow,
+                  currentElement.currentColumn,
                 ]}></SudokuSquare>
             </div>
             <div
@@ -227,10 +250,10 @@ export default function Sudoku(props) {
                 cells={grid[2]}
                 selectCell={selectCell}
                 current={[
-                  currentCell,
-                  currentSquare,
-                  currentRow,
-                  currentColumn,
+                  currentElement.currentCell,
+                  currentElement.currentSquare,
+                  currentElement.currentRow,
+                  currentElement.currentColumn,
                 ]}></SudokuSquare>
             </div>
             <div
@@ -242,10 +265,10 @@ export default function Sudoku(props) {
                 cells={grid[3]}
                 selectCell={selectCell}
                 current={[
-                  currentCell,
-                  currentSquare,
-                  currentRow,
-                  currentColumn,
+                  currentElement.currentCell,
+                  currentElement.currentSquare,
+                  currentElement.currentRow,
+                  currentElement.currentColumn,
                 ]}></SudokuSquare>
             </div>
             <div
@@ -257,10 +280,10 @@ export default function Sudoku(props) {
                 cells={grid[4]}
                 selectCell={selectCell}
                 current={[
-                  currentCell,
-                  currentSquare,
-                  currentRow,
-                  currentColumn,
+                  currentElement.currentCell,
+                  currentElement.currentSquare,
+                  currentElement.currentRow,
+                  currentElement.currentColumn,
                 ]}></SudokuSquare>
             </div>
             <div
@@ -272,10 +295,10 @@ export default function Sudoku(props) {
                 cells={grid[5]}
                 selectCell={selectCell}
                 current={[
-                  currentCell,
-                  currentSquare,
-                  currentRow,
-                  currentColumn,
+                  currentElement.currentCell,
+                  currentElement.currentSquare,
+                  currentElement.currentRow,
+                  currentElement.currentColumn,
                 ]}></SudokuSquare>
             </div>
             <div
@@ -287,10 +310,10 @@ export default function Sudoku(props) {
                 cells={grid[6]}
                 selectCell={selectCell}
                 current={[
-                  currentCell,
-                  currentSquare,
-                  currentRow,
-                  currentColumn,
+                  currentElement.currentCell,
+                  currentElement.currentSquare,
+                  currentElement.currentRow,
+                  currentElement.currentColumn,
                 ]}></SudokuSquare>
             </div>
             <div
@@ -302,10 +325,10 @@ export default function Sudoku(props) {
                 cells={grid[7]}
                 selectCell={selectCell}
                 current={[
-                  currentCell,
-                  currentSquare,
-                  currentRow,
-                  currentColumn,
+                  currentElement.currentCell,
+                  currentElement.currentSquare,
+                  currentElement.currentRow,
+                  currentElement.currentColumn,
                 ]}></SudokuSquare>
             </div>
             <div
@@ -317,21 +340,20 @@ export default function Sudoku(props) {
                 cells={grid[8]}
                 selectCell={selectCell}
                 current={[
-                  currentCell,
-                  currentSquare,
-                  currentRow,
-                  currentColumn,
+                  currentElement.currentCell,
+                  currentElement.currentSquare,
+                  currentElement.currentRow,
+                  currentElement.currentColumn,
                 ]}></SudokuSquare>
             </div>
           </div>
-          <div className="col-span-1 text-white justify-self-center self-center">
-            <button
-              onClick={() => insertValue(0)}
-              className={` border rounded ${
-                theme == "dark" ? "texit-white" : "text-neutral-900"
-              }`}>
-              add random value
-            </button>
+          <div className="col-span-2 text-white lg:justify-self-end justify-self-center self-start">
+            <div className="lg:flex hidden flex-col 2xl:gap-y-4 xl:gap-y-6 lg:gap-y-6 ml-4">
+              <div className="2xl:h-20 xl:h-20 lg:h-20 md:h-16 sm:h-14 h-12 2xl:w-96 xl:w-80 lg:w-72 border rounded transition-all ease-in duration-200 "></div>
+              <div className="2xl:h-96 xl:h-80 lg:h-72 md:h-64 sm:h-64 h-60 2xl:w-96 xl:w-80 lg:w-72 border rounded transition-all ease-in duration-200 "></div>
+              <div className="2xl:h-20 xl:h-20 lg:h-16 md:h-16 sm:h-14 h-12 2xl:w-96 xl:w-80 lg:w-72 border rounded transition-all ease-in duration-200 "></div>
+            </div>
+            <div className="lg:hidden h-20 sm:w-96 w-72 border rounded mt-1 transition-all ease-in duration-200"></div>
           </div>
         </div>
       </div>
