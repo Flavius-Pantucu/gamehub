@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, useRef, useEffect, useState } from "react";
 import { Menu, Transition } from "@headlessui/react";
 import SudokuSquare from "./sudoku-square";
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
@@ -25,6 +25,8 @@ export default function Sudoku(props) {
   }, [currentElement]);
 
   const theme = props.theme;
+  const movesList = useRef(new Array());
+
 
   const createGrid = () => {
     var grid = new Array(9);
@@ -32,6 +34,14 @@ export default function Sudoku(props) {
     return grid;
   };
   const [grid, setGrid] = useState(createGrid());
+
+  const copyGrid = () => {
+    var copy = [];
+    for (var i = 0; i < grid.length; i++) {
+      copy.push(grid[i].map((x) => x));
+    }
+    return copy;
+  }
 
   const selectCell = (cell, square, row, col) => {
     if (cell == null || square == null || row == null || col == null) return;
@@ -54,10 +64,10 @@ export default function Sudoku(props) {
       return;
     const number = parseInt(event.key);
     if (isNaN(number)) return;
-    console.log(number);
-    grid[currentElement.currentSquare - 1][currentElement.currentCell - 1] =
-      number;
+    grid[currentElement.currentSquare - 1][currentElement.currentCell - 1] = number;
     setGrid([...grid]);
+
+    movesList.current.push(copyGrid());
   };
 
   const insertValue = (value) => {
@@ -70,9 +80,10 @@ export default function Sudoku(props) {
       return;
     if(isNaN(parseInt(value))) return;
     if(value < 0 || value > 9) return;
-    grid[currentElement.currentSquare - 1][currentElement.currentCell - 1] =
-      value;
+    grid[currentElement.currentSquare - 1][currentElement.currentCell - 1] = value;
     setGrid([...grid]);
+
+    movesList.current.push(copyGrid());
   };
 
   const startTimer = () => {
@@ -110,6 +121,28 @@ export default function Sudoku(props) {
       hour == "00" ? minute + ":" + second : hour + ":" + minute + ":" + second;
     return time;
   };
+
+  const undoMove = () => {
+    if (movesList.current.length == 0) return;
+    movesList.current.pop();
+    const len = movesList.current.length;
+    const previousState = len != 0 ? movesList.current[movesList.current.length - 1] : createGrid();
+    setGrid([...previousState]);
+  }
+
+  const eraseValue = () => {
+    if (
+      currentElement.currentSquare == null ||
+      currentElement.currentCell == null ||
+      currentElement.currentRow == null ||
+      currentElement.currentColumn == null
+    )
+      return;
+    if(grid[currentElement.currentSquare - 1][currentElement.currentCell - 1] == null)
+      return;
+      grid[currentElement.currentSquare - 1][currentElement.currentCell - 1] = null;
+      setGrid([...grid]);
+    }
 
   const chooseDifficulty = (difficulty) => setDifficulty(difficulty);
 
@@ -351,10 +384,10 @@ export default function Sudoku(props) {
           <div className="lg:col-span-2 col-span-1 text-white lg:justify-self-end justify-self-center self-start">
             <div className="flex flex-col lg:gap-y-6 gap-y-4 lg:ml-4 lg:mt-0 mt-4">
               <div className="grid grid-cols-4 content-center lg:order-1 order-2 h-20 2xl:w-96 xl:w-80 lg:w-72 md:w-[480px] sm:w-[432px] w-[384px] border rounded transition-all ease-in duration-200">
-                <div className={`flex justify-center font-mono ${ theme == "dark" ? "text-gray-300" : "text-neutral-900"}`}>Hint</div>
-                <div className={`flex justify-center font-mono ${ theme == "dark" ? "text-gray-300" : "text-neutral-900"}`}>Notes</div>
-                <div className={`flex justify-center font-mono ${ theme == "dark" ? "text-gray-300" : "text-neutral-900"}`}>Erase</div>
-                <div className={`flex justify-center font-mono ${ theme == "dark" ? "text-gray-300" : "text-neutral-900"}`}>Undo</div>
+                <div className={`flex justify-center cursor-pointer font-mono ${ theme == "dark" ? "text-gray-300" : "text-neutral-900"}`}>Hint</div>
+                <div className={`flex justify-center cursor-pointer font-mono ${ theme == "dark" ? "text-gray-300" : "text-neutral-900"}`}>Notes</div>
+                <div onClick={() => eraseValue()} className={`flex justify-center cursor-pointer font-mono ${ theme == "dark" ? "text-gray-300" : "text-neutral-900"}`}>Erase</div>
+                <div onClick={() => undoMove()} className={`flex justify-center cursor-pointer font-mono ${ theme == "dark" ? "text-gray-300" : "text-neutral-900"}`}>Undo</div>
               </div>
               <div className="lg:order-2 order-1 2xl:h-96 xl:h-80 lg:h-72 2xl:w-96 h-20 xl:w-80 lg:w-72 md:w-[480px] sm:w-[432px] w-[384px] transition-all ease-in duration-200 ">
                 <div className="grid grid-cols-9 lg:grid-cols-3 lg:grid-rows-3 lg:gap-2 h-full content-center items-center">
