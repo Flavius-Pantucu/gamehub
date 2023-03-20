@@ -191,7 +191,7 @@ export default function Sudoku(props) {
     ].value = value;
     setGrid([...grid]);
 
-    currentElement.currentValue = number;
+    currentElement.currentValue = value;
     setCurrentElement(currentElement);
 
     movesList.current.push(copyGrid());
