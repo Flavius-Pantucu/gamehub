@@ -3,46 +3,136 @@ import { Menu, Transition } from "@headlessui/react";
 import SudokuSquare from "./sudoku-square";
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
 
+class Cell {
+  constructor(original, value, status) {
+    this.original = original;
+    this.value = value;
+    this.status = status;
+  }
+}
+
 export default function Sudoku(props) {
-  const [currentElement, setCurrentElement] = useState({
-    currentCell: null,
-    currentSquare: null,
-    currentRow: null,
-    currentColumn: null,
-  });
-  const [difficulty, setDifficulty] = useState("Easy");
-  const [timer, setTimer] = useState({ hour: 0, minute: 0, second: 0 });
-
-  useEffect(() => {
-    startTimer();
-  }, []);
-
-  useEffect(() => {
-    document.addEventListener("keyup", fillCell);
-    return () => {
-      document.removeEventListener("keyup", fillCell);
-    };
-  }, [currentElement]);
-
-  const theme = props.theme;
-  const movesList = useRef(new Array());
-
   const createGrid = () => {
     var grid = new Array(9);
     for (var i = 0; i < 9; i++) grid[i] = new Array(9);
-    return grid;
+    return [
+      [
+        new Cell(false, null, null),
+        new Cell(false, null, null),
+        new Cell(true, 7, null),
+        new Cell(false, null, null),
+        new Cell(false, null, null),
+        new Cell(false, null, null),
+        new Cell(false, null, null),
+        new Cell(true, 1, null),
+        new Cell(false, null, null),
+      ],
+      [
+        new Cell(false, null, null),
+        new Cell(true, 9, null),
+        new Cell(false, null, null),
+        new Cell(true, 1, null),
+        new Cell(false, null, null),
+        new Cell(false, null, null),
+        new Cell(false, null, null),
+        new Cell(false, null, null),
+        new Cell(false, null, null),
+      ],
+      [
+        new Cell(true, 5, null),
+        new Cell(true, 2, null),
+        new Cell(true, 1, null),
+        new Cell(true, 6, null),
+        new Cell(false, null, null),
+        new Cell(false, null, null),
+        new Cell(true, 9, null),
+        new Cell(false, null, null),
+        new Cell(true, 7, null),
+      ],
+      [
+        new Cell(true, 5, null),
+        new Cell(true, 4, null),
+        new Cell(false, null, null),
+        new Cell(false, null, null),
+        new Cell(false, null, null),
+        new Cell(false, null, null),
+        new Cell(true, 3, null),
+        new Cell(true, 7, null),
+        new Cell(true, 6, null),
+      ],
+      [
+        new Cell(true, 2, null),
+        new Cell(false, null, null),
+        new Cell(false, null, null),
+        new Cell(false, null, null),
+        new Cell(true, 5, null),
+        new Cell(true, 3, null),
+        new Cell(true, 9, null),
+        new Cell(true, 8, null),
+        new Cell(false, null, null),
+      ],
+      [
+        new Cell(true, 1, null),
+        new Cell(true, 9, null),
+        new Cell(false, null, null),
+        new Cell(true, 7, null),
+        new Cell(false, null, null),
+        new Cell(false, null, null),
+        new Cell(true, 4, null),
+        new Cell(false, null, null),
+        new Cell(false, null, null),
+      ],
+      [
+        new Cell(false, null, null),
+        new Cell(true, 5, null),
+        new Cell(false, null, null),
+        new Cell(false, null, null),
+        new Cell(false, null, null),
+        new Cell(true, 1, null),
+        new Cell(false, null, null),
+        new Cell(false, null, null),
+        new Cell(true, 4, null),
+      ],
+      [
+        new Cell(false, null, null),
+        new Cell(false, null, null),
+        new Cell(true, 6, null),
+        new Cell(true, 8, null),
+        new Cell(true, 2, null),
+        new Cell(true, 4, null),
+        new Cell(false, null, null),
+        new Cell(false, null, null),
+        new Cell(false, null, null),
+      ],
+      [
+        new Cell(true, 8, null),
+        new Cell(true, 4, null),
+        new Cell(false, null, null),
+        new Cell(true, 3, null),
+        new Cell(false, null, null),
+        new Cell(true, 5, null),
+        new Cell(false, null, null),
+        new Cell(false, null, null),
+        new Cell(false, null, null),
+      ],
+    ];
   };
-  const [grid, setGrid] = useState(createGrid());
 
   const copyGrid = () => {
     var copy = [];
     for (var i = 0; i < grid.length; i++) {
-      copy.push(grid[i].map((x) => x));
+      var square = [];
+      for (var j = 0; j < grid[i].length; j++) {
+        square.push(
+          new Cell(grid[i][j].original, grid[i][j].value, grid[i][j].status)
+        );
+      }
+      copy.push(square);
     }
     return copy;
   };
 
-  const selectCell = (cell, square, row, col) => {
+  const selectCell = (cell, square, row, col, val) => {
     if (cell == null || square == null || row == null || col == null) return;
 
     setCurrentElement({
@@ -50,6 +140,7 @@ export default function Sudoku(props) {
       currentSquare: square,
       currentRow: row,
       currentColumn: col,
+      currentValue: val,
     });
   };
 
@@ -61,13 +152,23 @@ export default function Sudoku(props) {
       currentElement.currentColumn == null
     )
       return;
+    if (
+      grid[currentElement.currentSquare - 1][currentElement.currentCell - 1]
+        .original == true
+    )
+      return;
     const number = parseInt(event.key);
     if (isNaN(number)) return;
-    grid[currentElement.currentSquare - 1][currentElement.currentCell - 1] =
-      number;
+    grid[currentElement.currentSquare - 1][
+      currentElement.currentCell - 1
+    ].value = number;
     setGrid([...grid]);
 
+    currentElement.currentValue = number;
+    setCurrentElement(currentElement);
+
     movesList.current.push(copyGrid());
+    checkPosition(currentElement);
   };
 
   const insertValue = (value) => {
@@ -78,13 +179,38 @@ export default function Sudoku(props) {
       currentElement.currentColumn == null
     )
       return;
+    if (
+      grid[currentElement.currentSquare - 1][currentElement.currentCell - 1]
+        .original == true
+    )
+      return;
     if (isNaN(parseInt(value))) return;
     if (value < 0 || value > 9) return;
-    grid[currentElement.currentSquare - 1][currentElement.currentCell - 1] =
-      value;
+    grid[currentElement.currentSquare - 1][
+      currentElement.currentCell - 1
+    ].value = value;
     setGrid([...grid]);
 
+    currentElement.currentValue = number;
+    setCurrentElement(currentElement);
+
     movesList.current.push(copyGrid());
+    checkPosition(currentElement);
+  };
+
+  const checkPosition = () => {
+    // grid[currentElement.currentSquare - 1].forEach((cell, index, square) => {
+    //   var currentValue =
+    //     grid[currentElement.currentSquare - 1][currentElement.currentCell - 1]
+    //       .value;
+    //   if (
+    //     cell.value == currentValue &&
+    //     index != currentElement.currentCell - 1
+    //   ) {
+    //     square[currentElement.currentCell - 1].status = "error";
+    //     square[index].status = "error";
+    //   }
+    // });
   };
 
   const startTimer = () => {
@@ -124,11 +250,9 @@ export default function Sudoku(props) {
   };
 
   const undoMove = () => {
-    if (movesList.current.length == 0) return;
-    movesList.current.pop();
-    const len = movesList.current.length;
-    const previousState =
-      len != 0 ? movesList.current[movesList.current.length - 1] : createGrid();
+    if (movesList.current.length != 1) movesList.current.pop();
+
+    const previousState = movesList.current[movesList.current.length - 1];
     setGrid([...previousState]);
   };
 
@@ -141,16 +265,51 @@ export default function Sudoku(props) {
     )
       return;
     if (
-      grid[currentElement.currentSquare - 1][currentElement.currentCell - 1] ==
-      null
+      grid[currentElement.currentSquare - 1][currentElement.currentCell - 1]
+        .original == true
     )
       return;
-    grid[currentElement.currentSquare - 1][currentElement.currentCell - 1] =
-      null;
+    if (
+      grid[currentElement.currentSquare - 1][currentElement.currentCell - 1]
+        .value == null
+    )
+      return;
+    grid[currentElement.currentSquare - 1][
+      currentElement.currentCell - 1
+    ].value = null;
     setGrid([...grid]);
+
+    currentElement.currentValue = null;
+    setCurrentElement(currentElement);
+
+    movesList.current.push(copyGrid());
   };
 
-  const chooseDifficulty = (difficulty) => setDifficulty(difficulty);
+  const theme = props.theme;
+
+  const [currentElement, setCurrentElement] = useState({
+    currentCell: null,
+    currentSquare: null,
+    currentRow: null,
+    currentColumn: null,
+    currentValue: null,
+  });
+  const [difficulty, setDifficulty] = useState("Easy");
+  const [timer, setTimer] = useState({ hour: 0, minute: 0, second: 0 });
+  const [grid, setGrid] = useState(createGrid());
+
+  const movesList = useRef([copyGrid()]);
+
+  useEffect(() => {
+    startTimer();
+  }, []);
+
+  useEffect(() => {
+    document.addEventListener("keyup", fillCell);
+    return () => {
+      document.removeEventListener("keyup", fillCell);
+    };
+  }, [currentElement]);
 
   return (
     <div className="mx-auto h-5/6 w-full lg:w-5/6 max-w-7xl px-2 mt-4 sm:px-6 lg:px-8">
@@ -177,7 +336,7 @@ export default function Sudoku(props) {
               theme == "dark" ? "bg-slate-800" : "bg-slate-100"
             }`}>
             <Menu.Item
-              onClick={() => chooseDifficulty("Easy")}
+              onClick={() => setDifficulty("Easy")}
               className={` w-full cursor-pointer text-left rounded transition-colors ease-in-out duration-300 ${
                 theme == "dark"
                   ? "text-white hover:bg-gray-700"
@@ -186,7 +345,7 @@ export default function Sudoku(props) {
               <button className="text-sm font-normal">Easy</button>
             </Menu.Item>
             <Menu.Item
-              onClick={() => chooseDifficulty("Medium")}
+              onClick={() => setDifficulty("Medium")}
               className={` w-full cursor-pointer text-left rounded transition-colors ease-in-out duration-300 ${
                 theme == "dark"
                   ? "text-white hover:bg-gray-700"
@@ -195,7 +354,7 @@ export default function Sudoku(props) {
               <button className="text-sm font-normal">Medium</button>
             </Menu.Item>
             <Menu.Item
-              onClick={() => chooseDifficulty("Hard")}
+              onClick={() => setDifficulty("Hard")}
               className={` w-full cursor-pointer text-left rounded transition-colors ease-in-out duration-300 ${
                 theme == "dark"
                   ? "text-white hover:bg-gray-700"
@@ -204,7 +363,7 @@ export default function Sudoku(props) {
               <button className="text-sm font-normal">Hard</button>
             </Menu.Item>
             <Menu.Item
-              onClick={() => chooseDifficulty("Extreme")}
+              onClick={() => setDifficulty("Extreme")}
               className={` w-full cursor-pointer text-left rounded transition-colors ease-in-out duration-300 ${
                 theme == "dark"
                   ? "text-white hover:bg-gray-700"
@@ -213,7 +372,7 @@ export default function Sudoku(props) {
               <button className="text-sm font-normal">Extreme</button>
             </Menu.Item>
             <Menu.Item
-              onClick={() => chooseDifficulty("Evil")}
+              onClick={() => setDifficulty("Evil")}
               className={` w-full cursor-pointer text-left rounded transition-colors ease-in-out duration-300 ${
                 theme == "dark"
                   ? "text-white hover:bg-gray-700"
@@ -264,6 +423,7 @@ export default function Sudoku(props) {
                   currentElement.currentSquare,
                   currentElement.currentRow,
                   currentElement.currentColumn,
+                  currentElement.currentValue,
                 ]}></SudokuSquare>
             </div>
             <div
@@ -279,6 +439,7 @@ export default function Sudoku(props) {
                   currentElement.currentSquare,
                   currentElement.currentRow,
                   currentElement.currentColumn,
+                  currentElement.currentValue,
                 ]}></SudokuSquare>
             </div>
             <div
@@ -294,6 +455,7 @@ export default function Sudoku(props) {
                   currentElement.currentSquare,
                   currentElement.currentRow,
                   currentElement.currentColumn,
+                  currentElement.currentValue,
                 ]}></SudokuSquare>
             </div>
             <div
@@ -309,6 +471,7 @@ export default function Sudoku(props) {
                   currentElement.currentSquare,
                   currentElement.currentRow,
                   currentElement.currentColumn,
+                  currentElement.currentValue,
                 ]}></SudokuSquare>
             </div>
             <div
@@ -324,6 +487,7 @@ export default function Sudoku(props) {
                   currentElement.currentSquare,
                   currentElement.currentRow,
                   currentElement.currentColumn,
+                  currentElement.currentValue,
                 ]}></SudokuSquare>
             </div>
             <div
@@ -339,6 +503,7 @@ export default function Sudoku(props) {
                   currentElement.currentSquare,
                   currentElement.currentRow,
                   currentElement.currentColumn,
+                  currentElement.currentValue,
                 ]}></SudokuSquare>
             </div>
             <div
@@ -354,6 +519,7 @@ export default function Sudoku(props) {
                   currentElement.currentSquare,
                   currentElement.currentRow,
                   currentElement.currentColumn,
+                  currentElement.currentValue,
                 ]}></SudokuSquare>
             </div>
             <div
@@ -369,6 +535,7 @@ export default function Sudoku(props) {
                   currentElement.currentSquare,
                   currentElement.currentRow,
                   currentElement.currentColumn,
+                  currentElement.currentValue,
                 ]}></SudokuSquare>
             </div>
             <div
@@ -384,34 +551,35 @@ export default function Sudoku(props) {
                   currentElement.currentSquare,
                   currentElement.currentRow,
                   currentElement.currentColumn,
+                  currentElement.currentValue,
                 ]}></SudokuSquare>
             </div>
           </div>
           <div className="lg:col-span-2 col-span-1 text-white lg:justify-self-end justify-self-center self-start">
-            <div className="flex flex-col lg:gap-y-6 gap-y-4 lg:ml-4 lg:mt-0 mt-4">
-              <div className="grid grid-cols-4 content-center mb-4 lg:mb-0 lg:order-1 order-2 h-20 2xl:w-96 xl:w-80 lg:w-72 md:w-[480px] sm:w-[432px] w-[384px] border rounded transition-all ease-in duration-200">
+            <div className="flex flex-col lg:gap-y-6 2xl:gap-y-4 gap-y-1 lg:ml-4 lg:mt-0 mt-3">
+              <div className="grid grid-cols-4 justify-items-center content-center mb-4 lg:mb-0 lg:order-1 order-2 h-20 2xl:w-96 xl:w-80 lg:w-72 md:w-[480px] sm:w-[432px] w-[384px] transition-all ease-in duration-200">
                 <div
-                  className={`flex justify-center cursor-pointer font-mono ${
+                  className={`flex justify-center items-center bg-gray-300/20 rounded-full lg:w-16 xl:w-16 2xl:w-20 w-20 aspect-square cursor-pointer font-mono ${
                     theme == "dark" ? "text-gray-300" : "text-neutral-900"
                   }`}>
                   Hint
                 </div>
                 <div
-                  className={`flex justify-center cursor-pointer font-mono ${
+                  className={`flex justify-center items-center bg-gray-300/20 rounded-full lg:w-16 xl:w-16 2xl:w-20 w-20 aspect-square cursor-pointer font-mono ${
                     theme == "dark" ? "text-gray-300" : "text-neutral-900"
                   }`}>
                   Notes
                 </div>
                 <div
                   onClick={() => eraseValue()}
-                  className={`flex justify-center cursor-pointer font-mono ${
+                  className={`flex justify-center items-center bg-gray-300/20 rounded-full lg:w-16 xl:w-16 2xl:w-20 w-20 aspect-square cursor-pointer font-mono ${
                     theme == "dark" ? "text-gray-300" : "text-neutral-900"
                   }`}>
                   Erase
                 </div>
                 <div
                   onClick={() => undoMove()}
-                  className={`flex justify-center cursor-pointer font-mono ${
+                  className={`flex justify-center items-center bg-gray-300/20 rounded-full lg:w-16 xl:w-16 2xl:w-20 w-20 aspect-square cursor-pointer font-mono ${
                     theme == "dark" ? "text-gray-300" : "text-neutral-900"
                   }`}>
                   Undo
@@ -421,82 +589,82 @@ export default function Sudoku(props) {
                 <div className="grid grid-cols-9 lg:grid-cols-3 lg:grid-rows-3 lg:gap-2 h-full content-center items-center">
                   <div
                     onClick={() => insertValue(1)}
-                    className={`flex justify-center items-center font-mono text-5xl cursor-pointer lg:rounded h-full w-full ${
+                    className={`transition-colors ease-in-out duration-300 flex justify-center text-cyan-500 hover:text-cyan-600 items-center font-mono text-5xl cursor-pointer lg:rounded h-full w-full ${
                       theme == "dark"
-                        ? "text-cyan-500 lg:bg-cyan-500 lg:text-white"
-                        : "text-cyan-600 lg:bg-gray-400/30"
+                        ? " lg:bg-cyan-500 hover:lg:bg-cyan-600 lg:text-white hover:lg:text-white"
+                        : " lg:bg-gray-300/20 hover:lg:bg-gray-300/40"
                     } `}>
                     1
                   </div>
                   <div
                     onClick={() => insertValue(2)}
-                    className={`flex justify-center items-center font-mono text-5xl cursor-pointer lg:rounded h-full w-full ${
+                    className={`transition-colors ease-in-out duration-300 flex justify-center text-cyan-500 hover:text-cyan-600 items-center font-mono text-5xl cursor-pointer lg:rounded h-full w-full ${
                       theme == "dark"
-                        ? "text-cyan-500 lg:bg-cyan-500 lg:text-white"
-                        : "text-cyan-600 lg:bg-gray-400/30"
+                        ? " lg:bg-cyan-500 hover:lg:bg-cyan-600 lg:text-white hover:lg:text-white"
+                        : " lg:bg-gray-300/20 hover:lg:bg-gray-300/40"
                     } `}>
                     2
                   </div>
                   <div
                     onClick={() => insertValue(3)}
-                    className={`flex justify-center items-center font-mono text-5xl cursor-pointer lg:rounded h-full w-full ${
+                    className={`transition-colors ease-in-out duration-300 flex justify-center text-cyan-500 hover:text-cyan-600 items-center font-mono text-5xl cursor-pointer lg:rounded h-full w-full ${
                       theme == "dark"
-                        ? "text-cyan-500 lg:bg-cyan-500 lg:text-white"
-                        : "text-cyan-600 lg:bg-gray-400/30"
+                        ? " lg:bg-cyan-500 hover:lg:bg-cyan-600 lg:text-white hover:lg:text-white"
+                        : " lg:bg-gray-300/20 hover:lg:bg-gray-300/40"
                     } `}>
                     3
                   </div>
                   <div
                     onClick={() => insertValue(4)}
-                    className={`flex justify-center items-center font-mono text-5xl cursor-pointer lg:rounded h-full w-full ${
+                    className={`transition-colors ease-in-out duration-300 flex justify-center text-cyan-500 hover:text-cyan-600 items-center font-mono text-5xl cursor-pointer lg:rounded h-full w-full ${
                       theme == "dark"
-                        ? "text-cyan-500 lg:bg-cyan-500 lg:text-white"
-                        : "text-cyan-600 lg:bg-gray-400/30"
+                        ? " lg:bg-cyan-500 hover:lg:bg-cyan-600 lg:text-white hover:lg:text-white"
+                        : " lg:bg-gray-300/20 hover:lg:bg-gray-300/40"
                     } `}>
                     4
                   </div>
                   <div
                     onClick={() => insertValue(5)}
-                    className={`flex justify-center items-center font-mono text-5xl cursor-pointer lg:rounded h-full w-full ${
+                    className={`transition-colors ease-in-out duration-300 flex justify-center text-cyan-500 hover:text-cyan-600 items-center font-mono text-5xl cursor-pointer lg:rounded h-full w-full ${
                       theme == "dark"
-                        ? "text-cyan-500 lg:bg-cyan-500 lg:text-white"
-                        : "text-cyan-600 lg:bg-gray-400/30"
+                        ? " lg:bg-cyan-500 hover:lg:bg-cyan-600 lg:text-white hover:lg:text-white"
+                        : " lg:bg-gray-300/20 hover:lg:bg-gray-300/40"
                     } `}>
                     5
                   </div>
                   <div
                     onClick={() => insertValue(6)}
-                    className={`flex justify-center items-center font-mono text-5xl cursor-pointer lg:rounded h-full w-full ${
+                    className={`transition-colors ease-in-out duration-300 flex justify-center text-cyan-500 hover:text-cyan-600 items-center font-mono text-5xl cursor-pointer lg:rounded h-full w-full ${
                       theme == "dark"
-                        ? "text-cyan-500 lg:bg-cyan-500 lg:text-white"
-                        : "text-cyan-600 lg:bg-gray-400/30"
+                        ? " lg:bg-cyan-500 hover:lg:bg-cyan-600 lg:text-white hover:lg:text-white"
+                        : " lg:bg-gray-300/20 hover:lg:bg-gray-300/40"
                     } `}>
                     6
                   </div>
                   <div
                     onClick={() => insertValue(7)}
-                    className={`flex justify-center items-center font-mono text-5xl cursor-pointer lg:rounded h-full w-full ${
+                    className={`transition-colors ease-in-out duration-300 flex justify-center text-cyan-500 hover:text-cyan-600 items-center font-mono text-5xl cursor-pointer lg:rounded h-full w-full ${
                       theme == "dark"
-                        ? "text-cyan-500 lg:bg-cyan-500 lg:text-white"
-                        : "text-cyan-600 lg:bg-gray-400/30"
+                        ? " lg:bg-cyan-500 hover:lg:bg-cyan-600 lg:text-white hover:lg:text-white"
+                        : " lg:bg-gray-300/20 hover:lg:bg-gray-300/40"
                     } `}>
                     7
                   </div>
                   <div
                     onClick={() => insertValue(8)}
-                    className={`flex justify-center items-center font-mono text-5xl cursor-pointer lg:rounded h-full w-full ${
+                    className={`transition-colors ease-in-out duration-300 flex justify-center text-cyan-500 hover:text-cyan-600 items-center font-mono text-5xl cursor-pointer lg:rounded h-full w-full ${
                       theme == "dark"
-                        ? "text-cyan-500 lg:bg-cyan-500 lg:text-white"
-                        : "text-cyan-600 lg:bg-gray-400/30"
+                        ? " lg:bg-cyan-500 hover:lg:bg-cyan-600 lg:text-white hover:lg:text-white"
+                        : " lg:bg-gray-300/20 hover:lg:bg-gray-300/40"
                     } `}>
                     8
                   </div>
                   <div
                     onClick={() => insertValue(9)}
-                    className={`flex justify-center items-center font-mono text-5xl cursor-pointer lg:rounded h-full w-full ${
+                    className={`transition-colors ease-in-out duration-300 flex justify-center text-cyan-500 hover:text-cyan-600 items-center font-mono text-5xl cursor-pointer lg:rounded h-full w-full ${
                       theme == "dark"
-                        ? "text-cyan-500 lg:bg-cyan-500 lg:text-white"
-                        : "text-cyan-600 lg:bg-gray-400/30"
+                        ? " lg:bg-cyan-500 hover:lg:bg-cyan-600 lg:text-white hover:lg:text-white"
+                        : " lg:bg-gray-300/20 hover:lg:bg-gray-300/40"
                     } `}>
                     9
                   </div>
