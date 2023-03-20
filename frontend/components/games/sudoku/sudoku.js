@@ -144,7 +144,102 @@ export default function Sudoku(props) {
     });
   };
 
-  const fillCell = (event) => {
+  const isKeyNumber = (key) => {
+    if (isNaN(parseInt(key))) return false;
+    return true;
+  }
+
+  const isKeyArrow = (key) => {
+    if("ArrowUp" === key || "ArrowDown" === key || "ArrowLeft" === key || "ArrowRight" === key) return true;
+      return false;
+  }
+
+  const keyUpHandler = (event) => {
+    if(isKeyNumber(event.key))
+      fillCell(event.key);
+    else if(isKeyArrow(event.key))
+      shiftCell(event.key);
+  }
+
+  const shiftCell = (key) => {
+    if (
+      currentElement.currentSquare == null ||
+      currentElement.currentCell == null ||
+      currentElement.currentRow == null ||
+      currentElement.currentColumn == null
+    )
+      return;
+
+    const newCell = {
+      currentCell: null,
+      currentSquare: null,
+      currentRow: null,
+      currentColumn: null, 
+    }
+
+    switch (key){
+      case 'ArrowUp':
+        if (currentElement.currentCell < 4) 
+          newCell.currentSquare = currentElement.currentSquare - 3;
+        else
+          newCell.currentSquare = currentElement.currentSquare;
+        newCell.currentCell = currentElement.currentCell - 3;
+        newCell.currentRow = currentElement.currentRow - 1;
+        newCell.currentColumn = currentElement.currentColumn;
+        break;
+      case 'ArrowDown':
+        if (currentElement.currentCell > 6) 
+          newCell.currentSquare = currentElement.currentSquare + 3;
+        else
+          newCell.currentSquare = currentElement.currentSquare;
+        newCell.currentCell = currentElement.currentCell + 3;
+        newCell.currentRow = currentElement.currentRow + 1;
+        newCell.currentColumn = currentElement.currentColumn;
+        break;
+      case 'ArrowRight':
+        if ([3,6,9].includes(currentElement.currentCell)) 
+          newCell.currentSquare = currentElement.currentSquare + 1;
+        else
+          newCell.currentSquare = currentElement.currentSquare;
+        if ([3,6,9].includes(currentElement.currentCell))
+          newCell.currentCell = currentElement.currentCell - 2;
+        else
+          newCell.currentCell = currentElement.currentCell + 1;
+        if(currentElement.currentColumn == 9)
+          newCell.currentSquare = currentElement.currentSquare - 2;
+        newCell.currentColumn = currentElement.currentColumn + 1;
+        newCell.currentRow = currentElement.currentRow;
+        break;
+      case 'ArrowLeft':
+        if ([1,4,7].includes(currentElement.currentCell)) 
+          newCell.currentSquare = currentElement.currentSquare - 1;
+        else
+          newCell.currentSquare = currentElement.currentSquare;
+        if ([1,4,7].includes(currentElement.currentCell))
+          newCell.currentCell = currentElement.currentCell + 2;
+        else
+          newCell.currentCell = currentElement.currentCell - 1;
+        if(currentElement.currentColumn == 1)
+          newCell.currentSquare = currentElement.currentSquare + 2;
+        newCell.currentColumn = currentElement.currentColumn - 1;
+        newCell.currentRow = currentElement.currentRow;
+        break;
+    }
+
+    if(newCell.currentSquare < 1 || newCell.currentSquare > 9)
+      newCell.currentSquare = (newCell.currentSquare + 9) % 9;
+    if(newCell.currentCell < 1) 
+      newCell.currentCell = newCell.currentCell + 9;
+    if(newCell.currentCell > 9)
+      newCell.currentCell = newCell.currentCell % 9;
+    if(newCell.currentColumn < 1 || newCell.currentColumn > 9)
+      newCell.currentColumn = (newCell.currentColumn + 9) % 9;
+    if (newCell.currentRow < 1 || newCell.currentRow > 9)
+      newCell.currentRow = (newCell.currentRow + 9) % 9;
+    setCurrentElement(newCell);
+  }
+
+  const fillCell = (key) => {
     if (
       currentElement.currentSquare == null ||
       currentElement.currentCell == null ||
@@ -157,7 +252,7 @@ export default function Sudoku(props) {
         .original == true
     )
       return;
-    const number = parseInt(event.key);
+    const number = parseInt(key);
     if (isNaN(number)) return;
     grid[currentElement.currentSquare - 1][
       currentElement.currentCell - 1
@@ -305,9 +400,9 @@ export default function Sudoku(props) {
   }, []);
 
   useEffect(() => {
-    document.addEventListener("keyup", fillCell);
+    document.addEventListener("keyup", keyUpHandler);
     return () => {
-      document.removeEventListener("keyup", fillCell);
+      document.removeEventListener("keyup", keyUpHandler);
     };
   }, [currentElement]);
 
