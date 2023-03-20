@@ -34,7 +34,7 @@ export default function Navbar(props) {
       {({ open }) => (
         <>
           <div className="border-b border-slate-300/30">
-            <div className="mx-auto w-5/6 max-w-7xl px-2 sm:px-6 lg:px-8">
+            <div className="mx-auto lg:w-5/6 w-full max-w-7xl px-2 sm:px-6 lg:px-8">
               <div className="relative flex h-16 items-center justify-between">
                 <div className="absolute inset-y-0 left-0 flex items-center lg:hidden">
                   <Disclosure.Button
@@ -56,14 +56,14 @@ export default function Navbar(props) {
                   <div className="flex flex-shrink-0 items-center">
                     <Link href="/">
                       <Image
-                        className="block md:hidden"
+                        className="block lg:hidden"
                         src="/images/logo.png"
                         alt="GameHub Company"
                         height={35}
                         width={40}
                       />
                       <Image
-                        className="hidden md:block"
+                        className="hidden lg:block"
                         src="/images/logo.png"
                         alt="GameHub Company"
                         height={35}
@@ -218,8 +218,8 @@ export default function Navbar(props) {
             enterTo="transform scale-100 opacity-100 max-h-[200px]"
             leaveFrom="transform scale-100 opacity-100 max-h-[200px]"
             leaveTo="transform scale-0 opacity-0 max-h-0">
-            <Disclosure.Panel className="sm:hidden origin-top">
-              <div className="space-y-1 px-2 pt-2 pb-3">
+            <Disclosure.Panel className="flex justify-center lg:hidden origin-top w-full">
+              <div className="space-y-1 px-2 pt-2 pb-3 w-full">
                 {elements.map((item) => (
                   <Disclosure.Button
                     key={item.name}

@@ -67,7 +67,10 @@ export default function Home() {
           window={currentElement}
           setToast={setToast}
           theme={theme}></Window>
-        <Modal modal={currentModal} childSetModal={childSetModal}></Modal>
+        <Modal
+          theme={theme}
+          modal={currentModal}
+          childSetModal={childSetModal}></Modal>
         <Toast theme={theme} toast={toast} closeToast={closeToast}></Toast>
       </Container>
     </>

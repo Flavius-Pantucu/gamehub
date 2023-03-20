@@ -4,16 +4,21 @@ import PasswordModal from "../components/modals/password_modal";
 
 export default function Modal(props) {
   const current = props.modal;
+  const theme = props.theme;
 
   const setModal = (modal) => {
     props.childSetModal(modal);
   };
 
   if (current == "login")
-    return <AuthModal childSetModal={setModal}></AuthModal>;
+    return <AuthModal theme={theme} childSetModal={setModal}></AuthModal>;
   else if (current == "register")
-    return <RegisterModal childSetModal={setModal}></RegisterModal>;
+    return (
+      <RegisterModal theme={theme} childSetModal={setModal}></RegisterModal>
+    );
   else if (current == "password")
-    return <PasswordModal childSetModal={setModal}></PasswordModal>;
+    return (
+      <PasswordModal theme={theme} childSetModal={setModal}></PasswordModal>
+    );
   else return <></>;
 }

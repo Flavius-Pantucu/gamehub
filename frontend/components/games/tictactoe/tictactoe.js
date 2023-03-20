@@ -107,7 +107,7 @@ export default function TicTacToe(props) {
   }
 
   return (
-    <div className="mx-auto h-5/6 w-5/6 mt-4 max-w-7xl px-2 sm:px-6 lg:px-8">
+    <div className="mx-auto h-5/6 w-full lg:w-5/6 mt-4 max-w-7xl px-2 sm:px-6 lg:px-8">
       <Menu as="div" className="relative inline-block">
         <div>
           <Menu.Button

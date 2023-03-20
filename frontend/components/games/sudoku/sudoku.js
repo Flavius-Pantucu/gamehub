@@ -27,7 +27,6 @@ export default function Sudoku(props) {
   const theme = props.theme;
   const movesList = useRef(new Array());
 
-
   const createGrid = () => {
     var grid = new Array(9);
     for (var i = 0; i < 9; i++) grid[i] = new Array(9);
@@ -41,7 +40,7 @@ export default function Sudoku(props) {
       copy.push(grid[i].map((x) => x));
     }
     return copy;
-  }
+  };
 
   const selectCell = (cell, square, row, col) => {
     if (cell == null || square == null || row == null || col == null) return;
@@ -64,7 +63,8 @@ export default function Sudoku(props) {
       return;
     const number = parseInt(event.key);
     if (isNaN(number)) return;
-    grid[currentElement.currentSquare - 1][currentElement.currentCell - 1] = number;
+    grid[currentElement.currentSquare - 1][currentElement.currentCell - 1] =
+      number;
     setGrid([...grid]);
 
     movesList.current.push(copyGrid());
@@ -78,9 +78,10 @@ export default function Sudoku(props) {
       currentElement.currentColumn == null
     )
       return;
-    if(isNaN(parseInt(value))) return;
-    if(value < 0 || value > 9) return;
-    grid[currentElement.currentSquare - 1][currentElement.currentCell - 1] = value;
+    if (isNaN(parseInt(value))) return;
+    if (value < 0 || value > 9) return;
+    grid[currentElement.currentSquare - 1][currentElement.currentCell - 1] =
+      value;
     setGrid([...grid]);
 
     movesList.current.push(copyGrid());
@@ -126,9 +127,10 @@ export default function Sudoku(props) {
     if (movesList.current.length == 0) return;
     movesList.current.pop();
     const len = movesList.current.length;
-    const previousState = len != 0 ? movesList.current[movesList.current.length - 1] : createGrid();
+    const previousState =
+      len != 0 ? movesList.current[movesList.current.length - 1] : createGrid();
     setGrid([...previousState]);
-  }
+  };
 
   const eraseValue = () => {
     if (
@@ -138,16 +140,20 @@ export default function Sudoku(props) {
       currentElement.currentColumn == null
     )
       return;
-    if(grid[currentElement.currentSquare - 1][currentElement.currentCell - 1] == null)
+    if (
+      grid[currentElement.currentSquare - 1][currentElement.currentCell - 1] ==
+      null
+    )
       return;
-      grid[currentElement.currentSquare - 1][currentElement.currentCell - 1] = null;
-      setGrid([...grid]);
-    }
+    grid[currentElement.currentSquare - 1][currentElement.currentCell - 1] =
+      null;
+    setGrid([...grid]);
+  };
 
   const chooseDifficulty = (difficulty) => setDifficulty(difficulty);
 
   return (
-    <div className="mx-auto h-5/6 w-full md:w-5/6 max-w-7xl px-2 mt-4 sm:px-6 lg:px-8">
+    <div className="mx-auto h-5/6 w-full lg:w-5/6 max-w-7xl px-2 mt-4 sm:px-6 lg:px-8">
       <Menu as="div" className="relative inline-block">
         <div>
           <Menu.Button
@@ -380,31 +386,135 @@ export default function Sudoku(props) {
                   currentElement.currentColumn,
                 ]}></SudokuSquare>
             </div>
-        </div>
+          </div>
           <div className="lg:col-span-2 col-span-1 text-white lg:justify-self-end justify-self-center self-start">
             <div className="flex flex-col lg:gap-y-6 gap-y-4 lg:ml-4 lg:mt-0 mt-4">
-              <div className="grid grid-cols-4 content-center lg:order-1 order-2 h-20 2xl:w-96 xl:w-80 lg:w-72 md:w-[480px] sm:w-[432px] w-[384px] border rounded transition-all ease-in duration-200">
-                <div className={`flex justify-center cursor-pointer font-mono ${ theme == "dark" ? "text-gray-300" : "text-neutral-900"}`}>Hint</div>
-                <div className={`flex justify-center cursor-pointer font-mono ${ theme == "dark" ? "text-gray-300" : "text-neutral-900"}`}>Notes</div>
-                <div onClick={() => eraseValue()} className={`flex justify-center cursor-pointer font-mono ${ theme == "dark" ? "text-gray-300" : "text-neutral-900"}`}>Erase</div>
-                <div onClick={() => undoMove()} className={`flex justify-center cursor-pointer font-mono ${ theme == "dark" ? "text-gray-300" : "text-neutral-900"}`}>Undo</div>
+              <div className="grid grid-cols-4 content-center mb-4 lg:mb-0 lg:order-1 order-2 h-20 2xl:w-96 xl:w-80 lg:w-72 md:w-[480px] sm:w-[432px] w-[384px] border rounded transition-all ease-in duration-200">
+                <div
+                  className={`flex justify-center cursor-pointer font-mono ${
+                    theme == "dark" ? "text-gray-300" : "text-neutral-900"
+                  }`}>
+                  Hint
+                </div>
+                <div
+                  className={`flex justify-center cursor-pointer font-mono ${
+                    theme == "dark" ? "text-gray-300" : "text-neutral-900"
+                  }`}>
+                  Notes
+                </div>
+                <div
+                  onClick={() => eraseValue()}
+                  className={`flex justify-center cursor-pointer font-mono ${
+                    theme == "dark" ? "text-gray-300" : "text-neutral-900"
+                  }`}>
+                  Erase
+                </div>
+                <div
+                  onClick={() => undoMove()}
+                  className={`flex justify-center cursor-pointer font-mono ${
+                    theme == "dark" ? "text-gray-300" : "text-neutral-900"
+                  }`}>
+                  Undo
+                </div>
               </div>
               <div className="lg:order-2 order-1 2xl:h-96 xl:h-80 lg:h-72 2xl:w-96 h-20 xl:w-80 lg:w-72 md:w-[480px] sm:w-[432px] w-[384px] transition-all ease-in duration-200 ">
                 <div className="grid grid-cols-9 lg:grid-cols-3 lg:grid-rows-3 lg:gap-2 h-full content-center items-center">
-                  <div onClick={() => insertValue(1)} className={`flex justify-center items-center font-mono text-5xl cursor-pointer lg:rounded h-full w-full ${ theme == "dark" ? "text-cyan-500 lg:bg-cyan-500 lg:text-white" : "text-cyan-600 lg:bg-gray-400/30"} `}>1</div>
-                  <div onClick={() => insertValue(2)} className={`flex justify-center items-center font-mono text-5xl cursor-pointer lg:rounded h-full w-full ${ theme == "dark" ? "text-cyan-500 lg:bg-cyan-500 lg:text-white" : "text-cyan-600 lg:bg-gray-400/30"} `}>2</div>
-                  <div onClick={() => insertValue(3)} className={`flex justify-center items-center font-mono text-5xl cursor-pointer lg:rounded h-full w-full ${ theme == "dark" ? "text-cyan-500 lg:bg-cyan-500 lg:text-white" : "text-cyan-600 lg:bg-gray-400/30"} `}>3</div>
-                  <div onClick={() => insertValue(4)} className={`flex justify-center items-center font-mono text-5xl cursor-pointer lg:rounded h-full w-full ${ theme == "dark" ? "text-cyan-500 lg:bg-cyan-500 lg:text-white" : "text-cyan-600 lg:bg-gray-400/30"} `}>4</div>
-                  <div onClick={() => insertValue(5)} className={`flex justify-center items-center font-mono text-5xl cursor-pointer lg:rounded h-full w-full ${ theme == "dark" ? "text-cyan-500 lg:bg-cyan-500 lg:text-white" : "text-cyan-600 lg:bg-gray-400/30"} `}>5</div>
-                  <div onClick={() => insertValue(6)} className={`flex justify-center items-center font-mono text-5xl cursor-pointer lg:rounded h-full w-full ${ theme == "dark" ? "text-cyan-500 lg:bg-cyan-500 lg:text-white" : "text-cyan-600 lg:bg-gray-400/30"} `}>6</div>
-                  <div onClick={() => insertValue(7)} className={`flex justify-center items-center font-mono text-5xl cursor-pointer lg:rounded h-full w-full ${ theme == "dark" ? "text-cyan-500 lg:bg-cyan-500 lg:text-white" : "text-cyan-600 lg:bg-gray-400/30"} `}>7</div>
-                  <div onClick={() => insertValue(8)} className={`flex justify-center items-center font-mono text-5xl cursor-pointer lg:rounded h-full w-full ${ theme == "dark" ? "text-cyan-500 lg:bg-cyan-500 lg:text-white" : "text-cyan-600 lg:bg-gray-400/30"} `}>8</div>
-                  <div onClick={() => insertValue(9)} className={`flex justify-center items-center font-mono text-5xl cursor-pointer lg:rounded h-full w-full ${ theme == "dark" ? "text-cyan-500 lg:bg-cyan-500 lg:text-white" : "text-cyan-600 lg:bg-gray-400/30"} `}>9</div>
+                  <div
+                    onClick={() => insertValue(1)}
+                    className={`flex justify-center items-center font-mono text-5xl cursor-pointer lg:rounded h-full w-full ${
+                      theme == "dark"
+                        ? "text-cyan-500 lg:bg-cyan-500 lg:text-white"
+                        : "text-cyan-600 lg:bg-gray-400/30"
+                    } `}>
+                    1
+                  </div>
+                  <div
+                    onClick={() => insertValue(2)}
+                    className={`flex justify-center items-center font-mono text-5xl cursor-pointer lg:rounded h-full w-full ${
+                      theme == "dark"
+                        ? "text-cyan-500 lg:bg-cyan-500 lg:text-white"
+                        : "text-cyan-600 lg:bg-gray-400/30"
+                    } `}>
+                    2
+                  </div>
+                  <div
+                    onClick={() => insertValue(3)}
+                    className={`flex justify-center items-center font-mono text-5xl cursor-pointer lg:rounded h-full w-full ${
+                      theme == "dark"
+                        ? "text-cyan-500 lg:bg-cyan-500 lg:text-white"
+                        : "text-cyan-600 lg:bg-gray-400/30"
+                    } `}>
+                    3
+                  </div>
+                  <div
+                    onClick={() => insertValue(4)}
+                    className={`flex justify-center items-center font-mono text-5xl cursor-pointer lg:rounded h-full w-full ${
+                      theme == "dark"
+                        ? "text-cyan-500 lg:bg-cyan-500 lg:text-white"
+                        : "text-cyan-600 lg:bg-gray-400/30"
+                    } `}>
+                    4
+                  </div>
+                  <div
+                    onClick={() => insertValue(5)}
+                    className={`flex justify-center items-center font-mono text-5xl cursor-pointer lg:rounded h-full w-full ${
+                      theme == "dark"
+                        ? "text-cyan-500 lg:bg-cyan-500 lg:text-white"
+                        : "text-cyan-600 lg:bg-gray-400/30"
+                    } `}>
+                    5
+                  </div>
+                  <div
+                    onClick={() => insertValue(6)}
+                    className={`flex justify-center items-center font-mono text-5xl cursor-pointer lg:rounded h-full w-full ${
+                      theme == "dark"
+                        ? "text-cyan-500 lg:bg-cyan-500 lg:text-white"
+                        : "text-cyan-600 lg:bg-gray-400/30"
+                    } `}>
+                    6
+                  </div>
+                  <div
+                    onClick={() => insertValue(7)}
+                    className={`flex justify-center items-center font-mono text-5xl cursor-pointer lg:rounded h-full w-full ${
+                      theme == "dark"
+                        ? "text-cyan-500 lg:bg-cyan-500 lg:text-white"
+                        : "text-cyan-600 lg:bg-gray-400/30"
+                    } `}>
+                    7
+                  </div>
+                  <div
+                    onClick={() => insertValue(8)}
+                    className={`flex justify-center items-center font-mono text-5xl cursor-pointer lg:rounded h-full w-full ${
+                      theme == "dark"
+                        ? "text-cyan-500 lg:bg-cyan-500 lg:text-white"
+                        : "text-cyan-600 lg:bg-gray-400/30"
+                    } `}>
+                    8
+                  </div>
+                  <div
+                    onClick={() => insertValue(9)}
+                    className={`flex justify-center items-center font-mono text-5xl cursor-pointer lg:rounded h-full w-full ${
+                      theme == "dark"
+                        ? "text-cyan-500 lg:bg-cyan-500 lg:text-white"
+                        : "text-cyan-600 lg:bg-gray-400/30"
+                    } `}>
+                    9
+                  </div>
                 </div>
               </div>
               <div className="hidden order-3 lg:grid grid-cols-2 content-center 2xl:h-20 xl:h-20 lg:h-16 2xl:w-96 xl:w-80 lg:w-72 border rounded transition-all ease-in duration-200 ">
-                <div className={`flex justify-center font-mono ${ theme == "dark" ? "text-gray-300" : "text-neutral-900"}`}>New game</div>
-                <div className={`flex justify-center font-mono ${ theme == "dark" ? "text-gray-300" : "text-neutral-900"}`}>Reset game</div>
+                <div
+                  className={`flex justify-center font-mono ${
+                    theme == "dark" ? "text-gray-300" : "text-neutral-900"
+                  }`}>
+                  New game
+                </div>
+                <div
+                  className={`flex justify-center font-mono ${
+                    theme == "dark" ? "text-gray-300" : "text-neutral-900"
+                  }`}>
+                  Reset game
+                </div>
               </div>
             </div>
           </div>
