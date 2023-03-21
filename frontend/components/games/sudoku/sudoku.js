@@ -13,6 +13,20 @@ class Cell {
 }
 
 export default function Sudoku(props) {
+  const createSolution = () => {
+    return [
+      [4, 3, 7, 8, 2, 9, 6, 1, 5],
+      [6, 9, 8, 1, 7, 5, 3, 4, 2],
+      [5, 2, 1, 6, 3, 4, 9, 8, 7],
+      [5, 4, 8, 1, 9, 2, 3, 7, 6],
+      [2, 6, 7, 4, 5, 3, 9, 8, 1],
+      [1, 9, 3, 7, 6, 8, 4, 5, 2],
+      [2, 5, 3, 9, 6, 1, 7, 8, 4],
+      [7, 1, 6, 8, 2, 4, 5, 3, 9],
+      [8, 4, 9, 3, 7, 5, 2, 1, 6],
+    ];
+  };
+
   const createGrid = () => {
     var grid = new Array(9);
     for (var i = 0; i < 9; i++) grid[i] = new Array(9);
@@ -249,15 +263,20 @@ export default function Sudoku(props) {
       return;
     const number = parseInt(key);
     if (isNaN(number)) return;
-    grid[currentElement.currentSquare][currentElement.currentCell].value =
-      number;
+    const previousValue =
+      grid[currentElement.currentSquare][currentElement.currentCell].value;
+    previousValue == number
+      ? (grid[currentElement.currentSquare][currentElement.currentCell].value =
+          null)
+      : (grid[currentElement.currentSquare][currentElement.currentCell].value =
+          number);
+    checkPosition(previousValue);
     setGrid([...grid]);
 
     currentElement.currentValue = number;
     setCurrentElement(currentElement);
 
     movesList.current.push(copyGrid());
-    checkPosition(currentElement);
   };
 
   const insertValue = (value) => {
@@ -275,30 +294,68 @@ export default function Sudoku(props) {
       return;
     if (isNaN(parseInt(value))) return;
     if (value < 0 || value > 9) return;
-    grid[currentElement.currentSquare][currentElement.currentCell].value =
-      value;
+    const previousValue =
+      grid[currentElement.currentSquare][currentElement.currentCell].value;
+    previousValue == value
+      ? (grid[currentElement.currentSquare][currentElement.currentCell].value =
+          null)
+      : (grid[currentElement.currentSquare][currentElement.currentCell].value =
+          value);
+    checkPosition(previousValue);
     setGrid([...grid]);
 
     currentElement.currentValue = value;
     setCurrentElement(currentElement);
 
     movesList.current.push(copyGrid());
-    checkPosition(currentElement);
   };
 
-  const checkPosition = () => {
-    // grid[currentElement.currentSquare - 1].forEach((cell, index, square) => {
-    //   var currentValue =
-    //     grid[currentElement.currentSquare - 1][currentElement.currentCell - 1]
-    //       .value;
-    //   if (
-    //     cell.value == currentValue &&
-    //     index != currentElement.currentCell - 1
-    //   ) {
-    //     square[currentElement.currentCell - 1].status = "error";
-    //     square[index].status = "error";
-    //   }
-    // });
+  const checkPosition = (previousValue) => {
+    for (var i = 0; i < 9; i++) {
+      for (var j = 0; j < 9; j++) {
+        if (grid[i][j].value != solution[i][j] && grid[i][j].value != null) {
+          grid[i][j].status = "error";
+          flagMistakes(i, j, grid[i][j].value, "error");
+        } else
+          previousValue != null ? flagMistakes(i, j, previousValue, null) : "";
+      }
+    }
+  };
+
+  const flagMistakes = (square, cell, value, status) => {
+    var column = 3 * (square % 3) + (cell % 3);
+    var row = 3 * Math.floor(square / 3) + Math.floor(cell / 3);
+
+    for (var i = 0; i < 9; i++)
+      grid[square][i].value == value ? (grid[square][i].status = status) : "";
+    for (var i = 0; i < 3; i++) {
+      grid[modulo(square - 3, 9)][modulo(column, 3) + i * 3].value == value
+        ? (grid[modulo(square - 3, 9)][modulo(column, 3) + i * 3].status =
+            status)
+        : "";
+
+      grid[modulo(square + 3, 9)][modulo(column, 3) + i * 3].value == value
+        ? (grid[modulo(square + 3, 9)][modulo(column, 3) + i * 3].status =
+            status)
+        : "";
+
+      grid[modulo(square, 3) == 2 ? square - 2 : square + 1][
+        modulo(row, 3) * 3 + i
+      ].value == value
+        ? (grid[modulo(square, 3) == 2 ? square - 2 : square + 1][
+            modulo(row, 3) * 3 + i
+          ].status = status)
+        : "";
+
+      grid[modulo(square, 3) == 0 ? square + 2 : square - 1][
+        modulo(row, 3) * 3 + i
+      ].value == value
+        ? (grid[modulo(square, 3) == 0 ? square + 2 : square - 1][
+            modulo(row, 3) * 3 + i
+          ].status = status)
+        : "";
+    }
+    status == null ? checkPosition(null) : "";
   };
 
   const startTimer = () => {
@@ -386,6 +443,7 @@ export default function Sudoku(props) {
 
   const movesList = useRef([copyGrid()]);
 
+  const solution = createSolution();
   const theme = props.theme;
 
   useEffect(() => {
