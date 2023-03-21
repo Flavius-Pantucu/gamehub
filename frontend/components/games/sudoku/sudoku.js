@@ -296,7 +296,7 @@ export default function Sudoku(props) {
     )
       return;
     if (isNaN(parseInt(value))) return;
-    if (value < 0 || value > 9) return;
+    if (value < 1 || value > 9) return;
     const previousValue =
       grid[currentElement.currentSquare][currentElement.currentCell].value;
     if (previousValue == value) {
@@ -306,7 +306,7 @@ export default function Sudoku(props) {
         null;
     } else
       grid[currentElement.currentSquare][currentElement.currentCell].value =
-        number;
+        value;
     checkPosition(previousValue);
     setGrid([...grid]);
 
