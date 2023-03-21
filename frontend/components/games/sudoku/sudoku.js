@@ -265,18 +265,21 @@ export default function Sudoku(props) {
     if (isNaN(number)) return;
     const previousValue =
       grid[currentElement.currentSquare][currentElement.currentCell].value;
-    previousValue == number
-      ? (grid[currentElement.currentSquare][currentElement.currentCell].value =
-          null)
-      : (grid[currentElement.currentSquare][currentElement.currentCell].value =
-          number);
+    if (previousValue == number) {
+      grid[currentElement.currentSquare][currentElement.currentCell].value =
+        null;
+      grid[currentElement.currentSquare][currentElement.currentCell].status =
+        null;
+    } else
+      grid[currentElement.currentSquare][currentElement.currentCell].value =
+        number;
     checkPosition(previousValue);
     setGrid([...grid]);
 
-    currentElement.currentValue = number;
+    currentElement.currentValue = previousValue == number ? null : number;
     setCurrentElement(currentElement);
 
-    movesList.current.push(copyGrid());
+    movesList.current.push({ grid: copyGrid(), current: currentElement });
   };
 
   const insertValue = (value) => {
@@ -296,18 +299,21 @@ export default function Sudoku(props) {
     if (value < 0 || value > 9) return;
     const previousValue =
       grid[currentElement.currentSquare][currentElement.currentCell].value;
-    previousValue == value
-      ? (grid[currentElement.currentSquare][currentElement.currentCell].value =
-          null)
-      : (grid[currentElement.currentSquare][currentElement.currentCell].value =
-          value);
+    if (previousValue == value) {
+      grid[currentElement.currentSquare][currentElement.currentCell].value =
+        null;
+      grid[currentElement.currentSquare][currentElement.currentCell].status =
+        null;
+    } else
+      grid[currentElement.currentSquare][currentElement.currentCell].value =
+        number;
     checkPosition(previousValue);
     setGrid([...grid]);
 
     currentElement.currentValue = value;
     setCurrentElement(currentElement);
 
-    movesList.current.push(copyGrid());
+    movesList.current.push({ grid: copyGrid(), current: currentElement });
   };
 
   const checkPosition = (previousValue) => {
@@ -316,8 +322,12 @@ export default function Sudoku(props) {
         if (grid[i][j].value != solution[i][j] && grid[i][j].value != null) {
           grid[i][j].status = "error";
           flagMistakes(i, j, grid[i][j].value, "error");
-        } else
+        } else if (grid[i][j].value == solution[i][j]) {
+          grid[i][j].status = null;
+        } else {
+          //grid[i][j].status == "error" ? (grid[i][j].status = null) : "";
           previousValue != null ? flagMistakes(i, j, previousValue, null) : "";
+        }
       }
     }
   };
@@ -398,7 +408,8 @@ export default function Sudoku(props) {
     if (movesList.current.length != 1) movesList.current.pop();
 
     const previousState = movesList.current[movesList.current.length - 1];
-    setGrid([...previousState]);
+    setGrid([...previousState.grid]);
+    setCurrentElement(previousState.current);
   };
 
   const eraseValue = () => {
@@ -419,15 +430,19 @@ export default function Sudoku(props) {
       null
     )
       return;
-    grid[currentElement.currentSquare - 1][
-      currentElement.currentCell - 1
-    ].value = null;
+
+    const previousValue =
+      grid[currentElement.currentSquare][currentElement.currentCell].value;
+    grid[currentElement.currentSquare][currentElement.currentCell].value = null;
+    grid[currentElement.currentSquare][currentElement.currentCell].status =
+      null;
+    checkPosition(previousValue);
     setGrid([...grid]);
 
     currentElement.currentValue = null;
     setCurrentElement(currentElement);
 
-    movesList.current.push(copyGrid());
+    movesList.current.push({ grid: copyGrid(), current: currentElement });
   };
 
   const [currentElement, setCurrentElement] = useState({
@@ -441,7 +456,7 @@ export default function Sudoku(props) {
   const [timer, setTimer] = useState({ hour: 0, minute: 0, second: 0 });
   const [grid, setGrid] = useState(createGrid());
 
-  const movesList = useRef([copyGrid()]);
+  const movesList = useRef([{ grid: copyGrid(), current: currentElement }]);
 
   const solution = createSolution();
   const theme = props.theme;

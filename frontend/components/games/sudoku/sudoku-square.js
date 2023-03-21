@@ -49,7 +49,9 @@ export default function SudokuSquare(props) {
                 : theme == "dark"
                 ? "bg-gray-600/40"
                 : "bg-gray-300/40"
-              : currentRow == coords[0].row || currentColumn == coords[0].column
+              : (currentRow == coords[0].row ||
+                  currentColumn == coords[0].column) &&
+                (currentValue != cells[0].value || currentValue == null)
               ? theme == "dark"
                 ? "bg-gray-600/40"
                 : "bg-gray-300/40"
@@ -86,7 +88,9 @@ export default function SudokuSquare(props) {
                 : theme == "dark"
                 ? "bg-gray-600/40"
                 : "bg-gray-300/40"
-              : currentRow == coords[1].row || currentColumn == coords[1].column
+              : (currentRow == coords[1].row ||
+                  currentColumn == coords[1].column) &&
+                (currentValue != cells[1].value || currentValue == null)
               ? theme == "dark"
                 ? "bg-gray-600/40"
                 : "bg-gray-300/40"
@@ -122,7 +126,9 @@ export default function SudokuSquare(props) {
                 : theme == "dark"
                 ? "bg-gray-600/40"
                 : "bg-gray-300/40"
-              : currentRow == coords[2].row || currentColumn == coords[2].column
+              : (currentRow == coords[2].row ||
+                  currentColumn == coords[2].column) &&
+                (currentValue != cells[2].value || currentValue == null)
               ? theme == "dark"
                 ? "bg-gray-600/40"
                 : "bg-gray-300/40"
@@ -160,7 +166,9 @@ export default function SudokuSquare(props) {
                 : theme == "dark"
                 ? "bg-gray-600/40"
                 : "bg-gray-300/40"
-              : currentRow == coords[3].row || currentColumn == coords[3].column
+              : (currentRow == coords[3].row ||
+                  currentColumn == coords[3].column) &&
+                (currentValue != cells[3].value || currentValue == null)
               ? theme == "dark"
                 ? "bg-gray-600/40"
                 : "bg-gray-300/40"
@@ -197,7 +205,9 @@ export default function SudokuSquare(props) {
                 : theme == "dark"
                 ? "bg-gray-600/40"
                 : "bg-gray-300/40"
-              : currentRow == coords[4].row || currentColumn == coords[4].column
+              : (currentRow == coords[4].row ||
+                  currentColumn == coords[4].column) &&
+                (currentValue != cells[4].value || currentValue == null)
               ? theme == "dark"
                 ? "bg-gray-600/40"
                 : "bg-gray-300/40"
@@ -234,7 +244,9 @@ export default function SudokuSquare(props) {
                 : theme == "dark"
                 ? "bg-gray-600/40"
                 : "bg-gray-300/40"
-              : currentRow == coords[5].row || currentColumn == coords[5].column
+              : (currentRow == coords[5].row ||
+                  currentColumn == coords[5].column) &&
+                (currentValue != cells[5].value || currentValue == null)
               ? theme == "dark"
                 ? "bg-gray-600/40"
                 : "bg-gray-300/40"
@@ -270,8 +282,9 @@ export default function SudokuSquare(props) {
                    : theme == "dark"
                    ? "bg-gray-600/40"
                    : "bg-gray-300/40"
-                 : currentRow == coords[6].row ||
-                   currentColumn == coords[6].column
+                 : (currentRow == coords[6].row ||
+                     currentColumn == coords[6].column) &&
+                   (currentValue != cells[6].value || currentValue == null)
                  ? theme == "dark"
                    ? "bg-gray-600/40"
                    : "bg-gray-300/40"
@@ -308,7 +321,9 @@ export default function SudokuSquare(props) {
                 : theme == "dark"
                 ? "bg-gray-600/40"
                 : "bg-gray-300/40"
-              : currentRow == coords[7].row || currentColumn == coords[7].column
+              : (currentRow == coords[7].row ||
+                  currentColumn == coords[7].column) &&
+                (currentValue != cells[7].value || currentValue == null)
               ? theme == "dark"
                 ? "bg-gray-600/40"
                 : "bg-gray-300/40"
@@ -344,7 +359,9 @@ export default function SudokuSquare(props) {
                 : theme == "dark"
                 ? "bg-gray-600/40"
                 : "bg-gray-300/40"
-              : currentRow == coords[8].row || currentColumn == coords[8].column
+              : (currentRow == coords[8].row ||
+                  currentColumn == coords[8].column) &&
+                (currentValue != cells[8].value || currentValue == null)
               ? theme == "dark"
                 ? "bg-gray-600/40"
                 : "bg-gray-300/40"
