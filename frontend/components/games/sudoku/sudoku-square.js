@@ -1,19 +1,17 @@
 export default function SudokuSquare(props) {
   const selectCell = (cell) => {
-    const column = 3 * ((square - 1) % 3) + (((cell - 1) % 3) + 1);
-    const row =
-      3 * Math.floor((square - 1) / 3) + (Math.floor((cell - 1) / 3) + 1);
-    props.selectCell(cell, square, row, column, cells[cell - 1].value);
+    const column = 3 * (square % 3) + (cell % 3);
+    const row = 3 * Math.floor(square / 3) + Math.floor(cell / 3);
+    props.selectCell(cell, square, row, column, cells[cell].value);
   };
 
   const getCoords = () => {
     var aux = [];
-    for (var i = 1; i <= 3; i++) {
-      for (var j = 1; j <= 3; j++) {
-        var cell = 3 * (i - 1) + ((j - 1) % 3) + 1;
-        var column = 3 * ((square - 1) % 3) + (((cell - 1) % 3) + 1);
-        var row =
-          3 * Math.floor((square - 1) / 3) + (Math.floor((cell - 1) / 3) + 1);
+    for (var i = 0; i < 3; i++) {
+      for (var j = 0; j < 3; j++) {
+        var cell = 3 * i + j;
+        var column = 3 * (square % 3) + (cell % 3);
+        var row = 3 * Math.floor(square / 3) + Math.floor(cell / 3);
         aux.push({ row: row, column: column });
       }
     }
@@ -31,7 +29,7 @@ export default function SudokuSquare(props) {
     <div className="w-full h-full">
       <div className="w-full h-full grid grid-cols-3 grid-rows-3">
         <div
-          onClick={() => selectCell(1)}
+          onClick={() => selectCell(0)}
           className={`flex text-3xl items-center justify-center transition-[border] ease-in duration-200 cursor-default 
           ${
             cells[0].status == "error"
@@ -44,7 +42,7 @@ export default function SudokuSquare(props) {
           } 
           ${
             currentSquare == square
-              ? currentCell == 1
+              ? currentCell == 0
                 ? theme == "dark"
                   ? "bg-gray-500/50"
                   : "bg-gray-400/30"
@@ -67,7 +65,7 @@ export default function SudokuSquare(props) {
           {cells[0].value}
         </div>
         <div
-          onClick={() => selectCell(2)}
+          onClick={() => selectCell(1)}
           className={`flex text-3xl items-center justify-center transition-[border] ease-in duration-200 cursor-default border-x 
           ${
             cells[1].status == "error"
@@ -81,7 +79,7 @@ export default function SudokuSquare(props) {
           ${theme == "dark" ? "border-x-gray-200/30" : "border-x-gray-500/50"} 
           ${
             currentSquare == square
-              ? currentCell == 2
+              ? currentCell == 1
                 ? theme == "dark"
                   ? "bg-gray-500/50"
                   : "bg-gray-400/30"
@@ -104,7 +102,7 @@ export default function SudokuSquare(props) {
           {cells[1].value}
         </div>
         <div
-          onClick={() => selectCell(3)}
+          onClick={() => selectCell(2)}
           className={`flex text-3xl items-center justify-center transition-[border] ease-in duration-200 cursor-default 
           ${
             cells[2].status == "error"
@@ -117,7 +115,7 @@ export default function SudokuSquare(props) {
           }
           ${
             currentSquare == square
-              ? currentCell == 3
+              ? currentCell == 2
                 ? theme == "dark"
                   ? "bg-gray-500/50"
                   : "bg-gray-400/30"
@@ -140,7 +138,7 @@ export default function SudokuSquare(props) {
           {cells[2].value}
         </div>
         <div
-          onClick={() => selectCell(4)}
+          onClick={() => selectCell(3)}
           className={`flex text-3xl items-center justify-center transition-[border] ease-in duration-200 cursor-default border-y 
           ${
             cells[3].status == "error"
@@ -155,7 +153,7 @@ export default function SudokuSquare(props) {
             theme == "dark" ? "border-y-gray-200/30" : "border-y-gray-500/50"
           } ${
             currentSquare == square
-              ? currentCell == 4
+              ? currentCell == 3
                 ? theme == "dark"
                   ? "bg-gray-500/50"
                   : "bg-gray-400/30"
@@ -178,7 +176,7 @@ export default function SudokuSquare(props) {
           {cells[3].value}
         </div>
         <div
-          onClick={() => selectCell(5)}
+          onClick={() => selectCell(4)}
           className={`flex text-3xl items-center justify-center transition-[border] ease-in duration-200 cursor-default border
           ${
             cells[4].status == "error"
@@ -192,7 +190,7 @@ export default function SudokuSquare(props) {
           ${theme == "dark" ? "border-gray-200/30" : "border-gray-500/50"}
           ${
             currentSquare == square
-              ? currentCell == 5
+              ? currentCell == 4
                 ? theme == "dark"
                   ? "bg-gray-500/50"
                   : "bg-gray-400/30"
@@ -215,7 +213,7 @@ export default function SudokuSquare(props) {
           {cells[4].value}
         </div>
         <div
-          onClick={() => selectCell(6)}
+          onClick={() => selectCell(5)}
           className={`flex text-3xl items-center justify-center transition-[border] ease-in duration-200 cursor-default border-y 
           ${
             cells[5].status == "error"
@@ -229,7 +227,7 @@ export default function SudokuSquare(props) {
           ${theme == "dark" ? "border-y-gray-200/30" : "border-y-gray-500/50"} 
           ${
             currentSquare == square
-              ? currentCell == 6
+              ? currentCell == 5
                 ? theme == "dark"
                   ? "bg-gray-500/50"
                   : "bg-gray-400/30"
@@ -252,7 +250,7 @@ export default function SudokuSquare(props) {
           {cells[5].value}
         </div>
         <div
-          onClick={() => selectCell(7)}
+          onClick={() => selectCell(6)}
           className={`flex text-3xl items-center justify-center transition-[border] ease-in duration-200 cursor-default
             ${
               cells[6].status == "error"
@@ -265,7 +263,7 @@ export default function SudokuSquare(props) {
             }
              ${
                currentSquare == square
-                 ? currentCell == 7
+                 ? currentCell == 6
                    ? theme == "dark"
                      ? "bg-gray-500/50"
                      : "bg-gray-400/30"
@@ -289,7 +287,7 @@ export default function SudokuSquare(props) {
           {cells[6].value}
         </div>
         <div
-          onClick={() => selectCell(8)}
+          onClick={() => selectCell(7)}
           className={`flex text-3xl items-center justify-center transition-[border] ease-in duration-200 cursor-default border-x 
           ${
             cells[7].status == "error"
@@ -303,7 +301,7 @@ export default function SudokuSquare(props) {
           ${theme == "dark" ? "border-x-gray-200/30" : "border-x-gray-500/50"}  
           ${
             currentSquare == square
-              ? currentCell == 8
+              ? currentCell == 7
                 ? theme == "dark"
                   ? "bg-gray-500/50"
                   : "bg-gray-400/30"
@@ -326,7 +324,7 @@ export default function SudokuSquare(props) {
           {cells[7].value}
         </div>
         <div
-          onClick={() => selectCell(9)}
+          onClick={() => selectCell(8)}
           className={`flex text-3xl items-center justify-center transition-[border] ease-in duration-200 cursor-default
           ${
             cells[8].status == "error"
@@ -339,7 +337,7 @@ export default function SudokuSquare(props) {
           }
           ${
             currentSquare == square
-              ? currentCell == 9
+              ? currentCell == 8
                 ? theme == "dark"
                   ? "bg-gray-500/50"
                   : "bg-gray-400/30"

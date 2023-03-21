@@ -16,12 +16,6 @@ const elements = [
 ];
 
 export default function Home() {
-  const [currentElement, setCurrentElement] = useState("Sudoku");
-  const [userSession, setUserSession] = useState();
-  const [currentModal, setCurrentModal] = useState("");
-  const [toast, setToast] = useState({ type: null, message: null });
-  const [theme, setTheme] = useState();
-
   const selectedGame = (game) => {
     setCurrentElement(game);
   };
@@ -39,6 +33,11 @@ export default function Home() {
     setCookie("site_theme", theme);
   };
 
+  const [currentElement, setCurrentElement] = useState("Sudoku");
+  const [currentModal, setCurrentModal] = useState("");
+  const [toast, setToast] = useState({ type: null, message: null });
+  const [theme, setTheme] = useState();
+
   useEffect(() => {
     toast.type != null
       ? setTimeout(() => setToast({ type: null, message: null }), 2500)
@@ -46,14 +45,11 @@ export default function Home() {
   }, [toast]);
 
   useEffect(() => {
-    //verify cookie validity
     if (hasCookie("site_theme")) setTheme(getCookie("site_theme"));
     else {
       setTheme("dark");
       setCookie("site_theme", "dark");
     }
-
-    hasCookie("user_session") ? setUserSession(true) : setUserSession(false);
 
     // axios.get("/api/tutorials").then((response) => {
     //   console.log(response);
@@ -70,14 +66,13 @@ export default function Home() {
         <Navbar
           theme={theme}
           elements={elements}
-          session={userSession}
           selectGame={selectedGame}
-          childSetModal={childSetModal}
-          childSetTheme={changeTheme}></Navbar>
+          childSetTheme={changeTheme}
+          childSetModal={childSetModal}></Navbar>
         <Window
-          window={currentElement}
+          theme={theme}
           setToast={setToast}
-          theme={theme}></Window>
+          window={currentElement}></Window>
         <Modal
           theme={theme}
           modal={currentModal}

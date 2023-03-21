@@ -8,9 +8,8 @@ export default function TicTacToeSquare(props) {
     return (
       <svg
         aria-hidden="true"
-        className={`xl:w-24 md:w-20 sm:w-16 w-16 xl:h-24 md:h-20 sm:h-16 h-16 flex transition-all ease-in duration-200 ${
-          theme == "dark" ? "text-rose-500" : "text-rose-900"
-        }`}
+        className={`xl:w-24 md:w-20 sm:w-16 w-16 xl:h-24 md:h-20 sm:h-16 h-16 flex transition-all ease-in duration-200 
+        ${theme == "dark" ? "text-rose-500" : "text-rose-900"}`}
         focusable="false"
         data-prefix="fas"
         data-icon="paper-plane"
@@ -26,9 +25,8 @@ export default function TicTacToeSquare(props) {
     return (
       <svg
         aria-hidden="true"
-        className={`xl:w-24 md:w-20 sm:w-16 w-16 xl:h-24 md:h-20 sm:h-16 h-16 flex transition-all ease-in duration-200 ${
-          theme == "dark" ? "text-cyan-300" : "text-cyan-900"
-        }`}
+        className={`xl:w-24 md:w-20 sm:w-16 w-16 xl:h-24 md:h-20 sm:h-16 h-16 flex transition-all ease-in duration-200
+        ${theme == "dark" ? "text-cyan-300" : "text-cyan-900"}`}
         focusable="false"
         data-prefix="fas"
         data-icon="paper-plane"

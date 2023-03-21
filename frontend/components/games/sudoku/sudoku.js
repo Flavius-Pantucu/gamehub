@@ -2,6 +2,7 @@ import { Fragment, useRef, useEffect, useState } from "react";
 import { Menu, Transition } from "@headlessui/react";
 import SudokuSquare from "./sudoku-square";
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
+import modulo from "modulo-x";
 
 class Cell {
   constructor(original, value, status) {
@@ -147,19 +148,23 @@ export default function Sudoku(props) {
   const isKeyNumber = (key) => {
     if (isNaN(parseInt(key))) return false;
     return true;
-  }
+  };
 
   const isKeyArrow = (key) => {
-    if("ArrowUp" === key || "ArrowDown" === key || "ArrowLeft" === key || "ArrowRight" === key) return true;
-      return false;
-  }
+    if (
+      "ArrowUp" === key ||
+      "ArrowDown" === key ||
+      "ArrowLeft" === key ||
+      "ArrowRight" === key
+    )
+      return true;
+    return false;
+  };
 
   const keyUpHandler = (event) => {
-    if(isKeyNumber(event.key))
-      fillCell(event.key);
-    else if(isKeyArrow(event.key))
-      shiftCell(event.key);
-  }
+    if (isKeyNumber(event.key)) fillCell(event.key);
+    else if (isKeyArrow(event.key)) shiftCell(event.key);
+  };
 
   const shiftCell = (key) => {
     if (
@@ -174,70 +179,60 @@ export default function Sudoku(props) {
       currentCell: null,
       currentSquare: null,
       currentRow: null,
-      currentColumn: null, 
-    }
+      currentColumn: null,
+      currentValue: null,
+    };
 
-    switch (key){
-      case 'ArrowUp':
-        if (currentElement.currentCell < 4) 
+    switch (key) {
+      case "ArrowUp":
+        if (currentElement.currentCell < 3)
           newCell.currentSquare = currentElement.currentSquare - 3;
-        else
-          newCell.currentSquare = currentElement.currentSquare;
+        else newCell.currentSquare = currentElement.currentSquare;
         newCell.currentCell = currentElement.currentCell - 3;
         newCell.currentRow = currentElement.currentRow - 1;
         newCell.currentColumn = currentElement.currentColumn;
         break;
-      case 'ArrowDown':
-        if (currentElement.currentCell > 6) 
+      case "ArrowDown":
+        if (currentElement.currentCell > 5)
           newCell.currentSquare = currentElement.currentSquare + 3;
-        else
-          newCell.currentSquare = currentElement.currentSquare;
+        else newCell.currentSquare = currentElement.currentSquare;
         newCell.currentCell = currentElement.currentCell + 3;
         newCell.currentRow = currentElement.currentRow + 1;
         newCell.currentColumn = currentElement.currentColumn;
         break;
-      case 'ArrowRight':
-        if ([3,6,9].includes(currentElement.currentCell)) 
+      case "ArrowRight":
+        if ([2, 5, 8].includes(currentElement.currentCell))
           newCell.currentSquare = currentElement.currentSquare + 1;
-        else
-          newCell.currentSquare = currentElement.currentSquare;
-        if ([3,6,9].includes(currentElement.currentCell))
+        else newCell.currentSquare = currentElement.currentSquare;
+        if ([2, 5, 8].includes(currentElement.currentCell))
           newCell.currentCell = currentElement.currentCell - 2;
-        else
-          newCell.currentCell = currentElement.currentCell + 1;
-        if(currentElement.currentColumn == 9)
+        else newCell.currentCell = currentElement.currentCell + 1;
+        if (currentElement.currentColumn == 8)
           newCell.currentSquare = currentElement.currentSquare - 2;
         newCell.currentColumn = currentElement.currentColumn + 1;
         newCell.currentRow = currentElement.currentRow;
         break;
-      case 'ArrowLeft':
-        if ([1,4,7].includes(currentElement.currentCell)) 
+      case "ArrowLeft":
+        if ([0, 3, 6].includes(currentElement.currentCell))
           newCell.currentSquare = currentElement.currentSquare - 1;
-        else
-          newCell.currentSquare = currentElement.currentSquare;
-        if ([1,4,7].includes(currentElement.currentCell))
+        else newCell.currentSquare = currentElement.currentSquare;
+        if ([0, 3, 6].includes(currentElement.currentCell))
           newCell.currentCell = currentElement.currentCell + 2;
-        else
-          newCell.currentCell = currentElement.currentCell - 1;
-        if(currentElement.currentColumn == 1)
+        else newCell.currentCell = currentElement.currentCell - 1;
+        if (currentElement.currentColumn == 0)
           newCell.currentSquare = currentElement.currentSquare + 2;
         newCell.currentColumn = currentElement.currentColumn - 1;
         newCell.currentRow = currentElement.currentRow;
         break;
     }
-
-    if(newCell.currentSquare < 1 || newCell.currentSquare > 9)
-      newCell.currentSquare = (newCell.currentSquare + 9) % 9;
-    if(newCell.currentCell < 1) 
-      newCell.currentCell = newCell.currentCell + 9;
-    if(newCell.currentCell > 9)
-      newCell.currentCell = newCell.currentCell % 9;
-    if(newCell.currentColumn < 1 || newCell.currentColumn > 9)
-      newCell.currentColumn = (newCell.currentColumn + 9) % 9;
-    if (newCell.currentRow < 1 || newCell.currentRow > 9)
-      newCell.currentRow = (newCell.currentRow + 9) % 9;
+    newCell.currentSquare = modulo(newCell.currentSquare, 9);
+    newCell.currentCell = modulo(newCell.currentCell, 9);
+    newCell.currentRow = modulo(newCell.currentRow, 9);
+    newCell.currentColumn = modulo(newCell.currentColumn, 9);
+    newCell.currentValue =
+      grid[newCell.currentSquare][newCell.currentCell].value;
     setCurrentElement(newCell);
-  }
+  };
 
   const fillCell = (key) => {
     if (
@@ -248,15 +243,14 @@ export default function Sudoku(props) {
     )
       return;
     if (
-      grid[currentElement.currentSquare - 1][currentElement.currentCell - 1]
-        .original == true
+      grid[currentElement.currentSquare][currentElement.currentCell].original ==
+      true
     )
       return;
     const number = parseInt(key);
     if (isNaN(number)) return;
-    grid[currentElement.currentSquare - 1][
-      currentElement.currentCell - 1
-    ].value = number;
+    grid[currentElement.currentSquare][currentElement.currentCell].value =
+      number;
     setGrid([...grid]);
 
     currentElement.currentValue = number;
@@ -275,15 +269,14 @@ export default function Sudoku(props) {
     )
       return;
     if (
-      grid[currentElement.currentSquare - 1][currentElement.currentCell - 1]
-        .original == true
+      grid[currentElement.currentSquare][currentElement.currentCell].original ==
+      true
     )
       return;
     if (isNaN(parseInt(value))) return;
     if (value < 0 || value > 9) return;
-    grid[currentElement.currentSquare - 1][
-      currentElement.currentCell - 1
-    ].value = value;
+    grid[currentElement.currentSquare][currentElement.currentCell].value =
+      value;
     setGrid([...grid]);
 
     currentElement.currentValue = value;
@@ -360,13 +353,13 @@ export default function Sudoku(props) {
     )
       return;
     if (
-      grid[currentElement.currentSquare - 1][currentElement.currentCell - 1]
-        .original == true
+      grid[currentElement.currentSquare][currentElement.currentCell].original ==
+      true
     )
       return;
     if (
-      grid[currentElement.currentSquare - 1][currentElement.currentCell - 1]
-        .value == null
+      grid[currentElement.currentSquare][currentElement.currentCell].value ==
+      null
     )
       return;
     grid[currentElement.currentSquare - 1][
@@ -380,8 +373,6 @@ export default function Sudoku(props) {
     movesList.current.push(copyGrid());
   };
 
-  const theme = props.theme;
-
   const [currentElement, setCurrentElement] = useState({
     currentCell: null,
     currentSquare: null,
@@ -394,6 +385,8 @@ export default function Sudoku(props) {
   const [grid, setGrid] = useState(createGrid());
 
   const movesList = useRef([copyGrid()]);
+
+  const theme = props.theme;
 
   useEffect(() => {
     startTimer();
@@ -510,7 +503,7 @@ export default function Sudoku(props) {
             ${theme == "dark" ? "border-slate-300" : "border-neutral-700"}`}>
               <SudokuSquare
                 theme={theme}
-                square={1}
+                square={0}
                 cells={grid[0]}
                 selectCell={selectCell}
                 current={[
@@ -526,7 +519,7 @@ export default function Sudoku(props) {
             ${theme == "dark" ? "border-slate-300" : "border-neutral-700"}`}>
               <SudokuSquare
                 theme={theme}
-                square={2}
+                square={1}
                 cells={grid[1]}
                 selectCell={selectCell}
                 current={[
@@ -542,7 +535,7 @@ export default function Sudoku(props) {
             ${theme == "dark" ? "border-slate-300" : "border-neutral-700"}`}>
               <SudokuSquare
                 theme={theme}
-                square={3}
+                square={2}
                 cells={grid[2]}
                 selectCell={selectCell}
                 current={[
@@ -558,7 +551,7 @@ export default function Sudoku(props) {
             ${theme == "dark" ? "border-slate-300" : "border-neutral-700"}`}>
               <SudokuSquare
                 theme={theme}
-                square={4}
+                square={3}
                 cells={grid[3]}
                 selectCell={selectCell}
                 current={[
@@ -574,7 +567,7 @@ export default function Sudoku(props) {
             ${theme == "dark" ? "border-slate-300" : "border-neutral-700"}`}>
               <SudokuSquare
                 theme={theme}
-                square={5}
+                square={4}
                 cells={grid[4]}
                 selectCell={selectCell}
                 current={[
@@ -590,7 +583,7 @@ export default function Sudoku(props) {
             ${theme == "dark" ? "border-slate-300" : "border-neutral-700"}`}>
               <SudokuSquare
                 theme={theme}
-                square={6}
+                square={5}
                 cells={grid[5]}
                 selectCell={selectCell}
                 current={[
@@ -606,7 +599,7 @@ export default function Sudoku(props) {
             ${theme == "dark" ? "border-slate-300" : "border-neutral-700"}`}>
               <SudokuSquare
                 theme={theme}
-                square={7}
+                square={6}
                 cells={grid[6]}
                 selectCell={selectCell}
                 current={[
@@ -622,7 +615,7 @@ export default function Sudoku(props) {
             ${theme == "dark" ? "border-slate-300" : "border-neutral-700"}`}>
               <SudokuSquare
                 theme={theme}
-                square={8}
+                square={7}
                 cells={grid[7]}
                 selectCell={selectCell}
                 current={[
@@ -638,7 +631,7 @@ export default function Sudoku(props) {
             ${theme == "dark" ? "border-slate-300" : "border-neutral-700"}`}>
               <SudokuSquare
                 theme={theme}
-                square={9}
+                square={8}
                 cells={grid[8]}
                 selectCell={selectCell}
                 current={[

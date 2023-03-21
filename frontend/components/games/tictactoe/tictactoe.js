@@ -4,45 +4,13 @@ import { Menu, Transition } from "@headlessui/react";
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
 
 export default function TicTacToe(props) {
-  var computerMove = useRef(false);
-  var move = useRef("x");
-  var turn = useRef(0);
-  const [blockStates, setBlockStates] = useState(new Array(9));
-  const [score, setScore] = useState({ x: 0, tie: 0, y: 0 });
-  const [gameMode, setGameMode] = useState("computer");
-  const [gameState, setGameState] = useState(true);
-
-  const theme = props.theme;
-
-  const winConditions = [
-    [0, 1, 2],
-    [0, 3, 6],
-    [0, 4, 8],
-    [1, 4, 7],
-    [2, 4, 6],
-    [2, 5, 8],
-    [3, 4, 5],
-    [6, 7, 8],
-  ];
-
-  useEffect(() => {
-    if (move.current == "o" && gameMode == "computer" && gameState != false) {
-      computerMove.current = true;
-      setTimeout(() => {
-        var block = generateComputerMove();
-        computerMove.current = false;
-        chooseBlock(block);
-      }, 500);
-    }
-  }, [move.current]);
-
-  function chooseGameMode(gameMode) {
+  const chooseGameMode = (gameMode) => {
     setGameMode(gameMode);
     setScore({ x: 0, y: 0, tie: 0 });
     restartGame();
-  }
+  };
 
-  function chooseBlock(block) {
+  const chooseBlock = (block) => {
     if (computerMove.current == true) return;
     if (gameState == false) {
       restartGame();
@@ -72,9 +40,9 @@ export default function TicTacToe(props) {
 
     setScore(score);
     setGameState(false);
-  }
+  };
 
-  function checkEndgame(player, turn) {
+  const checkEndgame = (player, turn) => {
     var status = { player: null, result: null };
 
     winConditions.forEach((condition) => {
@@ -87,16 +55,16 @@ export default function TicTacToe(props) {
     if (turn == 9 && status.result != "won") status.result = "draw";
 
     return status;
-  }
+  };
 
-  function restartGame() {
+  const restartGame = () => {
     setBlockStates(new Array(9));
     setGameState(true);
     move.current = (score.x + score.y + score.tie) % 2 ? "o" : "x";
     turn.current = 1;
-  }
+  };
 
-  function generateComputerMove() {
+  const generateComputerMove = () => {
     if (move.current != "o" || gameMode != "computer" || gameState == false)
       return;
     var randblock = Math.floor(Math.random() * 9);
@@ -104,7 +72,40 @@ export default function TicTacToe(props) {
       randblock = Math.floor(Math.random() * 9);
     }
     return randblock;
-  }
+  };
+
+  const [blockStates, setBlockStates] = useState(new Array(9));
+  const [score, setScore] = useState({ x: 0, tie: 0, y: 0 });
+  const [gameMode, setGameMode] = useState("computer");
+  const [gameState, setGameState] = useState(true);
+
+  const theme = props.theme;
+
+  const winConditions = [
+    [0, 1, 2],
+    [0, 3, 6],
+    [0, 4, 8],
+    [1, 4, 7],
+    [2, 4, 6],
+    [2, 5, 8],
+    [3, 4, 5],
+    [6, 7, 8],
+  ];
+
+  var computerMove = useRef(false);
+  var move = useRef("x");
+  var turn = useRef(0);
+
+  useEffect(() => {
+    if (move.current == "o" && gameMode == "computer" && gameState != false) {
+      computerMove.current = true;
+      setTimeout(() => {
+        var block = generateComputerMove();
+        computerMove.current = false;
+        chooseBlock(block);
+      }, 500);
+    }
+  }, [move.current]);
 
   return (
     <div className="mx-auto h-5/6 w-full lg:w-5/6 mt-4 max-w-7xl px-2 sm:px-6 lg:px-8">
@@ -176,7 +177,8 @@ export default function TicTacToe(props) {
         </Transition>
       </Menu>
       <div
-        className={`flex h-5/6 justify-center mt-4" ${
+        className={`flex h-5/6 justify-center mt-4" 
+        ${
           gameState == false
             ? theme == "dark"
               ? "opacity-40"
@@ -241,9 +243,8 @@ export default function TicTacToe(props) {
         </div>
       </div>
       <div
-        className={`flex justify-center transition-all ease-in duration-200 ${
-          theme == "dark" ? "text-white" : "text-neutral-900"
-        }`}>
+        className={`flex justify-center transition-all ease-in duration-200 
+        ${theme == "dark" ? "text-white" : "text-neutral-900"}`}>
         <div className="absolute bottom-5 grid grid-cols-3 gap-y-1">
           <div className="flex w-32 items-center justify-center">Player X</div>
           <div className="flex w-32 items-center justify-center">Tie</div>

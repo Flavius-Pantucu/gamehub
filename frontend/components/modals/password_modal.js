@@ -3,34 +3,29 @@ import Image from "next/image";
 import Link from "next/link";
 
 export default function PasswordModal(props) {
-  function handleClick(event) {
+  const handleClick = (event) => {
     if (dropdown.current && !dropdown.current.contains(event.target)) {
       props.childSetModal("none");
     }
-  }
+  };
 
-  function exit() {
-    props.childSetModal("none");
-  }
+  const exit = () => props.childSetModal("none");
 
-  function login() {
-    props.childSetModal("login");
-  }
+  const login = () => props.childSetModal("login");
+
+  const theme = props.theme;
 
   const dropdown = useRef(null);
-  const theme = props.theme;
 
   return (
     <div onClick={handleClick} className="absolute top-0 z-50 h-full w-full">
       <div
-        className={`flex w-full h-full ${
-          theme == "dark" ? "bg-gray-900/80" : "bg-gray-900/60"
-        }`}>
+        className={`flex w-full h-full 
+        ${theme == "dark" ? "bg-gray-900/80" : "bg-gray-900/60"}`}>
         <div
           ref={dropdown}
-          className={`flex mx-auto my-auto w-96 rounded-lg shadow ${
-            theme == "dark" ? "bg-gray-700" : "bg-gray-100"
-          }`}>
+          className={`flex mx-auto my-auto w-96 rounded-lg shadow 
+          ${theme == "dark" ? "bg-gray-700" : "bg-gray-100"}`}>
           <button
             type="button"
             className="absolute top-3 right-2.5 text-gray-400 bg-transparent rounded-lg text-sm p-1.5 ml-auto inline-flex items-center hover:bg-gray-800 hover:text-white"
@@ -51,18 +46,16 @@ export default function PasswordModal(props) {
           </button>
           <div className="px-6 py-6 lg:px-8 w-full">
             <h3
-              className={`flex justify-center mb-4 text-xl font-medium ${
-                theme == "dark" ? "text-white" : "text-neutral-900"
-              }`}>
+              className={`flex justify-center mb-4 text-xl font-medium
+              ${theme == "dark" ? "text-white" : "text-neutral-900"}`}>
               Recover password
             </h3>
             <form className="space-y-5" action="#">
               <div>
                 <label
                   htmlFor="email"
-                  className={`block mb-2 text-sm font-medium ${
-                    theme == "dark" ? "text-white" : "text-neutral-900"
-                  }`}>
+                  className={`block mb-2 text-sm font-medium 
+                  ${theme == "dark" ? "text-white" : "text-neutral-900"}`}>
                   Email
                 </label>
                 <input
@@ -85,9 +78,8 @@ export default function PasswordModal(props) {
                 Recover password
               </button>
               <div
-                className={`flex justify-center text-sm font-medium ${
-                  theme == "dark" ? "text-gray-300" : "text-neutral-600"
-                }`}>
+                className={`flex justify-center text-sm font-medium 
+                ${theme == "dark" ? "text-gray-300" : "text-neutral-600"}`}>
                 Accidentaly got there?
                 <Link
                   onClick={login}
