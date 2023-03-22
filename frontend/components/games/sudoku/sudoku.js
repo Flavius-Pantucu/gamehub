@@ -5,10 +5,10 @@ import { ChevronDownIcon } from "@heroicons/react/20/solid";
 import modulo from "modulo-x";
 
 class Cell {
-  constructor(original, value, status) {
-    this.original = original;
+  constructor(placement, value, error) {
+    this.placement = placement;
     this.value = value;
-    this.status = status;
+    this.error = error;
   }
 }
 
@@ -32,103 +32,103 @@ export default function Sudoku(props) {
     for (var i = 0; i < 9; i++) grid[i] = new Array(9);
     return [
       [
-        new Cell(false, null, null),
-        new Cell(false, null, null),
-        new Cell(true, 7, null),
-        new Cell(false, null, null),
-        new Cell(false, null, null),
-        new Cell(false, null, null),
-        new Cell(false, null, null),
-        new Cell(true, 1, null),
-        new Cell(false, null, null),
+        new Cell("empty", null, false),
+        new Cell("empty", null, false),
+        new Cell("initial", 7, false),
+        new Cell("empty", null, false),
+        new Cell("empty", null, false),
+        new Cell("empty", null, false),
+        new Cell("empty", null, false),
+        new Cell("initial", 1, false),
+        new Cell("empty", null, false),
       ],
       [
-        new Cell(false, null, null),
-        new Cell(true, 9, null),
-        new Cell(false, null, null),
-        new Cell(true, 1, null),
-        new Cell(false, null, null),
-        new Cell(false, null, null),
-        new Cell(false, null, null),
-        new Cell(false, null, null),
-        new Cell(false, null, null),
+        new Cell("empty", null, false),
+        new Cell("initial", 9, false),
+        new Cell("empty", null, false),
+        new Cell("initial", 1, false),
+        new Cell("empty", null, false),
+        new Cell("empty", null, false),
+        new Cell("empty", null, false),
+        new Cell("empty", null, false),
+        new Cell("empty", null, false),
       ],
       [
-        new Cell(true, 5, null),
-        new Cell(true, 2, null),
-        new Cell(true, 1, null),
-        new Cell(true, 6, null),
-        new Cell(false, null, null),
-        new Cell(false, null, null),
-        new Cell(true, 9, null),
-        new Cell(false, null, null),
-        new Cell(true, 7, null),
+        new Cell("initial", 5, false),
+        new Cell("initial", 2, false),
+        new Cell("initial", 1, false),
+        new Cell("initial", 6, false),
+        new Cell("empty", null, false),
+        new Cell("empty", null, false),
+        new Cell("initial", 9, false),
+        new Cell("empty", null, false),
+        new Cell("initial", 7, false),
       ],
       [
-        new Cell(true, 5, null),
-        new Cell(true, 4, null),
-        new Cell(false, null, null),
-        new Cell(false, null, null),
-        new Cell(false, null, null),
-        new Cell(false, null, null),
-        new Cell(true, 3, null),
-        new Cell(true, 7, null),
-        new Cell(true, 6, null),
+        new Cell("initial", 5, false),
+        new Cell("initial", 4, false),
+        new Cell("empty", null, false),
+        new Cell("empty", null, false),
+        new Cell("empty", null, false),
+        new Cell("empty", null, false),
+        new Cell("initial", 3, false),
+        new Cell("initial", 7, false),
+        new Cell("initial", 6, false),
       ],
       [
-        new Cell(true, 2, null),
-        new Cell(false, null, null),
-        new Cell(false, null, null),
-        new Cell(false, null, null),
-        new Cell(true, 5, null),
-        new Cell(true, 3, null),
-        new Cell(true, 9, null),
-        new Cell(true, 8, null),
-        new Cell(false, null, null),
+        new Cell("initial", 2, false),
+        new Cell("empty", null, false),
+        new Cell("empty", null, false),
+        new Cell("empty", null, false),
+        new Cell("initial", 5, false),
+        new Cell("initial", 3, false),
+        new Cell("initial", 9, false),
+        new Cell("initial", 8, false),
+        new Cell("empty", null, false),
       ],
       [
-        new Cell(true, 1, null),
-        new Cell(true, 9, null),
-        new Cell(false, null, null),
-        new Cell(true, 7, null),
-        new Cell(false, null, null),
-        new Cell(false, null, null),
-        new Cell(true, 4, null),
-        new Cell(false, null, null),
-        new Cell(false, null, null),
+        new Cell("initial", 1, false),
+        new Cell("initial", 9, false),
+        new Cell("empty", null, false),
+        new Cell("initial", 7, false),
+        new Cell("empty", null, false),
+        new Cell("empty", null, false),
+        new Cell("initial", 4, false),
+        new Cell("empty", null, false),
+        new Cell("empty", null, false),
       ],
       [
-        new Cell(false, null, null),
-        new Cell(true, 5, null),
-        new Cell(false, null, null),
-        new Cell(false, null, null),
-        new Cell(false, null, null),
-        new Cell(true, 1, null),
-        new Cell(false, null, null),
-        new Cell(false, null, null),
-        new Cell(true, 4, null),
+        new Cell("empty", null, false),
+        new Cell("initial", 5, false),
+        new Cell("empty", null, false),
+        new Cell("empty", null, false),
+        new Cell("empty", null, false),
+        new Cell("initial", 1, false),
+        new Cell("empty", null, false),
+        new Cell("empty", null, false),
+        new Cell("initial", 4, false),
       ],
       [
-        new Cell(false, null, null),
-        new Cell(false, null, null),
-        new Cell(true, 6, null),
-        new Cell(true, 8, null),
-        new Cell(true, 2, null),
-        new Cell(true, 4, null),
-        new Cell(false, null, null),
-        new Cell(false, null, null),
-        new Cell(false, null, null),
+        new Cell("empty", null, false),
+        new Cell("empty", null, false),
+        new Cell("initial", 6, false),
+        new Cell("initial", 8, false),
+        new Cell("initial", 2, false),
+        new Cell("initial", 4, false),
+        new Cell("empty", null, false),
+        new Cell("empty", null, false),
+        new Cell("empty", null, false),
       ],
       [
-        new Cell(true, 8, null),
-        new Cell(true, 4, null),
-        new Cell(false, null, null),
-        new Cell(true, 3, null),
-        new Cell(false, null, null),
-        new Cell(true, 5, null),
-        new Cell(false, null, null),
-        new Cell(false, null, null),
-        new Cell(false, null, null),
+        new Cell("initial", 8, null),
+        new Cell("initial", 4, null),
+        new Cell("empty", null, null),
+        new Cell("initial", 3, null),
+        new Cell("empty", null, null),
+        new Cell("initial", 5, null),
+        new Cell("empty", null, null),
+        new Cell("empty", null, null),
+        new Cell("empty", null, null),
       ],
     ];
   };
@@ -139,7 +139,7 @@ export default function Sudoku(props) {
       var square = [];
       for (var j = 0; j < grid[i].length; j++) {
         square.push(
-          new Cell(grid[i][j].original, grid[i][j].value, grid[i][j].status)
+          new Cell(grid[i][j].placement, grid[i][j].value, grid[i][j].error)
         );
       }
       copy.push(square);
@@ -257,8 +257,8 @@ export default function Sudoku(props) {
     )
       return;
     if (
-      grid[currentElement.currentSquare][currentElement.currentCell].original ==
-      true
+      grid[currentElement.currentSquare][currentElement.currentCell]
+        .placement == "initial"
     )
       return;
     const number = parseInt(key);
@@ -268,12 +268,13 @@ export default function Sudoku(props) {
     if (previousValue == number) {
       grid[currentElement.currentSquare][currentElement.currentCell].value =
         null;
-      grid[currentElement.currentSquare][currentElement.currentCell].status =
-        null;
+      grid[currentElement.currentSquare][
+        currentElement.currentCell
+      ].error = false;
     } else
       grid[currentElement.currentSquare][currentElement.currentCell].value =
         number;
-    checkPosition(previousValue);
+    checkPosition();
     setGrid([...grid]);
 
     currentElement.currentValue = previousValue == number ? null : number;
@@ -291,8 +292,8 @@ export default function Sudoku(props) {
     )
       return;
     if (
-      grid[currentElement.currentSquare][currentElement.currentCell].original ==
-      true
+      grid[currentElement.currentSquare][currentElement.currentCell]
+        .placement == "initial"
     )
       return;
     if (isNaN(parseInt(value))) return;
@@ -302,12 +303,13 @@ export default function Sudoku(props) {
     if (previousValue == value) {
       grid[currentElement.currentSquare][currentElement.currentCell].value =
         null;
-      grid[currentElement.currentSquare][currentElement.currentCell].status =
-        null;
+      grid[currentElement.currentSquare][
+        currentElement.currentCell
+      ].error = false;
     } else
       grid[currentElement.currentSquare][currentElement.currentCell].value =
-        number;
-    checkPosition(previousValue);
+        value;
+    checkPosition();
     setGrid([...grid]);
 
     currentElement.currentValue = value;
@@ -316,37 +318,39 @@ export default function Sudoku(props) {
     movesList.current.push({ grid: copyGrid(), current: currentElement });
   };
 
-  const checkPosition = (previousValue) => {
+  const checkPosition = () => {
+    const wrongValues = [];
     for (var i = 0; i < 9; i++) {
       for (var j = 0; j < 9; j++) {
-        if (grid[i][j].value != solution[i][j] && grid[i][j].value != null) {
-          grid[i][j].status = "error";
-          flagMistakes(i, j, grid[i][j].value, "error");
-        } else if (grid[i][j].value == solution[i][j]) {
-          grid[i][j].status = null;
-        } else {
-          //grid[i][j].status == "error" ? (grid[i][j].status = null) : "";
-          previousValue != null ? flagMistakes(i, j, previousValue, null) : "";
-        }
+        grid[i][j].error = false;
+        if (grid[i][j].placement == "initial" || grid[i][j].value == null)
+          continue;
+
+        if (grid[i][j].value != solution[i][j]) {
+          wrongValues.push({ square: i, cell: j, value: grid[i][j].value });
+          grid[i][j].placement = "wrong";
+        } else grid[i][j].placement = "right";
       }
     }
+    console.log(wrongValues);
+    wrongValues.forEach((cell) => {
+      flagMistakes(cell.square, cell.cell, cell.value);
+    });
   };
 
-  const flagMistakes = (square, cell, value, status) => {
+  const flagMistakes = (square, cell, value) => {
     var column = 3 * (square % 3) + (cell % 3);
     var row = 3 * Math.floor(square / 3) + Math.floor(cell / 3);
 
     for (var i = 0; i < 9; i++)
-      grid[square][i].value == value ? (grid[square][i].status = status) : "";
+      grid[square][i].value == value ? (grid[square][i].error = true) : "";
     for (var i = 0; i < 3; i++) {
       grid[modulo(square - 3, 9)][modulo(column, 3) + i * 3].value == value
-        ? (grid[modulo(square - 3, 9)][modulo(column, 3) + i * 3].status =
-            status)
+        ? (grid[modulo(square - 3, 9)][modulo(column, 3) + i * 3].error = true)
         : "";
 
       grid[modulo(square + 3, 9)][modulo(column, 3) + i * 3].value == value
-        ? (grid[modulo(square + 3, 9)][modulo(column, 3) + i * 3].status =
-            status)
+        ? (grid[modulo(square + 3, 9)][modulo(column, 3) + i * 3].error = true)
         : "";
 
       grid[modulo(square, 3) == 2 ? square - 2 : square + 1][
@@ -354,7 +358,7 @@ export default function Sudoku(props) {
       ].value == value
         ? (grid[modulo(square, 3) == 2 ? square - 2 : square + 1][
             modulo(row, 3) * 3 + i
-          ].status = status)
+          ].error = true)
         : "";
 
       grid[modulo(square, 3) == 0 ? square + 2 : square - 1][
@@ -362,10 +366,9 @@ export default function Sudoku(props) {
       ].value == value
         ? (grid[modulo(square, 3) == 0 ? square + 2 : square - 1][
             modulo(row, 3) * 3 + i
-          ].status = status)
+          ].error = true)
         : "";
     }
-    status == null ? checkPosition(null) : "";
   };
 
   const startTimer = () => {
@@ -421,8 +424,8 @@ export default function Sudoku(props) {
     )
       return;
     if (
-      grid[currentElement.currentSquare][currentElement.currentCell].original ==
-      true
+      grid[currentElement.currentSquare][currentElement.currentCell]
+        .placement == "initial"
     )
       return;
     if (
@@ -433,9 +436,12 @@ export default function Sudoku(props) {
 
     const previousValue =
       grid[currentElement.currentSquare][currentElement.currentCell].value;
+    grid[currentElement.currentSquare][currentElement.currentCell].placement =
+      "empty";
     grid[currentElement.currentSquare][currentElement.currentCell].value = null;
-    grid[currentElement.currentSquare][currentElement.currentCell].status =
-      null;
+    grid[currentElement.currentSquare][
+      currentElement.currentCell
+    ].error = false;
     checkPosition(previousValue);
     setGrid([...grid]);
 
