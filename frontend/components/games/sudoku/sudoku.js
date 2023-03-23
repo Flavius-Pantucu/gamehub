@@ -133,13 +133,13 @@ export default function Sudoku(props) {
     ];
   };
 
-  const copyGrid = () => {
+  const copyGrid = (board) => {
     var copy = [];
-    for (var i = 0; i < grid.length; i++) {
+    for (var i = 0; i < board.length; i++) {
       var square = [];
-      for (var j = 0; j < grid[i].length; j++) {
+      for (var j = 0; j < board[i].length; j++) {
         square.push(
-          new Cell(grid[i][j].placement, grid[i][j].value, grid[i][j].error)
+          new Cell(board[i][j].placement, board[i][j].value, board[i][j].error)
         );
       }
       copy.push(square);
@@ -275,12 +275,15 @@ export default function Sudoku(props) {
       grid[currentElement.currentSquare][currentElement.currentCell].value =
         number;
     checkPosition();
-    setGrid([...grid]);
+    setGrid(copyGrid(grid));
 
     currentElement.currentValue = previousValue == number ? null : number;
-    setCurrentElement(currentElement);
+    setCurrentElement({ ...currentElement });
 
-    movesList.current.push({ grid: copyGrid(), current: currentElement });
+    movesList.current.push({
+      grid: copyGrid(grid),
+      current: { ...currentElement },
+    });
   };
 
   const insertValue = (value) => {
@@ -310,12 +313,16 @@ export default function Sudoku(props) {
       grid[currentElement.currentSquare][currentElement.currentCell].value =
         value;
     checkPosition();
-    setGrid([...grid]);
+    setGrid(copyGrid(grid));
 
     currentElement.currentValue = previousValue == value ? null : value;
-    setCurrentElement(currentElement);
+    setCurrentElement({ ...currentElement });
 
-    movesList.current.push({ grid: copyGrid(), current: currentElement });
+    movesList.current.push({
+      grid: copyGrid(grid),
+      current: { ...currentElement },
+    });
+    console.log(movesList.current);
   };
 
   const checkPosition = () => {
@@ -332,7 +339,6 @@ export default function Sudoku(props) {
         } else grid[i][j].placement = "right";
       }
     }
-    console.log(wrongValues);
     wrongValues.forEach((cell) => {
       flagMistakes(cell.square, cell.cell, cell.value);
     });
@@ -372,7 +378,7 @@ export default function Sudoku(props) {
   };
 
   const startTimer = () => {
-    setInterval(() => {
+    const intervalID = setInterval(() => {
       timer.second += 1;
       if (timer.second == 60) {
         timer.second = 0;
@@ -389,6 +395,7 @@ export default function Sudoku(props) {
         second: timer.second,
       });
     }, 1000);
+    return intervalID;
   };
 
   const showTime = () => {
@@ -411,8 +418,9 @@ export default function Sudoku(props) {
     if (movesList.current.length != 1) movesList.current.pop();
 
     const previousState = movesList.current[movesList.current.length - 1];
-    setGrid([...previousState.grid]);
-    setCurrentElement(previousState.current);
+    setGrid(copyGrid(previousState.grid));
+    setCurrentElement({ ...previousState.current });
+    console.log(movesList.current);
   };
 
   const eraseValue = () => {
@@ -443,12 +451,64 @@ export default function Sudoku(props) {
       currentElement.currentCell
     ].error = false;
     checkPosition(previousValue);
-    setGrid([...grid]);
+    setGrid(copyGrid(grid));
 
     currentElement.currentValue = null;
-    setCurrentElement(currentElement);
+    setCurrentElement({ ...currentElement });
 
-    movesList.current.push({ grid: copyGrid(), current: currentElement });
+    movesList.current.push({
+      grid: copyGrid(grid),
+      current: { ...currentElement },
+    });
+    console.log(movesList.current);
+  };
+
+  const resetGame = () => {
+    for (var i = 0; i < grid.length; i++) {
+      for (var j = 0; j < grid[i].length; j++) {
+        if (grid[i][j].placement != "initial") grid[i][j].value = null;
+        grid[i][j].error = false;
+      }
+    }
+    setGrid(copyGrid(grid));
+    setCurrentElement({
+      currentCell: null,
+      currentSquare: null,
+      currentRow: null,
+      currentColumn: null,
+      currentValue: null,
+    });
+    setTimer({ hour: 0, minute: 0, second: 0 });
+    setReset(true);
+  };
+
+  const giveHint = () => {
+    if (hints == 0) return;
+
+    var square = Math.floor(Math.random() * 9);
+    var cell = Math.floor(Math.random() * 9);
+    while (grid[square][cell].placement != "empty") {
+      square = Math.floor(Math.random() * 9);
+      cell = Math.floor(Math.random() * 9);
+    }
+    grid[square][cell].value = solution[square][cell];
+    grid[square][cell].placement = "right";
+    setGrid(copyGrid(grid));
+
+    setCurrentElement({
+      currentCell: cell,
+      currentSquare: square,
+      currentRow: 3 * Math.floor(square / 3) + Math.floor(cell / 3),
+      currentColumn: 3 * (square % 3) + (cell % 3),
+      currentValue: solution[square][cell],
+    });
+
+    movesList.current.push({
+      grid: copyGrid(grid),
+      current: { ...currentElement },
+    });
+
+    setHints(hints - 1);
   };
 
   const [currentElement, setCurrentElement] = useState({
@@ -461,15 +521,25 @@ export default function Sudoku(props) {
   const [difficulty, setDifficulty] = useState("Easy");
   const [timer, setTimer] = useState({ hour: 0, minute: 0, second: 0 });
   const [grid, setGrid] = useState(createGrid());
+  const [reset, setReset] = useState(false);
+  const [hints, setHints] = useState(3);
 
-  const movesList = useRef([{ grid: copyGrid(), current: currentElement }]);
+  const movesList = useRef([{ grid: copyGrid(grid), current: currentElement }]);
+  const intervalID = useRef(0);
 
   const solution = createSolution();
   const theme = props.theme;
 
   useEffect(() => {
-    startTimer();
+    intervalID.current = startTimer();
   }, []);
+
+  useEffect(() => {
+    if (reset == false) return;
+    clearInterval(intervalID.current);
+    intervalID.current = startTimer();
+    setReset(false);
+  }, [reset]);
 
   useEffect(() => {
     document.addEventListener("keyup", keyUpHandler);
@@ -745,6 +815,7 @@ export default function Sudoku(props) {
               <div className="flex flex-row justify-between lg:h-[72px] xl:h-24 h-24 order-2 lg:order-1">
                 <div className="flex flex-col text-center">
                   <div
+                    onClick={giveHint}
                     className={`flex justify-center items-center rounded-full lg:w-14 xl:w-[72px] 2xl:w-20 w-16 aspect-square cursor-pointer font-mono transition-all ease-in-out duration-200
                     ${
                       theme == "dark"
@@ -959,6 +1030,7 @@ export default function Sudoku(props) {
                   }`}>
                   <button
                     type="button"
+                    onClick={resetGame}
                     className={`w-full h-10 xl:h-12 text-white bg-gradient-to-b rounded-lg text-sm mr-2 px-5 py-2.5 text-center hover:scale-110 transition-all ease-in duration-200
                     ${
                       theme == "dark"
