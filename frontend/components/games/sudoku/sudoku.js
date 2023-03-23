@@ -549,7 +549,7 @@ export default function Sudoku(props) {
   }, [currentElement]);
 
   return (
-    <div className="mx-auto h-5/6 w-full lg:w-5/6 max-w-7xl px-2 mt-2 sm:px-6 lg:px-8">
+    <div className="mx-auto h-5/6 w-full lg:w-5/6 max-w-7xl px-2 mt-2 sm:px-6 lg:px-8 select-none">
       <Menu as="div" className="relative inline-block">
         <div>
           <Menu.Button
