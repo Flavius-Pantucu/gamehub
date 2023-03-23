@@ -30,7 +30,7 @@ export default function SudokuSquare(props) {
       <div className="w-full h-full grid grid-cols-3 grid-rows-3">
         <div
           onClick={() => selectCell(0)}
-          className={`flex text-3xl items-center justify-center transition-[border] ease-in duration-200 cursor-default 
+          className={`flex text-3xl items-center justify-center transition-all ease-in duration-200 cursor-default 
           ${
             cells[0].placement == "wrong"
               ? "text-red-700"
@@ -70,7 +70,7 @@ export default function SudokuSquare(props) {
         </div>
         <div
           onClick={() => selectCell(1)}
-          className={`flex text-3xl items-center justify-center transition-[border] ease-in duration-200 cursor-default border-x 
+          className={`flex text-3xl items-center justify-center transition-all ease-in duration-200 cursor-default border-x 
           ${
             cells[1].placement == "wrong"
               ? "text-red-700"
@@ -111,7 +111,7 @@ export default function SudokuSquare(props) {
         </div>
         <div
           onClick={() => selectCell(2)}
-          className={`flex text-3xl items-center justify-center transition-[border] ease-in duration-200 cursor-default 
+          className={`flex text-3xl items-center justify-center transition-all ease-in duration-200 cursor-default 
           ${
             cells[2].placement == "wrong"
               ? "text-red-700"
@@ -151,7 +151,7 @@ export default function SudokuSquare(props) {
         </div>
         <div
           onClick={() => selectCell(3)}
-          className={`flex text-3xl items-center justify-center transition-[border] ease-in duration-200 cursor-default border-y 
+          className={`flex text-3xl items-center justify-center transition-all ease-in duration-200 cursor-default border-y 
           ${
             cells[3].placement == "wrong"
               ? "text-red-700"
@@ -193,7 +193,7 @@ export default function SudokuSquare(props) {
         </div>
         <div
           onClick={() => selectCell(4)}
-          className={`flex text-3xl items-center justify-center transition-[border] ease-in duration-200 cursor-default border
+          className={`flex text-3xl items-center justify-center transition-all ease-in duration-200 cursor-default border
           ${
             cells[4].placement == "wrong"
               ? "text-red-700"
@@ -234,7 +234,7 @@ export default function SudokuSquare(props) {
         </div>
         <div
           onClick={() => selectCell(5)}
-          className={`flex text-3xl items-center justify-center transition-[border] ease-in duration-200 cursor-default border-y 
+          className={`flex text-3xl items-center justify-center transition-all ease-in duration-200 cursor-default border-y 
           ${
             cells[5].placement == "wrong"
               ? "text-red-700"
@@ -275,7 +275,7 @@ export default function SudokuSquare(props) {
         </div>
         <div
           onClick={() => selectCell(6)}
-          className={`flex text-3xl items-center justify-center transition-[border] ease-in duration-200 cursor-default
+          className={`flex text-3xl items-center justify-center transition-all ease-in duration-200 cursor-default
             ${
               cells[6].placement == "wrong"
                 ? "text-red-700"
@@ -315,7 +315,7 @@ export default function SudokuSquare(props) {
         </div>
         <div
           onClick={() => selectCell(7)}
-          className={`flex text-3xl items-center justify-center transition-[border] ease-in duration-200 cursor-default border-x 
+          className={`flex text-3xl items-center justify-center transition-all ease-in duration-200 cursor-default border-x 
           ${
             cells[7].placement == "wrong"
               ? "text-red-700"
@@ -356,7 +356,7 @@ export default function SudokuSquare(props) {
         </div>
         <div
           onClick={() => selectCell(8)}
-          className={`flex text-3xl items-center justify-center transition-[border] ease-in duration-200 cursor-default
+          className={`flex text-3xl items-center justify-center transition-all ease-in duration-200 cursor-default
           ${
             cells[8].placement == "wrong"
               ? "text-red-700"

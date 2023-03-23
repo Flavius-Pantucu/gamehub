@@ -12,22 +12,22 @@ export default function Navbar(props) {
   const [elements, setElements] = useState(props.elements);
   const theme = props.theme;
 
-  function openLogin() {
+  const openLogin = () => {
     props.childSetModal("login");
-  }
+  };
 
-  function changeTheme() {
+  const changeTheme = () => {
     props.childSetTheme(theme == "dark" ? "light" : "dark");
-  }
+  };
 
-  function changeNavigation(name) {
+  const changeNavigation = (name) => {
     elements.forEach((elem, index) => {
       if (elem.name === name) elements[index].current = true;
       else elements[index].current = false;
     });
     setElements((elements) => [...elements]);
     props.selectGame(name);
-  }
+  };
 
   return (
     <Disclosure as="nav">
