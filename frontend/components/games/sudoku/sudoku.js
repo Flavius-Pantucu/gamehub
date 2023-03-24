@@ -5,10 +5,24 @@ import { ChevronDownIcon } from "@heroicons/react/20/solid";
 import modulo from "modulo-x";
 
 class Cell {
-  constructor(placement, value, error) {
+  constructor(placement, value, notes, error) {
     this.placement = placement;
     this.value = value;
+    this.notes = notes;
     this.error = error;
+  }
+}
+class Note {
+  constructor() {
+    this.one = false;
+    this.two = false;
+    this.three = false;
+    this.four = false;
+    this.five = false;
+    this.six = false;
+    this.seven = false;
+    this.eight = false;
+    this.nine = false;
   }
 }
 
@@ -32,103 +46,103 @@ export default function Sudoku(props) {
     for (var i = 0; i < 9; i++) grid[i] = new Array(9);
     return [
       [
-        new Cell("empty", null, false),
-        new Cell("empty", null, false),
-        new Cell("initial", 7, false),
-        new Cell("empty", null, false),
-        new Cell("empty", null, false),
-        new Cell("empty", null, false),
-        new Cell("empty", null, false),
-        new Cell("initial", 1, false),
-        new Cell("empty", null, false),
+        new Cell("empty", null, new Note(), false),
+        new Cell("empty", null, new Note(), false),
+        new Cell("initial", 7, new Note(), false),
+        new Cell("empty", null, new Note(), false),
+        new Cell("empty", null, new Note(), false),
+        new Cell("empty", null, new Note(), false),
+        new Cell("empty", null, new Note(), false),
+        new Cell("initial", 1, new Note(), false),
+        new Cell("empty", null, new Note(), false),
       ],
       [
-        new Cell("empty", null, false),
-        new Cell("initial", 9, false),
-        new Cell("empty", null, false),
-        new Cell("initial", 1, false),
-        new Cell("empty", null, false),
-        new Cell("empty", null, false),
-        new Cell("empty", null, false),
-        new Cell("empty", null, false),
-        new Cell("empty", null, false),
+        new Cell("empty", null, new Note(), false),
+        new Cell("initial", 9, new Note(), false),
+        new Cell("empty", null, new Note(), false),
+        new Cell("initial", 1, new Note(), false),
+        new Cell("empty", null, new Note(), false),
+        new Cell("empty", null, new Note(), false),
+        new Cell("empty", null, new Note(), false),
+        new Cell("empty", null, new Note(), false),
+        new Cell("empty", null, new Note(), false),
       ],
       [
-        new Cell("initial", 5, false),
-        new Cell("initial", 2, false),
-        new Cell("initial", 1, false),
-        new Cell("initial", 6, false),
-        new Cell("empty", null, false),
-        new Cell("empty", null, false),
-        new Cell("initial", 9, false),
-        new Cell("empty", null, false),
-        new Cell("initial", 7, false),
+        new Cell("initial", 5, new Note(), false),
+        new Cell("initial", 2, new Note(), false),
+        new Cell("initial", 1, new Note(), false),
+        new Cell("initial", 6, new Note(), false),
+        new Cell("empty", null, new Note(), false),
+        new Cell("empty", null, new Note(), false),
+        new Cell("initial", 9, new Note(), false),
+        new Cell("empty", null, new Note(), false),
+        new Cell("initial", 7, new Note(), false),
       ],
       [
-        new Cell("initial", 5, false),
-        new Cell("initial", 4, false),
-        new Cell("empty", null, false),
-        new Cell("empty", null, false),
-        new Cell("empty", null, false),
-        new Cell("empty", null, false),
-        new Cell("initial", 3, false),
-        new Cell("initial", 7, false),
-        new Cell("initial", 6, false),
+        new Cell("initial", 5, new Note(), false),
+        new Cell("initial", 4, new Note(), false),
+        new Cell("empty", null, new Note(), false),
+        new Cell("empty", null, new Note(), false),
+        new Cell("empty", null, new Note(), false),
+        new Cell("empty", null, new Note(), false),
+        new Cell("initial", 3, new Note(), false),
+        new Cell("initial", 7, new Note(), false),
+        new Cell("initial", 6, new Note(), false),
       ],
       [
-        new Cell("initial", 2, false),
-        new Cell("empty", null, false),
-        new Cell("empty", null, false),
-        new Cell("empty", null, false),
-        new Cell("initial", 5, false),
-        new Cell("initial", 3, false),
-        new Cell("initial", 9, false),
-        new Cell("initial", 8, false),
-        new Cell("empty", null, false),
+        new Cell("initial", 2, new Note(), false),
+        new Cell("empty", null, new Note(), false),
+        new Cell("empty", null, new Note(), false),
+        new Cell("empty", null, new Note(), false),
+        new Cell("initial", 5, new Note(), false),
+        new Cell("initial", 3, new Note(), false),
+        new Cell("initial", 9, new Note(), false),
+        new Cell("initial", 8, new Note(), false),
+        new Cell("empty", null, new Note(), false),
       ],
       [
-        new Cell("initial", 1, false),
-        new Cell("initial", 9, false),
-        new Cell("empty", null, false),
-        new Cell("initial", 7, false),
-        new Cell("empty", null, false),
-        new Cell("empty", null, false),
-        new Cell("initial", 4, false),
-        new Cell("empty", null, false),
-        new Cell("empty", null, false),
+        new Cell("initial", 1, new Note(), false),
+        new Cell("initial", 9, new Note(), false),
+        new Cell("empty", null, new Note(), false),
+        new Cell("initial", 7, new Note(), false),
+        new Cell("empty", null, new Note(), false),
+        new Cell("empty", null, new Note(), false),
+        new Cell("initial", 4, new Note(), false),
+        new Cell("empty", null, new Note(), false),
+        new Cell("empty", null, new Note(), false),
       ],
       [
-        new Cell("empty", null, false),
-        new Cell("initial", 5, false),
-        new Cell("empty", null, false),
-        new Cell("empty", null, false),
-        new Cell("empty", null, false),
-        new Cell("initial", 1, false),
-        new Cell("empty", null, false),
-        new Cell("empty", null, false),
-        new Cell("initial", 4, false),
+        new Cell("empty", null, new Note(), false),
+        new Cell("initial", 5, new Note(), false),
+        new Cell("empty", null, new Note(), false),
+        new Cell("empty", null, new Note(), false),
+        new Cell("empty", null, new Note(), false),
+        new Cell("initial", 1, new Note(), false),
+        new Cell("empty", null, new Note(), false),
+        new Cell("empty", null, new Note(), false),
+        new Cell("initial", 4, new Note(), false),
       ],
       [
-        new Cell("empty", null, false),
-        new Cell("empty", null, false),
-        new Cell("initial", 6, false),
-        new Cell("initial", 8, false),
-        new Cell("initial", 2, false),
-        new Cell("initial", 4, false),
-        new Cell("empty", null, false),
-        new Cell("empty", null, false),
-        new Cell("empty", null, false),
+        new Cell("empty", null, new Note(), false),
+        new Cell("empty", null, new Note(), false),
+        new Cell("initial", 6, new Note(), false),
+        new Cell("initial", 8, new Note(), false),
+        new Cell("initial", 2, new Note(), false),
+        new Cell("initial", 4, new Note(), false),
+        new Cell("empty", null, new Note(), false),
+        new Cell("empty", null, new Note(), false),
+        new Cell("empty", null, new Note(), false),
       ],
       [
-        new Cell("initial", 8, null),
-        new Cell("initial", 4, null),
-        new Cell("empty", null, null),
-        new Cell("initial", 3, null),
-        new Cell("empty", null, null),
-        new Cell("initial", 5, null),
-        new Cell("empty", null, null),
-        new Cell("empty", null, null),
-        new Cell("empty", null, null),
+        new Cell("initial", 8, new Note(), false),
+        new Cell("initial", 4, new Note(), false),
+        new Cell("empty", null, new Note(), false),
+        new Cell("initial", 3, new Note(), false),
+        new Cell("empty", null, new Note(), false),
+        new Cell("initial", 5, new Note(), false),
+        new Cell("empty", null, new Note(), false),
+        new Cell("empty", null, new Note(), false),
+        new Cell("empty", null, new Note(), false),
       ],
     ];
   };
@@ -248,7 +262,7 @@ export default function Sudoku(props) {
     setCurrentElement(newCell);
   };
 
-  const fillCell = (key) => {
+  const fillCell = (input) => {
     if (
       currentElement.currentSquare == null ||
       currentElement.currentCell == null ||
@@ -261,24 +275,29 @@ export default function Sudoku(props) {
         .placement == "initial"
     )
       return;
-    const number = parseInt(key);
+
+    const number = parseInt(input);
     if (isNaN(number)) return;
+
     const previousValue =
       grid[currentElement.currentSquare][currentElement.currentCell].value;
-    if (previousValue == number) {
-      grid[currentElement.currentSquare][currentElement.currentCell].value =
-        null;
-      grid[currentElement.currentSquare][
+
+    if (notes == false)
+      inserValue(
+        previousValue,
+        number,
+        currentElement.currentSquare,
         currentElement.currentCell
-      ].error = false;
-    } else
-      grid[currentElement.currentSquare][currentElement.currentCell].value =
-        number;
+      );
+    else
+      insertNote(
+        number,
+        currentElement.currentSquare,
+        currentElement.currentCell
+      );
+
     checkPosition();
     setGrid(copyGrid(grid));
-
-    currentElement.currentValue = previousValue == number ? null : number;
-    setCurrentElement({ ...currentElement });
 
     movesList.current.push({
       grid: copyGrid(grid),
@@ -286,43 +305,24 @@ export default function Sudoku(props) {
     });
   };
 
-  const insertValue = (value) => {
-    if (
-      currentElement.currentSquare == null ||
-      currentElement.currentCell == null ||
-      currentElement.currentRow == null ||
-      currentElement.currentColumn == null
-    )
-      return;
-    if (
-      grid[currentElement.currentSquare][currentElement.currentCell]
-        .placement == "initial"
-    )
-      return;
-    if (isNaN(parseInt(value))) return;
-    if (value < 1 || value > 9) return;
-    const previousValue =
-      grid[currentElement.currentSquare][currentElement.currentCell].value;
-    if (previousValue == value) {
-      grid[currentElement.currentSquare][currentElement.currentCell].value =
-        null;
-      grid[currentElement.currentSquare][
-        currentElement.currentCell
-      ].error = false;
-    } else
-      grid[currentElement.currentSquare][currentElement.currentCell].value =
-        value;
-    checkPosition();
-    setGrid(copyGrid(grid));
+  const inserValue = (prevValue, newValue, square, cell) => {
+    // Object.keys(grid[square][cell].notes).forEach((key) => {
+    //   grid[square][cell].notes[key] = false;
+    // });
 
-    currentElement.currentValue = previousValue == value ? null : value;
+    if (prevValue == newValue) {
+      grid[square][cell].value = null;
+      grid[square][cell].error = false;
+    } else grid[square][cell].value = newValue;
+    currentElement.currentValue = prevValue == newValue ? null : newValue;
     setCurrentElement({ ...currentElement });
+  };
 
-    movesList.current.push({
-      grid: copyGrid(grid),
-      current: { ...currentElement },
-    });
-    console.log(movesList.current);
+  const insertNote = (value, square, cell) => {
+    grid[square][cell].placement = "empty";
+    grid[square][cell].value = null;
+    grid[square][cell].error = false;
+    console.log(grid);
   };
 
   const checkPosition = () => {
@@ -330,7 +330,11 @@ export default function Sudoku(props) {
     for (var i = 0; i < 9; i++) {
       for (var j = 0; j < 9; j++) {
         grid[i][j].error = false;
-        if (grid[i][j].placement == "initial" || grid[i][j].value == null)
+        if (
+          grid[i][j].placement == "initial" ||
+          grid[i][j].placement == "notes" ||
+          grid[i][j].value == null
+        )
           continue;
 
         if (grid[i][j].value != solution[i][j]) {
@@ -523,6 +527,7 @@ export default function Sudoku(props) {
   const [grid, setGrid] = useState(createGrid());
   const [reset, setReset] = useState(false);
   const [hints, setHints] = useState(3);
+  const [notes, setNotes] = useState(false);
 
   const movesList = useRef([{ grid: copyGrid(grid), current: currentElement }]);
   const intervalID = useRef(0);
@@ -816,7 +821,7 @@ export default function Sudoku(props) {
                 <div className="flex flex-col text-center">
                   <div
                     onClick={giveHint}
-                    className={`flex justify-center items-center rounded-full lg:w-14 xl:w-[72px] 2xl:w-20 w-16 aspect-square cursor-pointer font-mono transition-all ease-in-out duration-200
+                    className={`flex relative justify-center items-center rounded-full lg:w-14 xl:w-[72px] 2xl:w-20 w-16 aspect-square cursor-pointer font-mono transition-all ease-in-out duration-200
                     ${
                       theme == "dark"
                         ? "text-cyan-600 hover:text-cyan-500 bg-gray-400/10 hover:bg-gray-300/20 "
@@ -835,6 +840,19 @@ export default function Sudoku(props) {
                         fill="currentColor"
                         d="M464 256A208 208 0 1 0 48 256a208 208 0 1 0 416 0zM0 256a256 256 0 1 1 512 0A256 256 0 1 1 0 256zm177.6 62.1C192.8 334.5 218.8 352 256 352s63.2-17.5 78.4-33.9c9-9.7 24.2-10.4 33.9-1.4s10.4 24.2 1.4 33.9c-22 23.8-60 49.4-113.6 49.4s-91.7-25.5-113.6-49.4c-9-9.7-8.4-24.9 1.4-33.9s24.9-8.4 33.9 1.4zM144.4 208a32 32 0 1 1 64 0 32 32 0 1 1 -64 0zm165.8 21.7c-7.6 8.1-20.2 8.5-28.3 .9s-8.5-20.2-.9-28.3c14.5-15.5 35.2-22.3 54.6-22.3s40.1 6.8 54.6 22.3c7.6 8.1 7.1 20.7-.9 28.3s-20.7 7.1-28.3-.9c-5.5-5.8-14.8-9.7-25.4-9.7s-19.9 3.8-25.4 9.7z"></path>
                     </svg>
+                    <div
+                      className={`absolute inline-flex items-center justify-center w-6 h-6 text-sm font-mono text-white rounded-full -top-1 -right-1 transition-all ease-in-out duration-500
+                      ${
+                        hints > 0
+                          ? theme == "dark"
+                            ? "bg-green-600"
+                            : "bg-green-500"
+                          : theme == "dark"
+                          ? "bg-red-600"
+                          : "bg-red-500"
+                      }`}>
+                      {hints}
+                    </div>
                   </div>
                   <p
                     className={`text-sm mt-1 font-mono transition-all ease-in-out duration-200
@@ -844,7 +862,8 @@ export default function Sudoku(props) {
                 </div>
                 <div className="flex flex-col text-center">
                   <div
-                    className={`flex justify-center items-center rounded-full lg:w-14 xl:w-[72px] 2xl:w-20 w-16 aspect-square cursor-pointer font-mono transition-all ease-in-out duration-200
+                    onClick={() => setNotes(!notes)}
+                    className={`flex relative justify-center items-center rounded-full lg:w-14 xl:w-[72px] 2xl:w-20 w-16 aspect-square cursor-pointer font-mono transition-all ease-in-out duration-200
                     ${
                       theme == "dark"
                         ? "text-cyan-600 hover:text-cyan-500 bg-gray-400/10 hover:bg-gray-300/20 "
@@ -863,6 +882,19 @@ export default function Sudoku(props) {
                         fill="currentColor"
                         d="M410.3 231l11.3-11.3-33.9-33.9-62.1-62.1L291.7 89.8l-11.3 11.3-22.6 22.6L58.6 322.9c-10.4 10.4-18 23.3-22.2 37.4L1 480.7c-2.5 8.4-.2 17.5 6.1 23.7s15.3 8.5 23.7 6.1l120.3-35.4c14.1-4.2 27-11.8 37.4-22.2L387.7 253.7 410.3 231zM160 399.4l-9.1 22.7c-4 3.1-8.5 5.4-13.3 6.9L59.4 452l23-78.1c1.4-4.9 3.8-9.4 6.9-13.3l22.7-9.1v32c0 8.8 7.2 16 16 16h32zM362.7 18.7L348.3 33.2 325.7 55.8 314.3 67.1l33.9 33.9 62.1 62.1 33.9 33.9 11.3-11.3 22.6-22.6 14.5-14.5c25-25 25-65.5 0-90.5L453.3 18.7c-25-25-65.5-25-90.5 0zm-47.4 168l-144 144c-6.2 6.2-16.4 6.2-22.6 0s-6.2-16.4 0-22.6l144-144c6.2-6.2 16.4-6.2 22.6 0s6.2 16.4 0 22.6z"></path>
                     </svg>
+                    <div
+                      className={`absolute inline-flex items-center justify-center w-10 h-6 text-xs font-mono text-white rounded-full -top-1 -right-1 transition-all ease-in-out duration-500 
+                      ${
+                        notes == false
+                          ? theme == "dark"
+                            ? "bg-gray-400"
+                            : "bg-gray-300"
+                          : theme == "dark"
+                          ? "bg-cyan-600"
+                          : "bg-cyan-500"
+                      }`}>
+                      {notes == false ? "Off" : "On"}
+                    </div>
                   </div>
                   <p
                     className={`text-sm mt-1 font-mono transition-all ease-in-out duration-200
@@ -932,7 +964,7 @@ export default function Sudoku(props) {
               <div className="order-1 lg:order-2 2xl:h-[400px] xl:h-[352px] lg:h-[336px] h-20">
                 <div className="grid grid-cols-9 lg:grid-cols-3 lg:grid-rows-3 lg:gap-2 h-full content-center items-center">
                   <div
-                    onClick={() => insertValue(1)}
+                    onClick={() => fillCell(1)}
                     className={`transition-colors ease-in-out duration-300 flex justify-center items-center font-mono text-5xl cursor-pointer lg:rounded h-full w-full 
                     ${
                       theme == "dark"
@@ -942,7 +974,7 @@ export default function Sudoku(props) {
                     1
                   </div>
                   <div
-                    onClick={() => insertValue(2)}
+                    onClick={() => fillCell(2)}
                     className={`transition-colors ease-in-out duration-300 flex justify-center items-center font-mono text-5xl cursor-pointer lg:rounded h-full w-full 
                     ${
                       theme == "dark"
@@ -952,7 +984,7 @@ export default function Sudoku(props) {
                     2
                   </div>
                   <div
-                    onClick={() => insertValue(3)}
+                    onClick={() => fillCell(3)}
                     className={`transition-colors ease-in-out duration-300 flex justify-center items-center font-mono text-5xl cursor-pointer lg:rounded h-full w-full 
                     ${
                       theme == "dark"
@@ -962,7 +994,7 @@ export default function Sudoku(props) {
                     3
                   </div>
                   <div
-                    onClick={() => insertValue(4)}
+                    onClick={() => fillCell(4)}
                     className={`transition-colors ease-in-out duration-300 flex justify-center items-center font-mono text-5xl cursor-pointer lg:rounded h-full w-full 
                     ${
                       theme == "dark"
@@ -972,7 +1004,7 @@ export default function Sudoku(props) {
                     4
                   </div>
                   <div
-                    onClick={() => insertValue(5)}
+                    onClick={() => fillCell(5)}
                     className={`transition-colors ease-in-out duration-300 flex justify-center items-center font-mono text-5xl cursor-pointer lg:rounded h-full w-full 
                     ${
                       theme == "dark"
@@ -982,7 +1014,7 @@ export default function Sudoku(props) {
                     5
                   </div>
                   <div
-                    onClick={() => insertValue(6)}
+                    onClick={() => fillCell(6)}
                     className={`transition-colors ease-in-out duration-300 flex justify-center items-center font-mono text-5xl cursor-pointer lg:rounded h-full w-full 
                     ${
                       theme == "dark"
@@ -992,7 +1024,7 @@ export default function Sudoku(props) {
                     6
                   </div>
                   <div
-                    onClick={() => insertValue(7)}
+                    onClick={() => fillCell(7)}
                     className={`transition-colors ease-in-out duration-300 flex justify-center items-center font-mono text-5xl cursor-pointer lg:rounded h-full w-full 
                     ${
                       theme == "dark"
@@ -1002,7 +1034,7 @@ export default function Sudoku(props) {
                     7
                   </div>
                   <div
-                    onClick={() => insertValue(8)}
+                    onClick={() => fillCell(8)}
                     className={`transition-colors ease-in-out duration-300 flex justify-center items-center font-mono text-5xl cursor-pointer lg:rounded h-full w-full 
                     ${
                       theme == "dark"
@@ -1012,7 +1044,7 @@ export default function Sudoku(props) {
                     8
                   </div>
                   <div
-                    onClick={() => insertValue(9)}
+                    onClick={() => fillCell(9)}
                     className={`transition-colors ease-in-out duration-300 flex justify-center items-center font-mono text-5xl cursor-pointer lg:rounded h-full w-full 
                     ${
                       theme == "dark"

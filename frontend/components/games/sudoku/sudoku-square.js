@@ -1,3 +1,5 @@
+import NotesSquare from "./notes-square";
+
 export default function SudokuSquare(props) {
   const selectCell = (cell) => {
     const column = 3 * (square % 3) + (cell % 3);
@@ -66,7 +68,11 @@ export default function SudokuSquare(props) {
                 : "bg-gray-400/30"
               : ""
           }`}>
-          {cells[0].value}
+          {cells[0].placement == "notes" ? (
+            <NotesSquare notes={cells[0].notes} />
+          ) : (
+            cells[0].value
+          )}
         </div>
         <div
           onClick={() => selectCell(1)}
