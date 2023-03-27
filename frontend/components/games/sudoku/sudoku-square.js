@@ -113,7 +113,11 @@ export default function SudokuSquare(props) {
                 : "bg-gray-400/30"
               : ""
           }`}>
-          {cells[1].value}
+          {cells[1].placement == "notes" ? (
+            <NotesSquare notes={cells[1].notes} />
+          ) : (
+            cells[1].value
+          )}
         </div>
         <div
           onClick={() => selectCell(2)}
@@ -153,7 +157,11 @@ export default function SudokuSquare(props) {
                 : "bg-gray-400/30"
               : ""
           }`}>
-          {cells[2].value}
+          {cells[2].placement == "notes" ? (
+            <NotesSquare notes={cells[2].notes} />
+          ) : (
+            cells[2].value
+          )}
         </div>
         <div
           onClick={() => selectCell(3)}
@@ -195,7 +203,11 @@ export default function SudokuSquare(props) {
                 : "bg-gray-400/30"
               : ""
           }`}>
-          {cells[3].value}
+          {cells[3].placement == "notes" ? (
+            <NotesSquare notes={cells[3].notes} />
+          ) : (
+            cells[3].value
+          )}
         </div>
         <div
           onClick={() => selectCell(4)}
@@ -236,7 +248,11 @@ export default function SudokuSquare(props) {
                 : "bg-gray-400/30"
               : ""
           }`}>
-          {cells[4].value}
+          {cells[4].placement == "notes" ? (
+            <NotesSquare notes={cells[4].notes} />
+          ) : (
+            cells[4].value
+          )}
         </div>
         <div
           onClick={() => selectCell(5)}
@@ -277,7 +293,11 @@ export default function SudokuSquare(props) {
                 : "bg-gray-400/30"
               : ""
           }`}>
-          {cells[5].value}
+          {cells[5].placement == "notes" ? (
+            <NotesSquare notes={cells[5].notes} />
+          ) : (
+            cells[5].value
+          )}
         </div>
         <div
           onClick={() => selectCell(6)}
@@ -317,7 +337,11 @@ export default function SudokuSquare(props) {
                    : "bg-gray-400/30"
                  : ""
              }`}>
-          {cells[6].value}
+          {cells[6].placement == "notes" ? (
+            <NotesSquare notes={cells[6].notes} />
+          ) : (
+            cells[6].value
+          )}
         </div>
         <div
           onClick={() => selectCell(7)}
@@ -358,7 +382,11 @@ export default function SudokuSquare(props) {
                 : "bg-gray-400/30"
               : ""
           }`}>
-          {cells[7].value}
+          {cells[7].placement == "notes" ? (
+            <NotesSquare notes={cells[7].notes} />
+          ) : (
+            cells[7].value
+          )}
         </div>
         <div
           onClick={() => selectCell(8)}
@@ -398,7 +426,11 @@ export default function SudokuSquare(props) {
                 : "bg-gray-400/30"
               : ""
           }`}>
-          {cells[8].value}
+          {cells[8].placement == "notes" ? (
+            <NotesSquare notes={cells[8].notes} />
+          ) : (
+            cells[8].value
+          )}
         </div>
       </div>
     </div>

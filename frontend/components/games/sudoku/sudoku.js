@@ -29,15 +29,15 @@ class Note {
 export default function Sudoku(props) {
   const createSolution = () => {
     return [
-      [4, 3, 7, 8, 2, 9, 6, 1, 5],
-      [6, 9, 8, 1, 7, 5, 3, 4, 2],
-      [5, 2, 1, 6, 3, 4, 9, 8, 7],
-      [5, 4, 8, 1, 9, 2, 3, 7, 6],
-      [2, 6, 7, 4, 5, 3, 9, 8, 1],
-      [1, 9, 3, 7, 6, 8, 4, 5, 2],
-      [2, 5, 3, 9, 6, 1, 7, 8, 4],
-      [7, 1, 6, 8, 2, 4, 5, 3, 9],
-      [8, 4, 9, 3, 7, 5, 2, 1, 6],
+      [6, 2, 4, 9, 8, 3, 5, 1, 7],
+      [9, 5, 3, 1, 7, 2, 4, 6, 8],
+      [8, 7, 1, 4, 5, 6, 3, 9, 2],
+      [1, 6, 5, 4, 9, 2, 3, 7, 8],
+      [3, 4, 9, 6, 8, 7, 2, 1, 5],
+      [7, 2, 8, 5, 1, 3, 6, 4, 9],
+      [8, 3, 1, 2, 4, 9, 7, 5, 6],
+      [7, 2, 4, 5, 3, 6, 8, 9, 1],
+      [9, 6, 5, 1, 8, 7, 2, 3, 4],
     ];
   };
 
@@ -46,103 +46,103 @@ export default function Sudoku(props) {
     for (var i = 0; i < 9; i++) grid[i] = new Array(9);
     return [
       [
-        new Cell("empty", null, new Note(), false),
-        new Cell("empty", null, new Note(), false),
-        new Cell("initial", 7, new Note(), false),
-        new Cell("empty", null, new Note(), false),
-        new Cell("empty", null, new Note(), false),
-        new Cell("empty", null, new Note(), false),
-        new Cell("empty", null, new Note(), false),
-        new Cell("initial", 1, new Note(), false),
-        new Cell("empty", null, new Note(), false),
-      ],
-      [
-        new Cell("empty", null, new Note(), false),
-        new Cell("initial", 9, new Note(), false),
-        new Cell("empty", null, new Note(), false),
-        new Cell("initial", 1, new Note(), false),
-        new Cell("empty", null, new Note(), false),
-        new Cell("empty", null, new Note(), false),
-        new Cell("empty", null, new Note(), false),
-        new Cell("empty", null, new Note(), false),
-        new Cell("empty", null, new Note(), false),
-      ],
-      [
-        new Cell("initial", 5, new Note(), false),
-        new Cell("initial", 2, new Note(), false),
-        new Cell("initial", 1, new Note(), false),
         new Cell("initial", 6, new Note(), false),
         new Cell("empty", null, new Note(), false),
         new Cell("empty", null, new Note(), false),
-        new Cell("initial", 9, new Note(), false),
+        new Cell("empty", null, new Note(), false),
+        new Cell("initial", 8, new Note(), false),
+        new Cell("empty", null, new Note(), false),
+        new Cell("empty", null, new Note(), false),
         new Cell("empty", null, new Note(), false),
         new Cell("initial", 7, new Note(), false),
       ],
       [
-        new Cell("initial", 5, new Note(), false),
-        new Cell("initial", 4, new Note(), false),
         new Cell("empty", null, new Note(), false),
         new Cell("empty", null, new Note(), false),
         new Cell("empty", null, new Note(), false),
+        new Cell("initial", 1, new Note(), false),
         new Cell("empty", null, new Note(), false),
-        new Cell("initial", 3, new Note(), false),
-        new Cell("initial", 7, new Note(), false),
-        new Cell("initial", 6, new Note(), false),
-      ],
-      [
         new Cell("initial", 2, new Note(), false),
         new Cell("empty", null, new Note(), false),
         new Cell("empty", null, new Note(), false),
         new Cell("empty", null, new Note(), false),
+      ],
+      [
+        new Cell("empty", null, new Note(), false),
+        new Cell("empty", null, new Note(), false),
+        new Cell("initial", 1, new Note(), false),
+        new Cell("empty", null, new Note(), false),
         new Cell("initial", 5, new Note(), false),
+        new Cell("empty", null, new Note(), false),
         new Cell("initial", 3, new Note(), false),
-        new Cell("initial", 9, new Note(), false),
-        new Cell("initial", 8, new Note(), false),
+        new Cell("empty", null, new Note(), false),
         new Cell("empty", null, new Note(), false),
       ],
       [
-        new Cell("initial", 1, new Note(), false),
+        new Cell("empty", null, new Note(), false),
+        new Cell("initial", 6, new Note(), false),
+        new Cell("empty", null, new Note(), false),
+        new Cell("empty", null, new Note(), false),
+        new Cell("empty", null, new Note(), false),
+        new Cell("empty", null, new Note(), false),
+        new Cell("empty", null, new Note(), false),
+        new Cell("initial", 7, new Note(), false),
+        new Cell("empty", null, new Note(), false),
+      ],
+      [
+        new Cell("initial", 3, new Note(), false),
+        new Cell("empty", null, new Note(), false),
         new Cell("initial", 9, new Note(), false),
+        new Cell("empty", null, new Note(), false),
+        new Cell("initial", 8, new Note(), false),
+        new Cell("empty", null, new Note(), false),
+        new Cell("initial", 2, new Note(), false),
+        new Cell("empty", null, new Note(), false),
+        new Cell("initial", 5, new Note(), false),
+      ],
+      [
+        new Cell("empty", null, new Note(), false),
+        new Cell("initial", 2, new Note(), false),
+        new Cell("empty", null, new Note(), false),
+        new Cell("empty", null, new Note(), false),
+        new Cell("empty", null, new Note(), false),
+        new Cell("empty", null, new Note(), false),
+        new Cell("empty", null, new Note(), false),
+        new Cell("initial", 4, new Note(), false),
+        new Cell("empty", null, new Note(), false),
+      ],
+      [
+        new Cell("empty", null, new Note(), false),
+        new Cell("empty", null, new Note(), false),
+        new Cell("initial", 1, new Note(), false),
+        new Cell("empty", null, new Note(), false),
+        new Cell("initial", 4, new Note(), false),
         new Cell("empty", null, new Note(), false),
         new Cell("initial", 7, new Note(), false),
         new Cell("empty", null, new Note(), false),
         new Cell("empty", null, new Note(), false),
-        new Cell("initial", 4, new Note(), false),
-        new Cell("empty", null, new Note(), false),
-        new Cell("empty", null, new Note(), false),
       ],
       [
+        new Cell("empty", null, new Note(), false),
+        new Cell("empty", null, new Note(), false),
         new Cell("empty", null, new Note(), false),
         new Cell("initial", 5, new Note(), false),
-        new Cell("empty", null, new Note(), false),
-        new Cell("empty", null, new Note(), false),
-        new Cell("empty", null, new Note(), false),
-        new Cell("initial", 1, new Note(), false),
-        new Cell("empty", null, new Note(), false),
-        new Cell("empty", null, new Note(), false),
-        new Cell("initial", 4, new Note(), false),
-      ],
-      [
-        new Cell("empty", null, new Note(), false),
         new Cell("empty", null, new Note(), false),
         new Cell("initial", 6, new Note(), false),
-        new Cell("initial", 8, new Note(), false),
-        new Cell("initial", 2, new Note(), false),
-        new Cell("initial", 4, new Note(), false),
         new Cell("empty", null, new Note(), false),
         new Cell("empty", null, new Note(), false),
         new Cell("empty", null, new Note(), false),
       ],
       [
+        new Cell("initial", 9, new Note(), false),
+        new Cell("empty", null, new Note(), false),
+        new Cell("empty", null, new Note(), false),
+        new Cell("empty", null, new Note(), false),
         new Cell("initial", 8, new Note(), false),
+        new Cell("empty", null, new Note(), false),
+        new Cell("empty", null, new Note(), false),
+        new Cell("empty", null, new Note(), false),
         new Cell("initial", 4, new Note(), false),
-        new Cell("empty", null, new Note(), false),
-        new Cell("initial", 3, new Note(), false),
-        new Cell("empty", null, new Note(), false),
-        new Cell("initial", 5, new Note(), false),
-        new Cell("empty", null, new Note(), false),
-        new Cell("empty", null, new Note(), false),
-        new Cell("empty", null, new Note(), false),
       ],
     ];
   };
@@ -153,7 +153,12 @@ export default function Sudoku(props) {
       var square = [];
       for (var j = 0; j < board[i].length; j++) {
         square.push(
-          new Cell(board[i][j].placement, board[i][j].value, board[i][j].error)
+          new Cell(
+            board[i][j].placement,
+            board[i][j].value,
+            board[i][j].notes,
+            board[i][j].error
+          )
         );
       }
       copy.push(square);
@@ -282,14 +287,15 @@ export default function Sudoku(props) {
     const previousValue =
       grid[currentElement.currentSquare][currentElement.currentCell].value;
 
-    if (notes == false)
+    if (notes.current == false) {
       inserValue(
         previousValue,
         number,
         currentElement.currentSquare,
         currentElement.currentCell
       );
-    else
+      checkNotes(number);
+    } else
       insertNote(
         number,
         currentElement.currentSquare,
@@ -306,10 +312,10 @@ export default function Sudoku(props) {
   };
 
   const inserValue = (prevValue, newValue, square, cell) => {
-    // Object.keys(grid[square][cell].notes).forEach((key) => {
-    //   grid[square][cell].notes[key] = false;
-    // });
-
+    Object.keys(grid[square][cell].notes).forEach((key) => {
+      grid[square][cell].notes[key] = false;
+    });
+    grid[square][cell].placement = "empty";
     if (prevValue == newValue) {
       grid[square][cell].value = null;
       grid[square][cell].error = false;
@@ -318,11 +324,61 @@ export default function Sudoku(props) {
     setCurrentElement({ ...currentElement });
   };
 
+  const setNote = (value, square, cell, mode) => {
+    switch (value) {
+      case 1:
+        mode == "setFalse"
+          ? (grid[square][cell].notes.one = false)
+          : (grid[square][cell].notes.one = !grid[square][cell].notes.one);
+        break;
+      case 2:
+        mode == "setFalse"
+          ? (grid[square][cell].notes.two = false)
+          : (grid[square][cell].notes.two = !grid[square][cell].notes.two);
+        break;
+      case 3:
+        mode == "setFalse"
+          ? (grid[square][cell].notes.three = false)
+          : (grid[square][cell].notes.three = !grid[square][cell].notes.three);
+        break;
+      case 4:
+        mode == "setFalse"
+          ? (grid[square][cell].notes.four = false)
+          : (grid[square][cell].notes.four = !grid[square][cell].notes.four);
+        break;
+      case 5:
+        mode == "setFalse"
+          ? (grid[square][cell].notes.five = false)
+          : (grid[square][cell].notes.five = !grid[square][cell].notes.five);
+        break;
+      case 6:
+        mode == "setFalse"
+          ? (grid[square][cell].notes.six = false)
+          : (grid[square][cell].notes.six = !grid[square][cell].notes.six);
+        break;
+      case 7:
+        mode == "setFalse"
+          ? (grid[square][cell].notes.seven = false)
+          : (grid[square][cell].notes.seven = !grid[square][cell].notes.seven);
+        break;
+      case 8:
+        mode == "setFalse"
+          ? (grid[square][cell].notes.eight = false)
+          : (grid[square][cell].notes.eight = !grid[square][cell].notes.eight);
+        break;
+      case 9:
+        mode == "setFalse"
+          ? (grid[square][cell].notes.nine = false)
+          : (grid[square][cell].notes.nine = !grid[square][cell].notes.nine);
+        break;
+    }
+  };
+
   const insertNote = (value, square, cell) => {
-    grid[square][cell].placement = "empty";
+    grid[square][cell].placement = "notes";
     grid[square][cell].value = null;
     grid[square][cell].error = false;
-    console.log(grid);
+    setNote(value, square, cell, "setFlip");
   };
 
   const checkPosition = () => {
@@ -348,6 +404,34 @@ export default function Sudoku(props) {
     });
   };
 
+  const checkNotes = (number) => {
+    const square = currentElement.currentSquare;
+    const cell = currentElement.currentCell;
+    const row = currentElement.currentRow;
+    const column = currentElement.currentColumn;
+
+    for (var i = 0; i < 9; i++)
+      if (grid[square][i].placement == "notes")
+        setNote(number, square, i, "setFalse");
+    for (var i = 0; i < 3; i++) {
+      const upSquare = modulo(square - 3, 9);
+      const downSquare = modulo(square + 3, 9);
+      const columnCell = modulo(column, 3) + i * 3;
+      if (grid[upSquare][columnCell].placement == "notes")
+        setNote(number, upSquare, columnCell, "setFalse");
+      if (grid[downSquare][columnCell].placement == "notes")
+        setNote(number, downSquare, columnCell, "setFalse");
+
+      const leftSquare = modulo(square, 3) == 2 ? square - 2 : square + 1;
+      const rightSquare = modulo(square, 3) == 0 ? square + 2 : square - 1;
+      const rowCell = modulo(row, 3) * 3 + i;
+      if (grid[leftSquare][rowCell].placement == "notes")
+        setNote(number, leftSquare, rowCell, "setFalse");
+      if (grid[rightSquare][rowCell].placement == "notes")
+        setNote(number, rightSquare, rowCell, "setFalse");
+    }
+  };
+
   const flagMistakes = (square, cell, value) => {
     var column = 3 * (square % 3) + (cell % 3);
     var row = 3 * Math.floor(square / 3) + Math.floor(cell / 3);
@@ -355,28 +439,26 @@ export default function Sudoku(props) {
     for (var i = 0; i < 9; i++)
       grid[square][i].value == value ? (grid[square][i].error = true) : "";
     for (var i = 0; i < 3; i++) {
-      grid[modulo(square - 3, 9)][modulo(column, 3) + i * 3].value == value
-        ? (grid[modulo(square - 3, 9)][modulo(column, 3) + i * 3].error = true)
+      const upSquare = modulo(square - 3, 9);
+      const downSquare = modulo(square + 3, 9);
+      const columnCell = modulo(column, 3) + i * 3;
+      grid[upSquare][columnCell].value == value
+        ? (grid[upSquare][columnCell].error = true)
         : "";
 
-      grid[modulo(square + 3, 9)][modulo(column, 3) + i * 3].value == value
-        ? (grid[modulo(square + 3, 9)][modulo(column, 3) + i * 3].error = true)
+      grid[downSquare][columnCell].value == value
+        ? (grid[downSquare][columnCell].error = true)
         : "";
 
-      grid[modulo(square, 3) == 2 ? square - 2 : square + 1][
-        modulo(row, 3) * 3 + i
-      ].value == value
-        ? (grid[modulo(square, 3) == 2 ? square - 2 : square + 1][
-            modulo(row, 3) * 3 + i
-          ].error = true)
+      const leftSquare = modulo(square, 3) == 2 ? square - 2 : square + 1;
+      const rightSquare = modulo(square, 3) == 0 ? square + 2 : square - 1;
+      const rowCell = modulo(row, 3) * 3 + i;
+      grid[leftSquare][rowCell].value == value
+        ? (grid[leftSquare][rowCell].error = true)
         : "";
 
-      grid[modulo(square, 3) == 0 ? square + 2 : square - 1][
-        modulo(row, 3) * 3 + i
-      ].value == value
-        ? (grid[modulo(square, 3) == 0 ? square + 2 : square - 1][
-            modulo(row, 3) * 3 + i
-          ].error = true)
+      grid[rightSquare][rowCell].value == value
+        ? (grid[rightSquare][rowCell].error = true)
         : "";
     }
   };
@@ -424,7 +506,6 @@ export default function Sudoku(props) {
     const previousState = movesList.current[movesList.current.length - 1];
     setGrid(copyGrid(previousState.grid));
     setCurrentElement({ ...previousState.current });
-    console.log(movesList.current);
   };
 
   const eraseValue = () => {
@@ -464,7 +545,6 @@ export default function Sudoku(props) {
       grid: copyGrid(grid),
       current: { ...currentElement },
     });
-    console.log(movesList.current);
   };
 
   const resetGame = () => {
@@ -522,15 +602,16 @@ export default function Sudoku(props) {
     currentColumn: null,
     currentValue: null,
   });
-  const [difficulty, setDifficulty] = useState("Easy");
+  const [difficulty, setDifficulty] = useState("Evil");
   const [timer, setTimer] = useState({ hour: 0, minute: 0, second: 0 });
   const [grid, setGrid] = useState(createGrid());
   const [reset, setReset] = useState(false);
   const [hints, setHints] = useState(3);
-  const [notes, setNotes] = useState(false);
+  const [notesFlag, setNotesFlag] = useState(false);
 
   const movesList = useRef([{ grid: copyGrid(grid), current: currentElement }]);
   const intervalID = useRef(0);
+  const notes = useRef(false);
 
   const solution = createSolution();
   const theme = props.theme;
@@ -862,7 +943,10 @@ export default function Sudoku(props) {
                 </div>
                 <div className="flex flex-col text-center">
                   <div
-                    onClick={() => setNotes(!notes)}
+                    onClick={() => {
+                      setNotesFlag(!notesFlag);
+                      notes.current = !notes.current;
+                    }}
                     className={`flex relative justify-center items-center rounded-full lg:w-14 xl:w-[72px] 2xl:w-20 w-16 aspect-square cursor-pointer font-mono transition-all ease-in-out duration-200
                     ${
                       theme == "dark"
@@ -885,7 +969,7 @@ export default function Sudoku(props) {
                     <div
                       className={`absolute inline-flex items-center justify-center w-10 h-6 text-xs font-mono text-white rounded-full -top-1 -right-1 transition-all ease-in-out duration-500 
                       ${
-                        notes == false
+                        notesFlag == false
                           ? theme == "dark"
                             ? "bg-gray-400"
                             : "bg-gray-300"
@@ -893,7 +977,7 @@ export default function Sudoku(props) {
                           ? "bg-cyan-600"
                           : "bg-cyan-500"
                       }`}>
-                      {notes == false ? "Off" : "On"}
+                      {notesFlag == false ? "Off" : "On"}
                     </div>
                   </div>
                   <p
