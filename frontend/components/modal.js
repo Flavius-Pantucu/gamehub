@@ -1,6 +1,7 @@
 import AuthModal from "../components/modals/auth_modal";
 import RegisterModal from "../components/modals/register_modal";
 import PasswordModal from "../components/modals/password_modal";
+import GameOverModal from "./modals/gameover_modal";
 
 export default function Modal(props) {
   const setModal = (modal) => {

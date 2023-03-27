@@ -47,8 +47,8 @@ export default function Home() {
   useEffect(() => {
     if (hasCookie("site_theme")) setTheme(getCookie("site_theme"));
     else {
-      setTheme("dark");
-      setCookie("site_theme", "dark");
+      setTheme("light");
+      setCookie("site_theme", "light");
     }
 
     // axios.get("/api/tutorials").then((response) => {
@@ -72,6 +72,7 @@ export default function Home() {
         <Window
           theme={theme}
           setToast={setToast}
+          childSetModal={childSetModal}
           window={currentElement}></Window>
         <Modal
           theme={theme}
