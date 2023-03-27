@@ -24,6 +24,30 @@ class Note {
     this.eight = false;
     this.nine = false;
   }
+
+  load(note) {
+    this.one = note.one;
+    this.two = note.two;
+    this.three = note.three;
+    this.four = note.four;
+    this.five = note.five;
+    this.six = note.six;
+    this.seven = note.seven;
+    this.eight = note.eight;
+    this.nine = note.nine;
+  }
+
+  deleteNotes() {
+    this.one = false;
+    this.two = false;
+    this.three = false;
+    this.four = false;
+    this.five = false;
+    this.six = false;
+    this.seven = false;
+    this.eight = false;
+    this.nine = false;
+  }
 }
 
 export default function Sudoku(props) {
@@ -152,11 +176,13 @@ export default function Sudoku(props) {
     for (var i = 0; i < board.length; i++) {
       var square = [];
       for (var j = 0; j < board[i].length; j++) {
+        const note = new Note();
+        note.load(board[i][j].notes);
         square.push(
           new Cell(
             board[i][j].placement,
             board[i][j].value,
-            board[i][j].notes,
+            note,
             board[i][j].error
           )
         );
@@ -406,7 +432,6 @@ export default function Sudoku(props) {
 
   const checkNotes = (number) => {
     const square = currentElement.currentSquare;
-    const cell = currentElement.currentCell;
     const row = currentElement.currentRow;
     const column = currentElement.currentColumn;
 
@@ -521,11 +546,6 @@ export default function Sudoku(props) {
         .placement == "initial"
     )
       return;
-    if (
-      grid[currentElement.currentSquare][currentElement.currentCell].value ==
-      null
-    )
-      return;
 
     const previousValue =
       grid[currentElement.currentSquare][currentElement.currentCell].value;
@@ -535,6 +555,9 @@ export default function Sudoku(props) {
     grid[currentElement.currentSquare][
       currentElement.currentCell
     ].error = false;
+    grid[currentElement.currentSquare][
+      currentElement.currentCell
+    ].notes.deleteNotes();
     checkPosition(previousValue);
     setGrid(copyGrid(grid));
 
@@ -569,14 +592,24 @@ export default function Sudoku(props) {
   const giveHint = () => {
     if (hints == 0) return;
 
-    var square = Math.floor(Math.random() * 9);
-    var cell = Math.floor(Math.random() * 9);
-    while (grid[square][cell].placement != "empty") {
-      square = Math.floor(Math.random() * 9);
-      cell = Math.floor(Math.random() * 9);
+    const emptyCells = [];
+    for (var i = 0; i < 9; i++) {
+      for (var j = 0; j < 9; j++) {
+        if (["notes", "empty"].includes(grid[i][j].placement))
+          emptyCells.push({ square: i, cell: j });
+      }
     }
+
+    if (emptyCells.length == 0) return;
+
+    const randomCell = Math.floor(Math.random() * emptyCells.length);
+    const square = emptyCells[randomCell].square;
+    const cell = emptyCells[randomCell].cell;
+
     grid[square][cell].value = solution[square][cell];
     grid[square][cell].placement = "right";
+    grid[square][cell].notes.deleteNotes();
+
     setGrid(copyGrid(grid));
 
     setCurrentElement({
