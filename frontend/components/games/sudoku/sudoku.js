@@ -821,74 +821,76 @@ export default function Sudoku(props) {
         </Menu>
         <div className="flex justify-center h-4/6 mt-6 lg:h-5/6 lg:mt-0">
           <div className="grid grid-cols-1 lg:grid-cols-5 xl:gap-x-4 2xl:gap-x-0">
-            <div className="flex justify-between self-end w-full col-span-1 h-8 lg:col-span-5">
-              <div className="flex">
+            <div className="flex justify-between self-end w-full col-span-1 h-8 lg:col-span-5 text-sm sm:text-sm md:text-base lg:text-lg">
+              <div className="flex justify-content items-center">
                 <h1
-                  className={`text-md  transition-all ease-in duration-200 ${
+                  className={`transition-all ease-in duration-200 ${
                     theme == "dark" ? "text-white/60" : "text-neutral-600/60"
                   }`}>
                   Difficulty:
                 </h1>
                 <h1
-                  className={`text-md  ml-2 transition-all ease-in duration-200 ${
+                  className={`ml-2 transition-all ease-in duration-200 ${
                     theme == "dark" ? "text-cyan-600" : "text-cyan-500"
                   }`}>
                   {difficulty}
                 </h1>
               </div>
-              <div>
+              <div className="flex justify-content items-center">
                 <h1
-                  className={`text-md  transition-all ease-in duration-200 ${
+                  className={`transition-all ease-in duration-200 ${
                     theme == "dark" ? "text-white/60" : "text-neutral-600/60"
                   }`}>
                   Mistakes: {mistakes}/3
                 </h1>
               </div>
-              <div className="flex flex-row gap-x-2">
+              <div className="flex flex-row gap-x-2 justify-content items-center">
                 <div
-                  className={`text-md  transition-all ease-in duration-200  
+                  className={`transition-all ease-in duration-200  
                   ${theme == "dark" ? "text-white/60" : "text-neutral-600/60"}
                   `}>
                   {showTime()}
                 </div>
-                <div
-                  onClick={pause == false ? pauseGame : unpauseGame}
-                  className={`h-6 w-6 rounded-full flex justify-center items-center cursor-pointer transition-all ease-in duration-200
+                <div className="transition-all duration-300 ease-in-out cursor-pointer">
+                  <div
+                    onClick={pause == false ? pauseGame : unpauseGame}
+                    className={`h-5 w-5 md:h-6 md:w-6 rounded-full flex justify-center items-center
                   ${
                     theme == "dark"
                       ? "bg-cyan-600 hover:bg-cyan-500 text-white/60"
                       : "bg-cyan-500 hover:bg-cyan-600 text-white/80"
                   } 
                   `}>
-                  {pause == false ? (
-                    <svg
-                      aria-hidden="true"
-                      className={`w-4 h-4`}
-                      focusable="false"
-                      data-prefix="fas"
-                      data-icon="paper-plane"
-                      role="img"
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="10 0 320 512">
-                      <path
-                        fill="currentColor"
-                        d="M48 64C21.5 64 0 85.5 0 112V400c0 26.5 21.5 48 48 48H80c26.5 0 48-21.5 48-48V112c0-26.5-21.5-48-48-48H48zm192 0c-26.5 0-48 21.5-48 48V400c0 26.5 21.5 48 48 48h32c26.5 0 48-21.5 48-48V112c0-26.5-21.5-48-48-48H240z"></path>
-                    </svg>
-                  ) : (
-                    <svg
-                      aria-hidden="true"
-                      className={`w-3 h-3`}
-                      focusable="false"
-                      data-prefix="fas"
-                      data-icon="paper-plane"
-                      role="img"
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="10 0 320 512">
-                      <path
-                        fill="currentColor"
-                        d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"></path>
-                    </svg>
-                  )}
+                    {pause == false ? (
+                      <svg
+                        aria-hidden="true"
+                        className={`w-3 h-3 md:h-4 md:w-4`}
+                        focusable="false"
+                        data-prefix="fas"
+                        data-icon="paper-plane"
+                        role="img"
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="10 0 320 512">
+                        <path
+                          fill="currentColor"
+                          d="M48 64C21.5 64 0 85.5 0 112V400c0 26.5 21.5 48 48 48H80c26.5 0 48-21.5 48-48V112c0-26.5-21.5-48-48-48H48zm192 0c-26.5 0-48 21.5-48 48V400c0 26.5 21.5 48 48 48h32c26.5 0 48-21.5 48-48V112c0-26.5-21.5-48-48-48H240z"></path>
+                      </svg>
+                    ) : (
+                      <svg
+                        aria-hidden="true"
+                        className={`w-3 h-3`}
+                        focusable="false"
+                        data-prefix="fas"
+                        data-icon="paper-plane"
+                        role="img"
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="10 0 320 512">
+                        <path
+                          fill="currentColor"
+                          d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"></path>
+                      </svg>
+                    )}
+                  </div>
                 </div>
               </div>
             </div>
@@ -1068,14 +1070,14 @@ export default function Sudoku(props) {
                 {pause == true ? (
                   <div
                     onClick={unpauseGame}
-                    className={`absolute inset-0 m-auto w-20 h-20 rounded-full transition-all flex justify-center items-center duration-300 hover:scale-110 ease-in-out cursor-pointer text-white ${
+                    className={`absolute inset-0 m-auto w-16 h-16 md:w-20 md:h-20 rounded-full transition-all flex justify-center items-center duration-300 hover:scale-110 ease-in-out cursor-pointer text-white ${
                       theme == "dark"
                         ? "bg-cyan-600 hover:bg-cyan-500"
                         : "bg-cyan-500 hover:bg-cyan-600"
                     }`}>
                     <svg
                       aria-hidden="true"
-                      className={`w-10 h-10`}
+                      className={`w-8 h-8 md:w-10 md:h-10`}
                       focusable="false"
                       data-prefix="fas"
                       data-icon="paper-plane"
