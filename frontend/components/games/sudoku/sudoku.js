@@ -195,7 +195,11 @@ export default function Sudoku(props) {
 
   const selectCell = (cell, square, row, col, val) => {
     if (cell == null || square == null || row == null || col == null) return;
-
+    if (pause == true) return;
+    if (gameOverRef.current == 3) {
+      gameOver();
+      return;
+    }
     setCurrentElement({
       currentCell: cell,
       currentSquare: square,
@@ -222,11 +226,21 @@ export default function Sudoku(props) {
   };
 
   const keyUpHandler = (event) => {
+    if (pause == true) return;
+    if (gameOverRef.current == 3) {
+      gameOver();
+      return;
+    }
     if (isKeyNumber(event.key)) fillCell(event.key);
     else if (isKeyArrow(event.key)) shiftCell(event.key);
   };
 
   const shiftCell = (key) => {
+    if (pause == true) return;
+    if (gameOverRef.current == 3) {
+      gameOver();
+      return;
+    }
     if (
       currentElement.currentSquare == null ||
       currentElement.currentCell == null ||
@@ -295,6 +309,7 @@ export default function Sudoku(props) {
   };
 
   const fillCell = (input) => {
+    if (pause == true) return;
     if (
       currentElement.currentSquare == null ||
       currentElement.currentCell == null ||
@@ -537,6 +552,11 @@ export default function Sudoku(props) {
   };
 
   const undoMove = () => {
+    if (pause == true) return;
+    if (gameOverRef.current == 3) {
+      gameOver();
+      return;
+    }
     if (movesList.current.length != 1) movesList.current.pop();
 
     const previousState = movesList.current[movesList.current.length - 1];
@@ -545,6 +565,11 @@ export default function Sudoku(props) {
   };
 
   const eraseValue = () => {
+    if (pause == true) return;
+    if (gameOverRef.current == 3) {
+      gameOver();
+      return;
+    }
     if (
       currentElement.currentSquare == null ||
       currentElement.currentCell == null ||
@@ -586,6 +611,7 @@ export default function Sudoku(props) {
       for (var j = 0; j < grid[i].length; j++) {
         if (grid[i][j].placement != "initial") grid[i][j].value = null;
         grid[i][j].error = false;
+        grid[i][j].notes.deleteNotes();
       }
     }
     setGrid(copyGrid(grid));
@@ -603,6 +629,11 @@ export default function Sudoku(props) {
   };
 
   const giveHint = () => {
+    if (pause == true) return;
+    if (gameOverRef.current == 3) {
+      gameOver();
+      return;
+    }
     if (hints == 0) return;
 
     const emptyCells = [];
@@ -652,6 +683,22 @@ export default function Sudoku(props) {
     });
   };
 
+  const pauseGame = () => {
+    setPause(true);
+    setCurrentElement({
+      currentCell: null,
+      currentSquare: null,
+      currentRow: null,
+      currentColumn: null,
+      currentValue: null,
+    });
+  };
+
+  const unpauseGame = () => {
+    setReset(true);
+    setPause(false);
+  };
+
   const [currentElement, setCurrentElement] = useState({
     currentCell: null,
     currentSquare: null,
@@ -663,6 +710,7 @@ export default function Sudoku(props) {
   const [notesFlag, setNotesFlag] = useState(false);
   const [mistakes, setMistakes] = useState(0);
   const [hints, setHints] = useState(3);
+  const [pause, setPause] = useState(false);
   const [reset, setReset] = useState(false);
   const [timer, setTimer] = useState({ hour: 0, minute: 0, second: 0 });
   const [grid, setGrid] = useState(createGrid());
@@ -685,6 +733,11 @@ export default function Sudoku(props) {
     intervalID.current = startTimer();
     setReset(false);
   }, [reset]);
+
+  useEffect(() => {
+    if (pause == false) return;
+    clearInterval(intervalID.current);
+  }, [pause]);
 
   useEffect(() => {
     document.addEventListener("keyup", keyUpHandler);
@@ -725,7 +778,7 @@ export default function Sudoku(props) {
                     ? "text-white hover:bg-gray-700"
                     : "text-neutral-600 hover:text-neutral-900 hover:bg-slate-300"
                 }`}>
-                <button className="text-sm font-normal">Easy</button>
+                <button className="text-sm ">Easy</button>
               </Menu.Item>
               <Menu.Item
                 onClick={() => setDifficulty("Medium")}
@@ -734,7 +787,7 @@ export default function Sudoku(props) {
                     ? "text-white hover:bg-gray-700"
                     : "text-neutral-600 hover:text-neutral-900 hover:bg-slate-300"
                 }`}>
-                <button className="text-sm font-normal">Medium</button>
+                <button className="text-sm ">Medium</button>
               </Menu.Item>
               <Menu.Item
                 onClick={() => setDifficulty("Hard")}
@@ -743,7 +796,7 @@ export default function Sudoku(props) {
                     ? "text-white hover:bg-gray-700"
                     : "text-neutral-600 hover:text-neutral-900 hover:bg-slate-300"
                 }`}>
-                <button className="text-sm font-normal">Hard</button>
+                <button className="text-sm ">Hard</button>
               </Menu.Item>
               <Menu.Item
                 onClick={() => setDifficulty("Extreme")}
@@ -752,7 +805,7 @@ export default function Sudoku(props) {
                     ? "text-white hover:bg-gray-700"
                     : "text-neutral-600 hover:text-neutral-900 hover:bg-slate-300"
                 }`}>
-                <button className="text-sm font-normal">Extreme</button>
+                <button className="text-sm ">Extreme</button>
               </Menu.Item>
               <Menu.Item
                 onClick={() => setDifficulty("Evil")}
@@ -761,7 +814,7 @@ export default function Sudoku(props) {
                     ? "text-white hover:bg-gray-700"
                     : "text-neutral-600 hover:text-neutral-900 hover:bg-slate-300"
                 }`}>
-                <button className="text-sm font-normal">Evil</button>
+                <button className="text-sm ">Evil</button>
               </Menu.Item>
             </Menu.Items>
           </Transition>
@@ -771,13 +824,13 @@ export default function Sudoku(props) {
             <div className="flex justify-between self-end w-full col-span-1 h-8 lg:col-span-5">
               <div className="flex">
                 <h1
-                  className={`text-md font-mono transition-all ease-in duration-200 ${
+                  className={`text-md  transition-all ease-in duration-200 ${
                     theme == "dark" ? "text-white/60" : "text-neutral-600/60"
                   }`}>
                   Difficulty:
                 </h1>
                 <h1
-                  className={`text-md font-mono ml-2 transition-all ease-in duration-200 ${
+                  className={`text-md  ml-2 transition-all ease-in duration-200 ${
                     theme == "dark" ? "text-cyan-600" : "text-cyan-500"
                   }`}>
                   {difficulty}
@@ -785,21 +838,62 @@ export default function Sudoku(props) {
               </div>
               <div>
                 <h1
-                  className={`text-md font-mono transition-all ease-in duration-200 ${
+                  className={`text-md  transition-all ease-in duration-200 ${
                     theme == "dark" ? "text-white/60" : "text-neutral-600/60"
                   }`}>
                   Mistakes: {mistakes}/3
                 </h1>
               </div>
-              <div
-                className={`text-md font-mono transition-all ease-in duration-200 ${
-                  theme == "dark" ? "text-white/60" : "text-neutral-600/60"
-                }`}>
-                {showTime()}
+              <div className="flex flex-row gap-x-2">
+                <div
+                  className={`text-md  transition-all ease-in duration-200  
+                  ${theme == "dark" ? "text-white/60" : "text-neutral-600/60"}
+                  `}>
+                  {showTime()}
+                </div>
+                <div
+                  onClick={pause == false ? pauseGame : unpauseGame}
+                  className={`h-6 w-6 rounded-full flex justify-center items-center cursor-pointer transition-all ease-in duration-200
+                  ${
+                    theme == "dark"
+                      ? "bg-cyan-600 hover:bg-cyan-500 text-white/60"
+                      : "bg-cyan-500 hover:bg-cyan-600 text-white/80"
+                  } 
+                  `}>
+                  {pause == false ? (
+                    <svg
+                      aria-hidden="true"
+                      className={`w-4 h-4`}
+                      focusable="false"
+                      data-prefix="fas"
+                      data-icon="paper-plane"
+                      role="img"
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="10 0 320 512">
+                      <path
+                        fill="currentColor"
+                        d="M48 64C21.5 64 0 85.5 0 112V400c0 26.5 21.5 48 48 48H80c26.5 0 48-21.5 48-48V112c0-26.5-21.5-48-48-48H48zm192 0c-26.5 0-48 21.5-48 48V400c0 26.5 21.5 48 48 48h32c26.5 0 48-21.5 48-48V112c0-26.5-21.5-48-48-48H240z"></path>
+                    </svg>
+                  ) : (
+                    <svg
+                      aria-hidden="true"
+                      className={`w-3 h-3`}
+                      focusable="false"
+                      data-prefix="fas"
+                      data-icon="paper-plane"
+                      role="img"
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="10 0 320 512">
+                      <path
+                        fill="currentColor"
+                        d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"></path>
+                    </svg>
+                  )}
+                </div>
               </div>
             </div>
-            <div className="flex justify-start self-start w-full col-span-1 lg:col-span-3 ">
-              <div className="grid grid-cols-3 w-96 2xl:w-[576px] xl:w-[528px] md:w-[480px] sm:w-[432px]">
+            <div className="flex justify-start self-start w-full col-span-1 lg:col-span-3">
+              <div className="grid grid-cols-3 relative w-96 2xl:w-[576px] xl:w-[528px] md:w-[480px] sm:w-[432px]">
                 <div
                   className={`flex items-center justify-center aspect-square 2xl:h-48 xl:h-44 md:h-40 sm:h-36 h-32 border-l-2 border-t-2 
                 ${
@@ -810,6 +904,7 @@ export default function Sudoku(props) {
                     square={0}
                     cells={grid[0]}
                     selectCell={selectCell}
+                    pause={pause}
                     current={[
                       currentElement.currentCell,
                       currentElement.currentSquare,
@@ -828,6 +923,7 @@ export default function Sudoku(props) {
                     square={1}
                     cells={grid[1]}
                     selectCell={selectCell}
+                    pause={pause}
                     current={[
                       currentElement.currentCell,
                       currentElement.currentSquare,
@@ -846,6 +942,7 @@ export default function Sudoku(props) {
                     square={2}
                     cells={grid[2]}
                     selectCell={selectCell}
+                    pause={pause}
                     current={[
                       currentElement.currentCell,
                       currentElement.currentSquare,
@@ -864,6 +961,7 @@ export default function Sudoku(props) {
                     square={3}
                     cells={grid[3]}
                     selectCell={selectCell}
+                    pause={pause}
                     current={[
                       currentElement.currentCell,
                       currentElement.currentSquare,
@@ -882,6 +980,7 @@ export default function Sudoku(props) {
                     square={4}
                     cells={grid[4]}
                     selectCell={selectCell}
+                    pause={pause}
                     current={[
                       currentElement.currentCell,
                       currentElement.currentSquare,
@@ -900,6 +999,7 @@ export default function Sudoku(props) {
                     square={5}
                     cells={grid[5]}
                     selectCell={selectCell}
+                    pause={pause}
                     current={[
                       currentElement.currentCell,
                       currentElement.currentSquare,
@@ -918,6 +1018,7 @@ export default function Sudoku(props) {
                     square={6}
                     cells={grid[6]}
                     selectCell={selectCell}
+                    pause={pause}
                     current={[
                       currentElement.currentCell,
                       currentElement.currentSquare,
@@ -936,6 +1037,7 @@ export default function Sudoku(props) {
                     square={7}
                     cells={grid[7]}
                     selectCell={selectCell}
+                    pause={pause}
                     current={[
                       currentElement.currentCell,
                       currentElement.currentSquare,
@@ -954,6 +1056,7 @@ export default function Sudoku(props) {
                     square={8}
                     cells={grid[8]}
                     selectCell={selectCell}
+                    pause={pause}
                     current={[
                       currentElement.currentCell,
                       currentElement.currentSquare,
@@ -962,6 +1065,31 @@ export default function Sudoku(props) {
                       currentElement.currentValue,
                     ]}></SudokuSquare>
                 </div>
+                {pause == true ? (
+                  <div
+                    onClick={unpauseGame}
+                    className={`absolute inset-0 m-auto w-20 h-20 rounded-full transition-all flex justify-center items-center duration-300 hover:scale-110 ease-in-out cursor-pointer text-white ${
+                      theme == "dark"
+                        ? "bg-cyan-600 hover:bg-cyan-500"
+                        : "bg-cyan-500 hover:bg-cyan-600"
+                    }`}>
+                    <svg
+                      aria-hidden="true"
+                      className={`w-10 h-10`}
+                      focusable="false"
+                      data-prefix="fas"
+                      data-icon="paper-plane"
+                      role="img"
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 336 512">
+                      <path
+                        fill="currentColor"
+                        d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"></path>
+                    </svg>
+                  </div>
+                ) : (
+                  ""
+                )}
               </div>
             </div>
             <div className="flex justify-end self-start col-span-1 lg:col-span-2 2xl:w-[400px] xl:w-[352px] lg:w-[336px] md:w-[480px] sm:w-[432px] w-[384px]">
@@ -970,7 +1098,7 @@ export default function Sudoku(props) {
                   <div className="flex flex-col text-center">
                     <div
                       onClick={giveHint}
-                      className={`flex relative justify-center items-center rounded-full lg:w-14 xl:w-[72px] 2xl:w-20 w-16 aspect-square cursor-pointer font-mono transition-all ease-in-out duration-200
+                      className={`flex relative justify-center items-center rounded-full lg:w-14 xl:w-[72px] 2xl:w-20 w-16 aspect-square cursor-pointer  transition-all ease-in-out duration-200
                     ${
                       theme == "dark"
                         ? "text-cyan-600 hover:text-cyan-500 bg-gray-400/10 hover:bg-gray-300/20 "
@@ -990,7 +1118,7 @@ export default function Sudoku(props) {
                           d="M464 256A208 208 0 1 0 48 256a208 208 0 1 0 416 0zM0 256a256 256 0 1 1 512 0A256 256 0 1 1 0 256zm177.6 62.1C192.8 334.5 218.8 352 256 352s63.2-17.5 78.4-33.9c9-9.7 24.2-10.4 33.9-1.4s10.4 24.2 1.4 33.9c-22 23.8-60 49.4-113.6 49.4s-91.7-25.5-113.6-49.4c-9-9.7-8.4-24.9 1.4-33.9s24.9-8.4 33.9 1.4zM144.4 208a32 32 0 1 1 64 0 32 32 0 1 1 -64 0zm165.8 21.7c-7.6 8.1-20.2 8.5-28.3 .9s-8.5-20.2-.9-28.3c14.5-15.5 35.2-22.3 54.6-22.3s40.1 6.8 54.6 22.3c7.6 8.1 7.1 20.7-.9 28.3s-20.7 7.1-28.3-.9c-5.5-5.8-14.8-9.7-25.4-9.7s-19.9 3.8-25.4 9.7z"></path>
                       </svg>
                       <div
-                        className={`absolute inline-flex items-center justify-center w-6 h-6 text-sm font-mono text-white rounded-full -top-1 -right-1 transition-all ease-in-out duration-500
+                        className={`absolute inline-flex items-center justify-center w-6 h-6 text-sm  text-white rounded-full -top-1 -right-1 transition-all ease-in-out duration-500
                       ${
                         hints > 0
                           ? theme == "dark"
@@ -1004,7 +1132,7 @@ export default function Sudoku(props) {
                       </div>
                     </div>
                     <p
-                      className={`text-sm mt-1 font-mono transition-all ease-in-out duration-200
+                      className={`text-sm mt-1  transition-all ease-in-out duration-200
                     ${theme == "dark" ? "text-gray-300" : "text-neutral-900"}`}>
                       Hint
                     </p>
@@ -1015,7 +1143,7 @@ export default function Sudoku(props) {
                         setNotesFlag(!notesFlag);
                         notes.current = !notes.current;
                       }}
-                      className={`flex relative justify-center items-center rounded-full lg:w-14 xl:w-[72px] 2xl:w-20 w-16 aspect-square cursor-pointer font-mono transition-all ease-in-out duration-200
+                      className={`flex relative justify-center items-center rounded-full lg:w-14 xl:w-[72px] 2xl:w-20 w-16 aspect-square cursor-pointer  transition-all ease-in-out duration-200
                     ${
                       theme == "dark"
                         ? "text-cyan-600 hover:text-cyan-500 bg-gray-400/10 hover:bg-gray-300/20 "
@@ -1035,7 +1163,7 @@ export default function Sudoku(props) {
                           d="M410.3 231l11.3-11.3-33.9-33.9-62.1-62.1L291.7 89.8l-11.3 11.3-22.6 22.6L58.6 322.9c-10.4 10.4-18 23.3-22.2 37.4L1 480.7c-2.5 8.4-.2 17.5 6.1 23.7s15.3 8.5 23.7 6.1l120.3-35.4c14.1-4.2 27-11.8 37.4-22.2L387.7 253.7 410.3 231zM160 399.4l-9.1 22.7c-4 3.1-8.5 5.4-13.3 6.9L59.4 452l23-78.1c1.4-4.9 3.8-9.4 6.9-13.3l22.7-9.1v32c0 8.8 7.2 16 16 16h32zM362.7 18.7L348.3 33.2 325.7 55.8 314.3 67.1l33.9 33.9 62.1 62.1 33.9 33.9 11.3-11.3 22.6-22.6 14.5-14.5c25-25 25-65.5 0-90.5L453.3 18.7c-25-25-65.5-25-90.5 0zm-47.4 168l-144 144c-6.2 6.2-16.4 6.2-22.6 0s-6.2-16.4 0-22.6l144-144c6.2-6.2 16.4-6.2 22.6 0s6.2 16.4 0 22.6z"></path>
                       </svg>
                       <div
-                        className={`absolute inline-flex items-center justify-center w-10 h-6 text-xs font-mono text-white rounded-full -top-1 -right-1 transition-all ease-in-out duration-500 
+                        className={`absolute inline-flex items-center justify-center w-10 h-6 text-xs  text-white rounded-full -top-1 -right-1 transition-all ease-in-out duration-500 
                       ${
                         notesFlag == false
                           ? theme == "dark"
@@ -1049,7 +1177,7 @@ export default function Sudoku(props) {
                       </div>
                     </div>
                     <p
-                      className={`text-sm mt-1 font-mono transition-all ease-in-out duration-200
+                      className={`text-sm mt-1  transition-all ease-in-out duration-200
                     ${theme == "dark" ? "text-gray-300" : "text-neutral-900"}`}>
                       Notes
                     </p>
@@ -1057,7 +1185,7 @@ export default function Sudoku(props) {
                   <div className="flex flex-col text-center">
                     <div
                       onClick={() => eraseValue()}
-                      className={`flex justify-center items-center rounded-full lg:w-14 xl:w-[72px] 2xl:w-20 w-16 aspect-square cursor-pointer font-mono transition-all ease-in-out duration-200
+                      className={`flex justify-center items-center rounded-full lg:w-14 xl:w-[72px] 2xl:w-20 w-16 aspect-square cursor-pointer  transition-all ease-in-out duration-200
                     ${
                       theme == "dark"
                         ? "text-cyan-600 hover:text-cyan-500 bg-gray-400/10 hover:bg-gray-300/20 "
@@ -1078,7 +1206,7 @@ export default function Sudoku(props) {
                       </svg>
                     </div>
                     <p
-                      className={`text-sm mt-1 font-mono transition-all ease-in-out duration-200 
+                      className={`text-sm mt-1  transition-all ease-in-out duration-200 
                     ${theme == "dark" ? "text-gray-300" : "text-neutral-900"}`}>
                       Erase
                     </p>
@@ -1086,7 +1214,7 @@ export default function Sudoku(props) {
                   <div className="flex flex-col text-center ">
                     <div
                       onClick={() => undoMove()}
-                      className={`flex justify-center items-center rounded-full lg:w-14 xl:w-[72px] 2xl:w-20 w-16 aspect-square cursor-pointer font-mono transition-all ease-in-out duration-200
+                      className={`flex justify-center items-center rounded-full lg:w-14 xl:w-[72px] 2xl:w-20 w-16 aspect-square cursor-pointer  transition-all ease-in-out duration-200
                     ${
                       theme == "dark"
                         ? "text-cyan-600 hover:text-cyan-500 bg-gray-400/10 hover:bg-gray-300/20 "
@@ -1107,7 +1235,7 @@ export default function Sudoku(props) {
                       </svg>
                     </div>
                     <p
-                      className={`text-sm mt-1 font-mono transition-all ease-in-out duration-200
+                      className={`text-sm mt-1  transition-all ease-in-out duration-200
                     ${theme == "dark" ? "text-gray-300" : "text-neutral-900"}`}>
                       Undo
                     </p>
@@ -1117,7 +1245,7 @@ export default function Sudoku(props) {
                   <div className="grid grid-cols-9 lg:grid-cols-3 lg:grid-rows-3 lg:gap-2 h-full content-center items-center">
                     <div
                       onClick={() => fillCell(1)}
-                      className={`transition-colors ease-in-out duration-300 flex justify-center items-center font-mono text-5xl cursor-pointer lg:rounded h-full w-full 
+                      className={`transition-colors ease-in-out duration-300 flex justify-center items-center  text-5xl cursor-pointer lg:rounded h-full w-full 
                     ${
                       theme == "dark"
                         ? "text-cyan-600 hover:text-cyan-500 lg:bg-cyan-600 hover:lg:bg-cyan-500 lg:text-white hover:lg:text-white"
@@ -1127,7 +1255,7 @@ export default function Sudoku(props) {
                     </div>
                     <div
                       onClick={() => fillCell(2)}
-                      className={`transition-colors ease-in-out duration-300 flex justify-center items-center font-mono text-5xl cursor-pointer lg:rounded h-full w-full 
+                      className={`transition-colors ease-in-out duration-300 flex justify-center items-center  text-5xl cursor-pointer lg:rounded h-full w-full 
                     ${
                       theme == "dark"
                         ? "text-cyan-600 hover:text-cyan-500 lg:bg-cyan-600 hover:lg:bg-cyan-500 lg:text-white hover:lg:text-white"
@@ -1137,7 +1265,7 @@ export default function Sudoku(props) {
                     </div>
                     <div
                       onClick={() => fillCell(3)}
-                      className={`transition-colors ease-in-out duration-300 flex justify-center items-center font-mono text-5xl cursor-pointer lg:rounded h-full w-full 
+                      className={`transition-colors ease-in-out duration-300 flex justify-center items-center  text-5xl cursor-pointer lg:rounded h-full w-full 
                     ${
                       theme == "dark"
                         ? "text-cyan-600 hover:text-cyan-500 lg:bg-cyan-600 hover:lg:bg-cyan-500 lg:text-white hover:lg:text-white"
@@ -1147,7 +1275,7 @@ export default function Sudoku(props) {
                     </div>
                     <div
                       onClick={() => fillCell(4)}
-                      className={`transition-colors ease-in-out duration-300 flex justify-center items-center font-mono text-5xl cursor-pointer lg:rounded h-full w-full 
+                      className={`transition-colors ease-in-out duration-300 flex justify-center items-center  text-5xl cursor-pointer lg:rounded h-full w-full 
                     ${
                       theme == "dark"
                         ? "text-cyan-600 hover:text-cyan-500 lg:bg-cyan-600 hover:lg:bg-cyan-500 lg:text-white hover:lg:text-white"
@@ -1157,7 +1285,7 @@ export default function Sudoku(props) {
                     </div>
                     <div
                       onClick={() => fillCell(5)}
-                      className={`transition-colors ease-in-out duration-300 flex justify-center items-center font-mono text-5xl cursor-pointer lg:rounded h-full w-full 
+                      className={`transition-colors ease-in-out duration-300 flex justify-center items-center  text-5xl cursor-pointer lg:rounded h-full w-full 
                     ${
                       theme == "dark"
                         ? "text-cyan-600 hover:text-cyan-500 lg:bg-cyan-600 hover:lg:bg-cyan-500 lg:text-white hover:lg:text-white"
@@ -1167,7 +1295,7 @@ export default function Sudoku(props) {
                     </div>
                     <div
                       onClick={() => fillCell(6)}
-                      className={`transition-colors ease-in-out duration-300 flex justify-center items-center font-mono text-5xl cursor-pointer lg:rounded h-full w-full 
+                      className={`transition-colors ease-in-out duration-300 flex justify-center items-center  text-5xl cursor-pointer lg:rounded h-full w-full 
                     ${
                       theme == "dark"
                         ? "text-cyan-600 hover:text-cyan-500 lg:bg-cyan-600 hover:lg:bg-cyan-500 lg:text-white hover:lg:text-white"
@@ -1177,7 +1305,7 @@ export default function Sudoku(props) {
                     </div>
                     <div
                       onClick={() => fillCell(7)}
-                      className={`transition-colors ease-in-out duration-300 flex justify-center items-center font-mono text-5xl cursor-pointer lg:rounded h-full w-full 
+                      className={`transition-colors ease-in-out duration-300 flex justify-center items-center  text-5xl cursor-pointer lg:rounded h-full w-full 
                     ${
                       theme == "dark"
                         ? "text-cyan-600 hover:text-cyan-500 lg:bg-cyan-600 hover:lg:bg-cyan-500 lg:text-white hover:lg:text-white"
@@ -1187,7 +1315,7 @@ export default function Sudoku(props) {
                     </div>
                     <div
                       onClick={() => fillCell(8)}
-                      className={`transition-colors ease-in-out duration-300 flex justify-center items-center font-mono text-5xl cursor-pointer lg:rounded h-full w-full 
+                      className={`transition-colors ease-in-out duration-300 flex justify-center items-center  text-5xl cursor-pointer lg:rounded h-full w-full 
                     ${
                       theme == "dark"
                         ? "text-cyan-600 hover:text-cyan-500 lg:bg-cyan-600 hover:lg:bg-cyan-500 lg:text-white hover:lg:text-white"
@@ -1197,7 +1325,7 @@ export default function Sudoku(props) {
                     </div>
                     <div
                       onClick={() => fillCell(9)}
-                      className={`transition-colors ease-in-out duration-300 flex justify-center items-center font-mono text-5xl cursor-pointer lg:rounded h-full w-full 
+                      className={`transition-colors ease-in-out duration-300 flex justify-center items-center  text-5xl cursor-pointer lg:rounded h-full w-full 
                     ${
                       theme == "dark"
                         ? "text-cyan-600 hover:text-cyan-500 lg:bg-cyan-600 hover:lg:bg-cyan-500 lg:text-white hover:lg:text-white"
@@ -1209,7 +1337,7 @@ export default function Sudoku(props) {
                 </div>
                 <div className="hidden grid-cols-2 order-3 transition-all ease-in duration-200 content-end h-10 xl:h-12 lg:grid">
                   <div
-                    className={`flex justify-start font-mono ${
+                    className={`flex justify-start  ${
                       theme == "dark" ? "text-gray-300" : "text-neutral-900"
                     }`}>
                     <button
@@ -1225,7 +1353,7 @@ export default function Sudoku(props) {
                     </button>
                   </div>
                   <div
-                    className={`flex justify-end font-mono ${
+                    className={`flex justify-end  ${
                       theme == "dark" ? "text-gray-300" : "text-neutral-900"
                     }`}>
                     <button

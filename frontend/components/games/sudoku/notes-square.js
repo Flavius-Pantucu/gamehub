@@ -2,9 +2,6 @@ import { useEffect } from "react";
 
 export default function NotesSquare(props) {
   const notes = props.notes;
-  useEffect(() => {
-    console.log(notes);
-  }, []);
   return (
     <div className="w-full h-full p-1.5">
       <div className="w-full h-full grid grid-cols-3 grid-rows-3">

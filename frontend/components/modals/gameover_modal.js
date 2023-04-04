@@ -20,12 +20,12 @@ export default function GameOverModal(props) {
           ${theme == "dark" ? "bg-gray-700" : "bg-gray-100"}`}>
           <div className="px-6 py-6 lg:px-8 w-full">
             <h1
-              className={`flex justify-center font-mono mb-4 text-2xl font-bold 
+              className={`flex justify-center  mb-4 text-2xl font-bold 
               ${theme == "dark" ? "text-white" : "text-neutral-900"}`}>
               Game Over
             </h1>
             <h1
-              className={`flex justify-center font-mono mb-4 text-sm text-center font-normal 
+              className={`flex justify-center  mb-4 text-sm text-center font-normal 
               ${theme == "dark" ? "text-gray-300/80" : "text-gray-400"}`}>
               You have accumulated too many mistakes to continue playing.
             </h1>
