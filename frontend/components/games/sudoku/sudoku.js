@@ -310,6 +310,7 @@ export default function Sudoku(props) {
 
   const fillCell = (input) => {
     if (pause == true) return;
+
     if (
       currentElement.currentSquare == null ||
       currentElement.currentCell == null ||
@@ -317,6 +318,7 @@ export default function Sudoku(props) {
       currentElement.currentColumn == null
     )
       return;
+
     if (
       grid[currentElement.currentSquare][currentElement.currentCell]
         .placement == "initial"
@@ -343,7 +345,6 @@ export default function Sudoku(props) {
         currentElement.currentSquare,
         currentElement.currentCell
       );
-
     checkPosition();
     setGrid(copyGrid(grid));
 
@@ -431,6 +432,20 @@ export default function Sudoku(props) {
     grid[square][cell].value = null;
     grid[square][cell].error = false;
     setNote(value, square, cell, "setFlip");
+  };
+
+  const checkDigits = () => {
+    digitsCount.fill(0);
+    for (var i = 0; i < grid.length; i++) {
+      for (var j = 0; j < grid[i].length; j++) {
+        if (
+          grid[i][j].placement == "initial" ||
+          grid[i][j].placement == "right"
+        )
+          digitsCount[grid[i][j].value - 1]++;
+      }
+    }
+    setDigitsCount([...digitsCount]);
   };
 
   const checkPosition = () => {
@@ -623,9 +638,22 @@ export default function Sudoku(props) {
       currentValue: null,
     });
     setMistakes(0);
+    setHints(3);
     gameOverRef.current = 0;
     setTimer({ hour: 0, minute: 0, second: 0 });
-    setReset(true);
+    movesList.current = [
+      {
+        grid: copyGrid(grid),
+        current: {
+          currentCell: null,
+          currentSquare: null,
+          currentRow: null,
+          currentColumn: null,
+          currentValue: null,
+        },
+      },
+    ];
+    reset.current = true;
   };
 
   const giveHint = () => {
@@ -695,7 +723,7 @@ export default function Sudoku(props) {
   };
 
   const unpauseGame = () => {
-    setReset(true);
+    reset.current = true;
     setPause(false);
   };
 
@@ -711,10 +739,11 @@ export default function Sudoku(props) {
   const [mistakes, setMistakes] = useState(0);
   const [hints, setHints] = useState(3);
   const [pause, setPause] = useState(false);
-  const [reset, setReset] = useState(false);
   const [timer, setTimer] = useState({ hour: 0, minute: 0, second: 0 });
   const [grid, setGrid] = useState(createGrid());
+  const [digitsCount, setDigitsCount] = useState(new Array(9));
 
+  const reset = useRef(false);
   const movesList = useRef([{ grid: copyGrid(grid), current: currentElement }]);
   const intervalID = useRef(0);
   const notes = useRef(false);
@@ -728,16 +757,20 @@ export default function Sudoku(props) {
   }, []);
 
   useEffect(() => {
-    if (reset == false) return;
+    if (reset.current == false) return;
     clearInterval(intervalID.current);
     intervalID.current = startTimer();
-    setReset(false);
-  }, [reset]);
+    reset.current = false;
+  }, [reset.current]);
 
   useEffect(() => {
     if (pause == false) return;
     clearInterval(intervalID.current);
   }, [pause]);
+
+  useEffect(() => {
+    checkDigits();
+  }, [grid]);
 
   useEffect(() => {
     document.addEventListener("keyup", keyUpHandler);
@@ -1246,93 +1279,138 @@ export default function Sudoku(props) {
                 <div className="order-1 lg:order-2 2xl:h-[400px] xl:h-[352px] lg:h-[336px] h-20">
                   <div className="grid grid-cols-9 lg:grid-cols-3 lg:grid-rows-3 lg:gap-2 h-full content-center items-center">
                     <div
-                      onClick={() => fillCell(1)}
-                      className={`transition-colors ease-in-out duration-300 flex justify-center items-center  text-5xl cursor-pointer lg:rounded h-full w-full 
-                    ${
-                      theme == "dark"
-                        ? "text-cyan-600 hover:text-cyan-500 lg:bg-cyan-600 hover:lg:bg-cyan-500 lg:text-white hover:lg:text-white"
-                        : "text-cyan-500 hover:text-cyan-600 lg:bg-gray-300/20 hover:lg:bg-gray-300/40"
-                    }`}>
+                      onClick={digitsCount[0] != 9 ? () => fillCell(1) : null}
+                      className={`transition-colors ease-in-out duration-300 flex justify-center items-center text-5xl lg:rounded h-full w-full 
+                      ${
+                        digitsCount[0] == 9
+                          ? "opacity-0 cursor-default"
+                          : "cursor-pointer"
+                      }
+                      ${
+                        theme == "dark"
+                          ? "text-cyan-600 hover:text-cyan-500 lg:bg-cyan-600 hover:lg:bg-cyan-500 lg:text-white hover:lg:text-white"
+                          : "text-cyan-500 hover:text-cyan-600 lg:bg-gray-300/20 hover:lg:bg-gray-300/40"
+                      }`}>
                       1
                     </div>
                     <div
-                      onClick={() => fillCell(2)}
-                      className={`transition-colors ease-in-out duration-300 flex justify-center items-center  text-5xl cursor-pointer lg:rounded h-full w-full 
-                    ${
-                      theme == "dark"
-                        ? "text-cyan-600 hover:text-cyan-500 lg:bg-cyan-600 hover:lg:bg-cyan-500 lg:text-white hover:lg:text-white"
-                        : "text-cyan-500 hover:text-cyan-600 lg:bg-gray-300/20 hover:lg:bg-gray-300/40"
-                    }`}>
+                      onClick={digitsCount[1] != 9 ? () => fillCell(2) : null}
+                      className={`transition-colors ease-in-out duration-300 flex justify-center items-center text-5xl cursor-pointer lg:rounded h-full w-full 
+                      ${
+                        digitsCount[1] == 9
+                          ? "opacity-0 cursor-default"
+                          : "cursor-pointer"
+                      }
+                      ${
+                        theme == "dark"
+                          ? "text-cyan-600 hover:text-cyan-500 lg:bg-cyan-600 hover:lg:bg-cyan-500 lg:text-white hover:lg:text-white"
+                          : "text-cyan-500 hover:text-cyan-600 lg:bg-gray-300/20 hover:lg:bg-gray-300/40"
+                      }`}>
                       2
                     </div>
                     <div
-                      onClick={() => fillCell(3)}
-                      className={`transition-colors ease-in-out duration-300 flex justify-center items-center  text-5xl cursor-pointer lg:rounded h-full w-full 
-                    ${
-                      theme == "dark"
-                        ? "text-cyan-600 hover:text-cyan-500 lg:bg-cyan-600 hover:lg:bg-cyan-500 lg:text-white hover:lg:text-white"
-                        : "text-cyan-500 hover:text-cyan-600 lg:bg-gray-300/20 hover:lg:bg-gray-300/40"
-                    }`}>
+                      onClick={digitsCount[2] != 9 ? () => fillCell(3) : null}
+                      className={`transition-colors ease-in-out duration-300 flex justify-center items-center text-5xl cursor-pointer lg:rounded h-full w-full 
+                      ${
+                        digitsCount[2] == 9
+                          ? "opacity-0 cursor-default"
+                          : "cursor-pointer"
+                      }
+                      ${
+                        theme == "dark"
+                          ? "text-cyan-600 hover:text-cyan-500 lg:bg-cyan-600 hover:lg:bg-cyan-500 lg:text-white hover:lg:text-white"
+                          : "text-cyan-500 hover:text-cyan-600 lg:bg-gray-300/20 hover:lg:bg-gray-300/40"
+                      }`}>
                       3
                     </div>
                     <div
-                      onClick={() => fillCell(4)}
-                      className={`transition-colors ease-in-out duration-300 flex justify-center items-center  text-5xl cursor-pointer lg:rounded h-full w-full 
-                    ${
-                      theme == "dark"
-                        ? "text-cyan-600 hover:text-cyan-500 lg:bg-cyan-600 hover:lg:bg-cyan-500 lg:text-white hover:lg:text-white"
-                        : "text-cyan-500 hover:text-cyan-600 lg:bg-gray-300/20 hover:lg:bg-gray-300/40"
-                    }`}>
+                      onClick={digitsCount[3] != 9 ? () => fillCell(4) : null}
+                      className={`transition-colors ease-in-out duration-300 flex justify-center items-center text-5xl cursor-pointer lg:rounded h-full w-full 
+                      ${
+                        digitsCount[3] == 9
+                          ? "opacity-0 cursor-default"
+                          : "cursor-pointer"
+                      }
+                      ${
+                        theme == "dark"
+                          ? "text-cyan-600 hover:text-cyan-500 lg:bg-cyan-600 hover:lg:bg-cyan-500 lg:text-white hover:lg:text-white"
+                          : "text-cyan-500 hover:text-cyan-600 lg:bg-gray-300/20 hover:lg:bg-gray-300/40"
+                      }`}>
                       4
                     </div>
                     <div
-                      onClick={() => fillCell(5)}
-                      className={`transition-colors ease-in-out duration-300 flex justify-center items-center  text-5xl cursor-pointer lg:rounded h-full w-full 
-                    ${
-                      theme == "dark"
-                        ? "text-cyan-600 hover:text-cyan-500 lg:bg-cyan-600 hover:lg:bg-cyan-500 lg:text-white hover:lg:text-white"
-                        : "text-cyan-500 hover:text-cyan-600 lg:bg-gray-300/20 hover:lg:bg-gray-300/40"
-                    }`}>
+                      onClick={digitsCount[4] != 9 ? () => fillCell(5) : null}
+                      className={`transition-colors ease-in-out duration-300 flex justify-center items-center text-5xl cursor-pointer lg:rounded h-full w-full 
+                      ${
+                        digitsCount[4] == 9
+                          ? "opacity-0 cursor-default"
+                          : "cursor-pointer"
+                      }
+                      ${
+                        theme == "dark"
+                          ? "text-cyan-600 hover:text-cyan-500 lg:bg-cyan-600 hover:lg:bg-cyan-500 lg:text-white hover:lg:text-white"
+                          : "text-cyan-500 hover:text-cyan-600 lg:bg-gray-300/20 hover:lg:bg-gray-300/40"
+                      }`}>
                       5
                     </div>
                     <div
-                      onClick={() => fillCell(6)}
-                      className={`transition-colors ease-in-out duration-300 flex justify-center items-center  text-5xl cursor-pointer lg:rounded h-full w-full 
-                    ${
-                      theme == "dark"
-                        ? "text-cyan-600 hover:text-cyan-500 lg:bg-cyan-600 hover:lg:bg-cyan-500 lg:text-white hover:lg:text-white"
-                        : "text-cyan-500 hover:text-cyan-600 lg:bg-gray-300/20 hover:lg:bg-gray-300/40"
-                    }`}>
+                      onClick={digitsCount[5] != 9 ? () => fillCell(6) : null}
+                      className={`transition-colors ease-in-out duration-300 flex justify-center items-center text-5xl cursor-pointer lg:rounded h-full w-full 
+                      ${
+                        digitsCount[5] == 9
+                          ? "opacity-0 cursor-default"
+                          : "cursor-pointer"
+                      }
+                      ${
+                        theme == "dark"
+                          ? "text-cyan-600 hover:text-cyan-500 lg:bg-cyan-600 hover:lg:bg-cyan-500 lg:text-white hover:lg:text-white"
+                          : "text-cyan-500 hover:text-cyan-600 lg:bg-gray-300/20 hover:lg:bg-gray-300/40"
+                      }`}>
                       6
                     </div>
                     <div
-                      onClick={() => fillCell(7)}
-                      className={`transition-colors ease-in-out duration-300 flex justify-center items-center  text-5xl cursor-pointer lg:rounded h-full w-full 
-                    ${
-                      theme == "dark"
-                        ? "text-cyan-600 hover:text-cyan-500 lg:bg-cyan-600 hover:lg:bg-cyan-500 lg:text-white hover:lg:text-white"
-                        : "text-cyan-500 hover:text-cyan-600 lg:bg-gray-300/20 hover:lg:bg-gray-300/40"
-                    }`}>
+                      onClick={digitsCount[6] != 9 ? () => fillCell(7) : null}
+                      className={`transition-colors ease-in-out duration-300 flex justify-center items-center text-5xl cursor-pointer lg:rounded h-full w-full 
+                      ${
+                        digitsCount[6] == 9
+                          ? "opacity-0 cursor-default"
+                          : "cursor-pointer"
+                      }
+                      ${
+                        theme == "dark"
+                          ? "text-cyan-600 hover:text-cyan-500 lg:bg-cyan-600 hover:lg:bg-cyan-500 lg:text-white hover:lg:text-white"
+                          : "text-cyan-500 hover:text-cyan-600 lg:bg-gray-300/20 hover:lg:bg-gray-300/40"
+                      }`}>
                       7
                     </div>
                     <div
-                      onClick={() => fillCell(8)}
-                      className={`transition-colors ease-in-out duration-300 flex justify-center items-center  text-5xl cursor-pointer lg:rounded h-full w-full 
-                    ${
-                      theme == "dark"
-                        ? "text-cyan-600 hover:text-cyan-500 lg:bg-cyan-600 hover:lg:bg-cyan-500 lg:text-white hover:lg:text-white"
-                        : "text-cyan-500 hover:text-cyan-600 lg:bg-gray-300/20 hover:lg:bg-gray-300/40"
-                    }`}>
+                      onClick={digitsCount[7] != 9 ? () => fillCell(8) : null}
+                      className={`transition-colors ease-in-out duration-300 flex justify-center items-center text-5xl cursor-pointer lg:rounded h-full w-full 
+                      ${
+                        digitsCount[7] == 9
+                          ? "opacity-0 cursor-default"
+                          : "cursor-pointer"
+                      }
+                     ${
+                       theme == "dark"
+                         ? "text-cyan-600 hover:text-cyan-500 lg:bg-cyan-600 hover:lg:bg-cyan-500 lg:text-white hover:lg:text-white"
+                         : "text-cyan-500 hover:text-cyan-600 lg:bg-gray-300/20 hover:lg:bg-gray-300/40"
+                     }`}>
                       8
                     </div>
                     <div
-                      onClick={() => fillCell(9)}
-                      className={`transition-colors ease-in-out duration-300 flex justify-center items-center  text-5xl cursor-pointer lg:rounded h-full w-full 
-                    ${
-                      theme == "dark"
-                        ? "text-cyan-600 hover:text-cyan-500 lg:bg-cyan-600 hover:lg:bg-cyan-500 lg:text-white hover:lg:text-white"
-                        : "text-cyan-500 hover:text-cyan-600 lg:bg-gray-300/20 hover:lg:bg-gray-300/40"
-                    }`}>
+                      onClick={digitsCount[8] != 9 ? () => fillCell(9) : null}
+                      className={`transition-colors ease-in-out duration-300 flex justify-center items-center text-5xl cursor-pointer lg:rounded h-full w-full 
+                      ${
+                        digitsCount[8] == 9
+                          ? "opacity-0 cursor-default"
+                          : "cursor-pointer"
+                      }
+                      ${
+                        theme == "dark"
+                          ? "text-cyan-600 hover:text-cyan-500 lg:bg-cyan-600 hover:lg:bg-cyan-500 lg:text-white hover:lg:text-white"
+                          : "text-cyan-500 hover:text-cyan-600 lg:bg-gray-300/20 hover:lg:bg-gray-300/40"
+                      }`}>
                       9
                     </div>
                   </div>

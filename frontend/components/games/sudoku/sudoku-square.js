@@ -72,7 +72,11 @@ export default function SudokuSquare(props) {
           {pause == true ? (
             ""
           ) : cells[0].placement == "notes" ? (
-            <NotesSquare notes={cells[0].notes} />
+            <NotesSquare
+              theme={theme}
+              currentValue={currentValue}
+              notes={cells[0].notes}
+            />
           ) : (
             cells[0].value
           )}
@@ -119,7 +123,11 @@ export default function SudokuSquare(props) {
           {pause == true ? (
             ""
           ) : cells[1].placement == "notes" ? (
-            <NotesSquare notes={cells[1].notes} />
+            <NotesSquare
+              theme={theme}
+              currentValue={currentValue}
+              notes={cells[1].notes}
+            />
           ) : (
             cells[1].value
           )}
@@ -165,7 +173,11 @@ export default function SudokuSquare(props) {
           {pause == true ? (
             ""
           ) : cells[2].placement == "notes" ? (
-            <NotesSquare notes={cells[2].notes} />
+            <NotesSquare
+              theme={theme}
+              currentValue={currentValue}
+              notes={cells[2].notes}
+            />
           ) : (
             cells[2].value
           )}
@@ -213,7 +225,11 @@ export default function SudokuSquare(props) {
           {pause == true ? (
             ""
           ) : cells[3].placement == "notes" ? (
-            <NotesSquare notes={cells[3].notes} />
+            <NotesSquare
+              theme={theme}
+              currentValue={currentValue}
+              notes={cells[3].notes}
+            />
           ) : (
             cells[3].value
           )}
@@ -260,7 +276,11 @@ export default function SudokuSquare(props) {
           {pause == true ? (
             ""
           ) : cells[4].placement == "notes" ? (
-            <NotesSquare notes={cells[4].notes} />
+            <NotesSquare
+              theme={theme}
+              currentValue={currentValue}
+              notes={cells[4].notes}
+            />
           ) : (
             cells[4].value
           )}
@@ -307,7 +327,11 @@ export default function SudokuSquare(props) {
           {pause == true ? (
             ""
           ) : cells[5].placement == "notes" ? (
-            <NotesSquare notes={cells[5].notes} />
+            <NotesSquare
+              theme={theme}
+              currentValue={currentValue}
+              notes={cells[5].notes}
+            />
           ) : (
             cells[5].value
           )}
@@ -353,7 +377,11 @@ export default function SudokuSquare(props) {
           {pause == true ? (
             ""
           ) : cells[6].placement == "notes" ? (
-            <NotesSquare notes={cells[6].notes} />
+            <NotesSquare
+              theme={theme}
+              currentValue={currentValue}
+              notes={cells[6].notes}
+            />
           ) : (
             cells[6].value
           )}
@@ -400,7 +428,11 @@ export default function SudokuSquare(props) {
           {pause == true ? (
             ""
           ) : cells[7].placement == "notes" ? (
-            <NotesSquare notes={cells[7].notes} />
+            <NotesSquare
+              theme={theme}
+              currentValue={currentValue}
+              notes={cells[7].notes}
+            />
           ) : (
             cells[7].value
           )}
@@ -446,7 +478,11 @@ export default function SudokuSquare(props) {
           {pause == true ? (
             ""
           ) : cells[8].placement == "notes" ? (
-            <NotesSquare notes={cells[8].notes} />
+            <NotesSquare
+              theme={theme}
+              currentValue={currentValue}
+              notes={cells[8].notes}
+            />
           ) : (
             cells[8].value
           )}

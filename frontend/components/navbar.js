@@ -86,7 +86,7 @@ export default function Navbar(props) {
                               : theme == "dark"
                               ? "text-gray-300 hover:bg-gray-700 hover:text-white"
                               : "text-neutral-600 hover:bg-gray-300 hover:text-neutral-900",
-                            "px-3 py-2 rounded-md text-sm font-medium transition-all ease-in duration-200"
+                            "px-3 py-2 rounded-md text-sm md:text-base font-medium transition-all ease-in duration-200"
                           )}
                           aria-current={item.current ? "page" : undefined}>
                           {item.name}
@@ -162,14 +162,14 @@ export default function Navbar(props) {
                     <>
                       <button
                         onClick={openLogin}
-                        className={`text-xs relative inline-flex items-center justify-center p-0.5 overflow-hidden font-medium  rounded-lg bg-gradient-to-br group   hover:text-white
+                        className={`text-xs w-16 h-8 md:w-20 md:h-10 md:text-sm relative inline-flex items-center justify-center p-0.5 overflow-hidden font-medium rounded-lg bg-gradient-to-br group hover:text-white
                       ${
                         theme == "dark"
                           ? "text-white from-cyan-500 to-blue-500"
                           : "text-neutral-900 from-teal-400 to-blue-500"
                       }`}>
                         <span
-                          className={`relative px-5 py-2 transition-all ease-in duration-200 rounded-md group-hover:bg-opacity-0
+                          className={`transition-all ease-in duration-200 md:px-5 md:py-2 px-3.5 py-1.5 rounded-md group-hover:bg-opacity-0
                       ${theme == "dark" ? "bg-gray-800" : "bg-slate-100"}`}>
                           Login
                         </span>
