@@ -12,12 +12,18 @@ export default function ChessBoard(props) {
             className={`h-full w-full relative text-white flex justify-center items-center
               ${(i + j) % 2 == 1 ? "bg-[#f0d9b5]" : "bg-[#b58863]"}`}>
             {i == 0 ? (
-              <div className="absolute ml-1 bottom-0 left-0"> {xAxis[j]} </div>
+              <div className="absolute ml-1 bottom-0 left-0 text-xs md:text-base">
+                {" "}
+                {xAxis[j]}{" "}
+              </div>
             ) : (
               ""
             )}
             {j == 7 ? (
-              <div className="absolute mr-1 top-0 right-0"> {yAxis[i]} </div>
+              <div className="absolute mr-1 top-0 right-0 text-xs md:text-base">
+                {" "}
+                {yAxis[i]}{" "}
+              </div>
             ) : (
               ""
             )}

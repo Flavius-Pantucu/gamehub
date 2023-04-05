@@ -162,17 +162,13 @@ export default function Navbar(props) {
                     <>
                       <button
                         onClick={openLogin}
-                        className={`text-xs w-16 h-8 md:w-20 md:h-10 md:text-sm relative inline-flex items-center justify-center p-0.5 overflow-hidden font-medium rounded-lg bg-gradient-to-br group hover:text-white
-                      ${
-                        theme == "dark"
-                          ? "text-white from-cyan-500 to-blue-500"
-                          : "text-neutral-900 from-teal-400 to-blue-500"
-                      }`}>
-                        <span
-                          className={`transition-all ease-in duration-200 md:px-5 md:py-2 px-3.5 py-1.5 rounded-md group-hover:bg-opacity-0
-                      ${theme == "dark" ? "bg-gray-800" : "bg-slate-100"}`}>
-                          Login
-                        </span>
+                        className={`text-xs w-16 h-8 md:w-20 md:h-10 md:text-sm items-center justify-center rounded-lg hover:text-white transition-all duration-300 ease-in-out
+                        ${
+                          theme == "dark"
+                            ? "text-white hover:bg-cyan-500"
+                            : "text-neutral-900 hover:bg-cyan-500"
+                        }`}>
+                        <span className={`bg-transparent`}>Login</span>
                       </button>
                     </>
                   )}
