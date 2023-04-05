@@ -11,8 +11,8 @@ import Container from "../components/container";
 const elements = [
   { name: "Dashboard", current: false },
   { name: "TicTacToe", current: false },
-  { name: "Sudoku", current: true },
-  { name: "Chess", current: false },
+  { name: "Sudoku", current: false },
+  { name: "Chess", current: true },
 ];
 
 export default function Home() {
@@ -33,7 +33,7 @@ export default function Home() {
     setCookie("site_theme", theme);
   };
 
-  const [currentElement, setCurrentElement] = useState("Sudoku");
+  const [currentElement, setCurrentElement] = useState("Chess");
   const [currentModal, setCurrentModal] = useState("");
   const [toast, setToast] = useState({ type: null, message: null });
   const [theme, setTheme] = useState();
