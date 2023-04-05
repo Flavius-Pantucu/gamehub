@@ -10,7 +10,7 @@ export default function ChessBoard(props) {
     for (var i = yAxis.length - 1; i >= 0; i--) {
       for (var j = 0; j < xAxis.length; j++) {
         board.push(
-          <Tile theme={theme} coords={[i, j]} values={[xAxis, yAxis]} />
+          <Tile key={[i,j]} theme={theme} coords={[i, j]} values={[xAxis, yAxis]} />
         );
       }
     }
