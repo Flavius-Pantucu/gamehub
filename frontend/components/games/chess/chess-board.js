@@ -9,10 +9,14 @@ export default function ChessBoard(props) {
       for (var j = 0; j < xAxis.length; j++) {
         board.push(
           <div
-            className={`h-full w-full relative text-white flex justify-center items-center
-              ${(i + j) % 2 == 1 ? "bg-[#f0d9b5]" : "bg-[#b58863]"}`}>
+            className={`h-full w-full relative flex justify-center items-center
+              ${
+                (i + j) % 2 == 1
+                  ? "bg-[#f0d9b5] text-[#b58863]"
+                  : "bg-[#b58863] text-[#f0d9b5]"
+              }`}>
             {i == 0 ? (
-              <div className="absolute ml-1 bottom-0 left-0 text-xs md:text-base">
+              <div className="absolute ml-1 bottom-0 left-0 text-xs md:text-sm">
                 {" "}
                 {xAxis[j]}{" "}
               </div>
@@ -20,7 +24,7 @@ export default function ChessBoard(props) {
               ""
             )}
             {j == 7 ? (
-              <div className="absolute mr-1 top-0 right-0 text-xs md:text-base">
+              <div className="absolute mr-1 top-0 right-0 text-xs md:text-sm">
                 {" "}
                 {yAxis[i]}{" "}
               </div>

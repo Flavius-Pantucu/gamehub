@@ -34,11 +34,11 @@ export default function Navbar(props) {
       {({ open }) => (
         <>
           <div className="border-b border-slate-300/30">
-            <div className="mx-auto lg:w-5/6 w-full max-w-7xl px-2 sm:px-6 lg:px-8">
+            <div className="mx-auto lg:w-5/6 w-full max-w-7xl px-4 sm:px-6 lg:px-8">
               <div className="relative flex h-16 items-center justify-between">
                 <div className="absolute inset-y-0 left-0 flex items-center lg:hidden">
                   <Disclosure.Button
-                    className={`inline-flex items-center justify-center rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-inset
+                    className={`inline-flex items-center justify-center rounded-md p-1 
                  ${
                    theme == "dark"
                      ? "text-gray-400 hover:bg-gray-700 hover:text-white  focus:ring-white"
@@ -52,7 +52,7 @@ export default function Navbar(props) {
                     )}
                   </Disclosure.Button>
                 </div>
-                <div className="flex flex-1 items-center ml-12 lg:ml-0 justify-start sm:items-stretch sm:justify-start">
+                <div className="flex flex-1 items-center ml-10 lg:ml-0 justify-start sm:items-stretch sm:justify-start">
                   <div className="flex flex-shrink-0 items-center">
                     <Link href="/">
                       <Image
