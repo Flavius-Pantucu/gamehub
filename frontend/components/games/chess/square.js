@@ -19,7 +19,7 @@ export default function Square(props) {
           className={`piece w-full h-full z-20`}></div>
       )}
 
-      {i == 0 ? (
+      {i == 7 ? (
         <div className="absolute ml-1 bottom-0 left-0 text-xs md:text-sm">
           {xAxis[j]}
         </div>
