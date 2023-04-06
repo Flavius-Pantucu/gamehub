@@ -4,7 +4,45 @@ import { ChevronDownIcon } from "@heroicons/react/20/solid";
 import ChessBoard from "./chess-board";
 
 export default function Chess(props) {
+  const grabPiece = (e) => {
+    const element = e.target;
+    selectedPieceRef.current = true;
+    if (element.classList.contains("bg-no-repeat")) {
+      const x =
+        e.clientX - e.target.parentNode.offsetLeft - e.target.offsetWidth / 2;
+      const y =
+        e.clientY - e.target.parentNode.offsetTop - e.target.offsetHeight / 2;
+
+      element.style.position = "absolute";
+      element.style.left = x + "px";
+      element.style.top = y + "px";
+    }
+  };
+
+  const movePiece = (e) => {
+    const element = e.target;
+    if (
+      selectedPieceRef.current &&
+      element.classList.contains("bg-no-repeat")
+    ) {
+      const x =
+        e.clientX - e.target.parentNode.offsetLeft - e.target.offsetWidth / 2;
+      const y =
+        e.clientY - e.target.parentNode.offsetTop - e.target.offsetHeight / 2;
+
+      element.style.position = "absolute";
+      element.style.left = x + "px";
+      element.style.top = y + "px";
+    }
+  };
+
+  const letPiece = (e) => {
+    selectedPieceRef.current = false;
+  };
+
   const theme = props.theme;
+
+  const selectedPieceRef = useRef(false);
 
   return (
     <>
@@ -59,7 +97,11 @@ export default function Chess(props) {
           </Transition>
         </Menu>
         <div className="flex justify-center h-4/6 mt-6 lg:h-5/6 lg:mt-0">
-          <div className="grid grid-rows-[8] grid-cols-8 aspect-square h-[90%] min-h-[384px] max-h-[384px] md:max-h-max cursor-pointer">
+          <div
+            onMouseUp={(e) => letPiece(e)}
+            onMouseMove={(e) => movePiece(e)}
+            onMouseDown={(e) => grabPiece(e)}
+            className="grid grid-rows-[8] grid-cols-8 aspect-square h-[90%] min-h-[384px] max-h-[384px] md:max-h-max cursor-pointer">
             <ChessBoard theme={theme}></ChessBoard>
           </div>
         </div>

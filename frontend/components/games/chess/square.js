@@ -1,9 +1,10 @@
-import Piece from "./piece";
+import Image from "next/image";
 
-export default function Tile(props) {
+export default function Square(props) {
   const theme = props.theme;
   const [i, j] = props.coords;
-  const [xAxis, yAxis] = props.values;
+  const [xAxis, yAxis] = props.axis;
+  const image = props.image;
   return (
     <div
       className={`relative flex justify-center items-center
@@ -12,7 +13,12 @@ export default function Tile(props) {
           ? "bg-[#f0d9b5] text-[#b58863]"
           : "bg-[#b58863] text-[#f0d9b5]"
       }`}>
-      {<Piece coords={[i,j]} />}
+      {image && (
+        <div
+          style={{ backgroundImage: `url(${image})` }}
+          className={`bg-no-repeat bg-cover bg-center w-full h-full`}></div>
+      )}
+
       {i == 0 ? (
         <div className="absolute ml-1 bottom-0 left-0 text-xs md:text-sm">
           {xAxis[j]}
