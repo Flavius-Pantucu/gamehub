@@ -99,6 +99,7 @@ export default function Chess(props) {
         <div className="flex justify-center h-4/6 mt-6 lg:h-5/6 lg:mt-0">
           <div
             onMouseUp={(e) => letPiece(e)}
+            onTouchMove={(e) => movePiece(e)}
             onMouseMove={(e) => movePiece(e)}
             onMouseDown={(e) => grabPiece(e)}
             className="grid grid-rows-[8] grid-cols-8 aspect-square h-[90%] min-h-[384px] max-h-[384px] md:max-h-max cursor-pointer">
