@@ -16,7 +16,7 @@ export default function Square(props) {
       {image && (
         <div
           style={{ backgroundImage: `url(${image})` }}
-          className={`bg-no-repeat bg-cover bg-center w-full h-full`}></div>
+          className={`piece w-full h-full z-20`}></div>
       )}
 
       {i == 0 ? (

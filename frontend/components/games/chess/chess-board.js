@@ -72,12 +72,63 @@ export default function ChessBoard(props) {
     return board;
   };
 
+  const grabPiece = (e) => {
+    const element = e.target;
+    selectedPieceRef.current = e.target;
+    if (element.classList.contains("piece")) {
+      const x =
+        e.clientX - element.parentNode.offsetLeft - element.offsetWidth / 2;
+      const y =
+        e.clientY - element.parentNode.offsetTop - element.offsetHeight / 2;
+
+      element.style.position = "absolute";
+      element.style.left = x + "px";
+      element.style.top = y + "px";
+      element.style.zIndex = 9999;
+    }
+  };
+
+  const movePiece = (e) => {
+    if (selectedPieceRef.current != null) {
+      const x =
+        e.clientX -
+        selectedPieceRef.current.parentNode.offsetLeft -
+        selectedPieceRef.current.offsetWidth / 2;
+      const y =
+        e.clientY -
+        selectedPieceRef.current.parentNode.offsetTop -
+        selectedPieceRef.current.offsetHeight / 2;
+
+      selectedPieceRef.current.style.position = "absolute";
+      selectedPieceRef.current.style.left = x + "px";
+      selectedPieceRef.current.style.top = y + "px";
+    }
+  };
+
+  const letPiece = (e) => {
+    selectedPieceRef.current.style.zIndex = 20;
+    selectedPieceRef.current = null;
+  };
+
   const xAxis = ["a", "b", "c", "d", "e", "f", "g", "h"];
   const yAxis = ["1", "2", "3", "4", "5", "6", "7", "8"];
   const theme = props.theme;
 
+  const selectedPieceRef = useRef(null);
   const piecesRef = useRef(addPieces());
 
   const [board, setBoard] = useState(createBoard());
-  return <>{board}</>;
+
+  return (
+    <div
+      onTouchEnd={(e) => letPiece(e)}
+      onTouchMove={(e) => movePiece(e)}
+      onTouchStart={(e) => grabPiece(e)}
+      onMouseUp={(e) => letPiece(e)}
+      onMouseMove={(e) => movePiece(e)}
+      onMouseDown={(e) => grabPiece(e)}
+      className="grid grid-rows-[8] grid-cols-8 aspect-square h-[90%] min-h-[384px] max-h-[384px] md:max-h-max cursor-pointer">
+      {board}
+    </div>
+  );
 }
