@@ -79,22 +79,25 @@ export default function ChessBoard(props) {
     if (piece.classList.contains("piece")) {
       const x = e.clientX - piece.parentNode.offsetLeft - piece.offsetWidth / 2;
       const y = e.clientY - piece.parentNode.offsetTop - piece.offsetHeight / 2;
-      
-      const row = Math.floor((e.clientY - chessboardRef.current.offsetTop) / piece.offsetHeight);
-      const col = Math.floor((e.clientX - chessboardRef.current.offsetLeft) / piece.offsetWidth);
-      setCurrentPiece({x:col, y:row});
+
+      const row = Math.floor(
+        (e.clientY - chessboardRef.current.offsetTop) / piece.offsetHeight
+      );
+      const col = Math.floor(
+        (e.clientX - chessboardRef.current.offsetLeft) / piece.offsetWidth
+      );
+      setCurrentPiece({ x: col, y: row });
 
       piece.style.position = "absolute";
       piece.style.left = x + "px";
       piece.style.top = y + "px";
       piece.style.zIndex = 9999;
-    }else
-      selectedPieceRef.current = null;
+    } else selectedPieceRef.current = null;
   };
 
   const movePiece = (e) => {
     if (selectedPieceRef.current == null || chessboardRef == null) return;
-    
+
     const piece = selectedPieceRef.current;
     const board = chessboardRef.current;
 
@@ -104,37 +107,41 @@ export default function ChessBoard(props) {
     const y = e.clientY - piece.parentNode.offsetTop - piece.offsetHeight / 2;
 
     piece.style.position = "absolute";
-    if(minX > x)
-      piece.style.left = x + "px";
-    else
-      piece.style.left = minX + "px";
+    if (minX > x) piece.style.left = x + "px";
+    else piece.style.left = minX + "px";
 
     piece.style.top = y + "px";
   };
 
   const letPiece = (e) => {
-    if(selectedPieceRef.current == null) return;
+    if (selectedPieceRef.current == null) return;
 
     const piece = selectedPieceRef.current;
 
-    let row = Math.floor((e.clientY - chessboardRef.current.offsetTop) / piece.offsetHeight);
-    let col = Math.floor((e.clientX - chessboardRef.current.offsetLeft) / piece.offsetWidth);
-    if(row == currentPiece.y && col == currentPiece.x){
+    let row = Math.floor(
+      (e.clientY - chessboardRef.current.offsetTop) / piece.offsetHeight
+    );
+    let col = Math.floor(
+      (e.clientX - chessboardRef.current.offsetLeft) / piece.offsetWidth
+    );
+    if (row == currentPiece.y && col == currentPiece.x) {
       piece.style.position = "relative";
       piece.style.left = "0px";
       piece.style.top = "0px";
-    }
-    else if(row < 8 && col < 8 && row >= 0 && col >= 0){
+    } else if (row < 8 && col < 8 && row >= 0 && col >= 0) {
+      castleSoundRef.current.load();
+      castleSoundRef.current.play();
+
       pieces.forEach((piece) => {
-        if(piece.x == currentPiece.x && piece.y == currentPiece.y){
+        if (piece.x == currentPiece.x && piece.y == currentPiece.y) {
           piece.x = col;
-          piece.y = row
+          piece.y = row;
         }
-      })
-      
+      });
+
       setPieces((value) => {
         const pieces = value.map((piece) => {
-          if(piece.x == currentPiece.x && piece.y == currentPiece.y){
+          if (piece.x == currentPiece.x && piece.y == currentPiece.y) {
             piece.x = col;
             piece.y = row;
           }
@@ -144,13 +151,11 @@ export default function ChessBoard(props) {
       });
 
       setBoard(createBoard());
-    
-    }else{
+    } else {
       piece.style.position = "relative";
       piece.style.left = "0px";
       piece.style.top = "0px";
     }
-
 
     selectedPieceRef.current = null;
   };
@@ -161,18 +166,32 @@ export default function ChessBoard(props) {
 
   const selectedPieceRef = useRef(null);
   const chessboardRef = useRef(null);
+  const moveSoundRef = useRef(
+    typeof Audio !== "undefined" && new Audio("/sounds/move.mp3")
+  );
+  const captureSoundRef = useRef(
+    typeof Audio !== "undefined" && new Audio("/sounds/capture.mp3")
+  );
+  const castleSoundRef = useRef(
+    typeof Audio !== "undefined" && new Audio("/sounds/castle.mp3")
+  );
 
   const [pieces, setPieces] = useState(addPieces());
   const [board, setBoard] = useState(createBoard());
-  const [currentPiece, setCurrentPiece] = useState({x: 0, y: 0});
+  const [currentPiece, setCurrentPiece] = useState({ x: 0, y: 0 });
 
+  useEffect(() => {
+    moveSoundRef.current.preload = "auto";
+    captureSoundRef.current.preload = "auto";
+    castleSoundRef.current.preload = "auto";
+  }, []);
   return (
     <div
       ref={chessboardRef}
       onTouchEnd={(e) => letPiece(e)}
       onTouchMove={(e) => movePiece(e)}
       onTouchStart={(e) => grabPiece(e)}
-      onMouseUp={(e) => letPiece(e)}
+      onMouseUpCapture={(e) => letPiece(e)}
       onMouseMove={(e) => movePiece(e)}
       onMouseDown={(e) => grabPiece(e)}
       className="grid grid-rows-[8] grid-cols-8 aspect-square h-[90%] min-h-[384px] max-h-[384px] md:max-h-max cursor-pointer">
