@@ -58,7 +58,7 @@ export default function Chess(props) {
           </Transition>
         </Menu>
         <div className="flex justify-center h-4/6 mt-6 lg:h-5/6 lg:mt-0">
-          <ChessBoard theme={theme}></ChessBoard>
+          <ChessBoard />
         </div>
       </div>
     </>

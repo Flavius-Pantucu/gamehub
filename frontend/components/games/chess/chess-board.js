@@ -2,8 +2,10 @@ import { useEffect, useState, useRef } from "react";
 import Square from "./square";
 
 class Piece {
-  constructor(image, x, y) {
+  constructor(image, type, color, x, y) {
     this.image = image;
+    this.color = color;
+    this.type = type;
     this.x = x;
     this.y = y;
   }
@@ -12,45 +14,44 @@ class Piece {
 export default function ChessBoard(props) {
   const addPieces = () => {
     const pieces = [];
-    pieces.push(new Piece("/images/wP.svg", 0, 6));
-    pieces.push(new Piece("/images/wP.svg", 1, 6));
-    pieces.push(new Piece("/images/wP.svg", 2, 6));
-    pieces.push(new Piece("/images/wP.svg", 3, 6));
-    pieces.push(new Piece("/images/wP.svg", 4, 6));
-    pieces.push(new Piece("/images/wP.svg", 5, 6));
-    pieces.push(new Piece("/images/wP.svg", 6, 6));
-    pieces.push(new Piece("/images/wP.svg", 7, 6));
-    pieces.push(new Piece("/images/wR.svg", 0, 7));
-    pieces.push(new Piece("/images/wR.svg", 7, 7));
-    pieces.push(new Piece("/images/wN.svg", 1, 7));
-    pieces.push(new Piece("/images/wN.svg", 6, 7));
-    pieces.push(new Piece("/images/wB.svg", 2, 7));
-    pieces.push(new Piece("/images/wB.svg", 5, 7));
-    pieces.push(new Piece("/images/wQ.svg", 3, 7));
-    pieces.push(new Piece("/images/wK.svg", 4, 7));
+    pieces.push(new Piece("/images/wP.svg", "pawn", "white", 0, 6));
+    pieces.push(new Piece("/images/wP.svg", "pawn", "white", 1, 6));
+    pieces.push(new Piece("/images/wP.svg", "pawn", "white", 2, 6));
+    pieces.push(new Piece("/images/wP.svg", "pawn", "white", 3, 6));
+    pieces.push(new Piece("/images/wP.svg", "pawn", "white", 4, 6));
+    pieces.push(new Piece("/images/wP.svg", "pawn", "white", 5, 6));
+    pieces.push(new Piece("/images/wP.svg", "pawn", "white", 6, 6));
+    pieces.push(new Piece("/images/wP.svg", "pawn", "white", 7, 6));
+    pieces.push(new Piece("/images/wR.svg", "rook", "white", 0, 7));
+    pieces.push(new Piece("/images/wR.svg", "rook", "white", 7, 7));
+    pieces.push(new Piece("/images/wN.svg", "knight", "white", 1, 7));
+    pieces.push(new Piece("/images/wN.svg", "knight", "white", 6, 7));
+    pieces.push(new Piece("/images/wB.svg", "bishop", "white", 2, 7));
+    pieces.push(new Piece("/images/wB.svg", "bishop", "white", 5, 7));
+    pieces.push(new Piece("/images/wQ.svg", "queen", "white", 3, 7));
+    pieces.push(new Piece("/images/wK.svg", "king", "white", 4, 7));
 
-    pieces.push(new Piece("/images/bP.svg", 0, 1));
-    pieces.push(new Piece("/images/bP.svg", 1, 1));
-    pieces.push(new Piece("/images/bP.svg", 2, 1));
-    pieces.push(new Piece("/images/bP.svg", 3, 1));
-    pieces.push(new Piece("/images/bP.svg", 4, 1));
-    pieces.push(new Piece("/images/bP.svg", 5, 1));
-    pieces.push(new Piece("/images/bP.svg", 6, 1));
-    pieces.push(new Piece("/images/bP.svg", 7, 1));
-    pieces.push(new Piece("/images/bR.svg", 0, 0));
-    pieces.push(new Piece("/images/bR.svg", 7, 0));
-    pieces.push(new Piece("/images/bN.svg", 1, 0));
-    pieces.push(new Piece("/images/bN.svg", 6, 0));
-    pieces.push(new Piece("/images/bB.svg", 2, 0));
-    pieces.push(new Piece("/images/bB.svg", 5, 0));
-    pieces.push(new Piece("/images/bQ.svg", 3, 0));
-    pieces.push(new Piece("/images/bK.svg", 4, 0));
+    pieces.push(new Piece("/images/bP.svg", "pawn", "black", 0, 1));
+    pieces.push(new Piece("/images/bP.svg", "pawn", "black", 1, 1));
+    pieces.push(new Piece("/images/bP.svg", "pawn", "black", 2, 1));
+    pieces.push(new Piece("/images/bP.svg", "pawn", "black", 3, 1));
+    pieces.push(new Piece("/images/bP.svg", "pawn", "black", 4, 1));
+    pieces.push(new Piece("/images/bP.svg", "pawn", "black", 5, 1));
+    pieces.push(new Piece("/images/bP.svg", "pawn", "black", 6, 1));
+    pieces.push(new Piece("/images/bP.svg", "pawn", "black", 7, 1));
+    pieces.push(new Piece("/images/bR.svg", "rook", "black", 0, 0));
+    pieces.push(new Piece("/images/bR.svg", "rook", "black", 7, 0));
+    pieces.push(new Piece("/images/bN.svg", "knight", "black", 1, 0));
+    pieces.push(new Piece("/images/bN.svg", "knight", "black", 6, 0));
+    pieces.push(new Piece("/images/bB.svg", "bishop", "black", 2, 0));
+    pieces.push(new Piece("/images/bB.svg", "bishop", "black", 5, 0));
+    pieces.push(new Piece("/images/bQ.svg", "queen", "black", 3, 0));
+    pieces.push(new Piece("/images/bK.svg", "king", "black", 4, 0));
 
     return pieces;
   };
 
   const createBoard = () => {
-    var board = [];
     for (var i = 0; i < yAxis.length; i++) {
       for (var j = 0; j < xAxis.length; j++) {
         let image = null;
@@ -61,30 +62,32 @@ export default function ChessBoard(props) {
         board.push(
           <Square
             key={`${i},${j}`}
-            theme={theme}
-            coords={[i, j]}
             axis={[xAxis, yAxis]}
             image={image}
+            coords={[i, j]}
+            lastMove={lastMove}
+            currentPiece={currentPiece}
           />
         );
       }
     }
-    return board;
   };
 
   const grabPiece = (e) => {
     selectedPieceRef.current = e.target;
 
     const piece = selectedPieceRef.current;
+    const chessboard = chessboardRef.current;
+
     if (piece.classList.contains("piece")) {
       const x = e.clientX - piece.parentNode.offsetLeft - piece.offsetWidth / 2;
       const y = e.clientY - piece.parentNode.offsetTop - piece.offsetHeight / 2;
 
       const row = Math.floor(
-        (e.clientY - chessboardRef.current.offsetTop) / piece.offsetHeight
+        (e.clientY - chessboard.offsetTop) / piece.offsetHeight
       );
       const col = Math.floor(
-        (e.clientX - chessboardRef.current.offsetLeft) / piece.offsetWidth
+        (e.clientX - chessboard.offsetLeft) / piece.offsetWidth
       );
       setCurrentPiece({ x: col, y: row });
 
@@ -99,17 +102,12 @@ export default function ChessBoard(props) {
     if (selectedPieceRef.current == null || chessboardRef == null) return;
 
     const piece = selectedPieceRef.current;
-    const board = chessboardRef.current;
 
-    const minX = board.offsetLeft;
-    const minY = board.offsetTop;
     const x = e.clientX - piece.parentNode.offsetLeft - piece.offsetWidth / 2;
     const y = e.clientY - piece.parentNode.offsetTop - piece.offsetHeight / 2;
 
     piece.style.position = "absolute";
-    if (minX > x) piece.style.left = x + "px";
-    else piece.style.left = minX + "px";
-
+    piece.style.left = x + "px";
     piece.style.top = y + "px";
   };
 
@@ -117,27 +115,30 @@ export default function ChessBoard(props) {
     if (selectedPieceRef.current == null) return;
 
     const piece = selectedPieceRef.current;
+    const chessboard = chessboardRef.current;
 
-    let row = Math.floor(
-      (e.clientY - chessboardRef.current.offsetTop) / piece.offsetHeight
+    const row = Math.floor(
+      (e.clientY - chessboard.offsetTop) / piece.offsetHeight
     );
-    let col = Math.floor(
-      (e.clientX - chessboardRef.current.offsetLeft) / piece.offsetWidth
+    const col = Math.floor(
+      (e.clientX - chessboard.offsetLeft) / piece.offsetWidth
     );
+
     if (row == currentPiece.y && col == currentPiece.x) {
       piece.style.position = "relative";
       piece.style.left = "0px";
       piece.style.top = "0px";
     } else if (row < 8 && col < 8 && row >= 0 && col >= 0) {
-      castleSoundRef.current.load();
-      castleSoundRef.current.play();
-
+      
       pieces.forEach((piece) => {
         if (piece.x == currentPiece.x && piece.y == currentPiece.y) {
           piece.x = col;
           piece.y = row;
         }
       });
+      
+      soundsRef.current[0].play();
+      setLastMove([{ x: currentPiece.x, y: currentPiece.y }, { x: col, y: row }]);
 
       setPieces((value) => {
         const pieces = value.map((piece) => {
@@ -150,48 +151,40 @@ export default function ChessBoard(props) {
         return pieces;
       });
 
-      setBoard(createBoard());
+      setCurrentPiece({ x: null, y: null });
     } else {
       piece.style.position = "relative";
       piece.style.left = "0px";
       piece.style.top = "0px";
     }
-
     selectedPieceRef.current = null;
   };
 
   const xAxis = ["a", "b", "c", "d", "e", "f", "g", "h"];
   const yAxis = ["1", "2", "3", "4", "5", "6", "7", "8"];
-  const theme = props.theme;
+  const board = [];
 
-  const selectedPieceRef = useRef(null);
+  const soundsRef = useRef(null);
   const chessboardRef = useRef(null);
-  const moveSoundRef = useRef(
-    typeof Audio !== "undefined" && new Audio("/sounds/move.mp3")
-  );
-  const captureSoundRef = useRef(
-    typeof Audio !== "undefined" && new Audio("/sounds/capture.mp3")
-  );
-  const castleSoundRef = useRef(
-    typeof Audio !== "undefined" && new Audio("/sounds/castle.mp3")
-  );
+  const selectedPieceRef = useRef(null);
 
   const [pieces, setPieces] = useState(addPieces());
-  const [board, setBoard] = useState(createBoard());
-  const [currentPiece, setCurrentPiece] = useState({ x: 0, y: 0 });
+  const [currentPiece, setCurrentPiece] = useState({ x: null, y: null });
+  const [lastMove, setLastMove] = useState([ { x: null, y: null }, { x: null, y: null } ]);
+
+  createBoard();
 
   useEffect(() => {
-    moveSoundRef.current.preload = "auto";
-    captureSoundRef.current.preload = "auto";
-    castleSoundRef.current.preload = "auto";
+    soundsRef.current = new Array(3);
+    soundsRef.current[0] = new Audio("/sounds/move.mp3");
+    soundsRef.current[1] = new Audio("/sounds/castle.mp3");
+    soundsRef.current[2] = new Audio("/sounds/capture.mp3");
   }, []);
+
   return (
     <div
       ref={chessboardRef}
-      onTouchEnd={(e) => letPiece(e)}
-      onTouchMove={(e) => movePiece(e)}
-      onTouchStart={(e) => grabPiece(e)}
-      onMouseUpCapture={(e) => letPiece(e)}
+      onMouseUp={(e) => letPiece(e)}
       onMouseMove={(e) => movePiece(e)}
       onMouseDown={(e) => grabPiece(e)}
       className="grid grid-rows-[8] grid-cols-8 aspect-square h-[90%] min-h-[384px] max-h-[384px] md:max-h-max cursor-pointer">
