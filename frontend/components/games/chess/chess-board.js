@@ -2,10 +2,11 @@ import { useEffect, useState, useRef } from "react";
 import Square from "./square";
 
 class Piece {
-  constructor(image, type, color, x, y) {
+  constructor(image, type, color, mark, x, y) {
     this.image = image;
     this.color = color;
     this.type = type;
+    this.mark = mark;
     this.x = x;
     this.y = y;
   }
@@ -14,39 +15,39 @@ class Piece {
 export default function ChessBoard(props) {
   const addPieces = () => {
     const pieces = [];
-    pieces.push(new Piece("/images/wP.svg", "pawn", "white", 0, 6));
-    pieces.push(new Piece("/images/wP.svg", "pawn", "white", 1, 6));
-    pieces.push(new Piece("/images/wP.svg", "pawn", "white", 2, 6));
-    pieces.push(new Piece("/images/wP.svg", "pawn", "white", 3, 6));
-    pieces.push(new Piece("/images/wP.svg", "pawn", "white", 4, 6));
-    pieces.push(new Piece("/images/wP.svg", "pawn", "white", 5, 6));
-    pieces.push(new Piece("/images/wP.svg", "pawn", "white", 6, 6));
-    pieces.push(new Piece("/images/wP.svg", "pawn", "white", 7, 6));
-    pieces.push(new Piece("/images/wR.svg", "rook", "white", 0, 7));
-    pieces.push(new Piece("/images/wR.svg", "rook", "white", 7, 7));
-    pieces.push(new Piece("/images/wN.svg", "knight", "white", 1, 7));
-    pieces.push(new Piece("/images/wN.svg", "knight", "white", 6, 7));
-    pieces.push(new Piece("/images/wB.svg", "bishop", "white", 2, 7));
-    pieces.push(new Piece("/images/wB.svg", "bishop", "white", 5, 7));
-    pieces.push(new Piece("/images/wQ.svg", "queen", "white", 3, 7));
-    pieces.push(new Piece("/images/wK.svg", "king", "white", 4, 7));
+    pieces.push(new Piece("/images/wP.svg", "pawn", "white", false, 0, 6));
+    pieces.push(new Piece("/images/wP.svg", "pawn", "white", false, 1, 6));
+    pieces.push(new Piece("/images/wP.svg", "pawn", "white", false, 2, 6));
+    pieces.push(new Piece("/images/wP.svg", "pawn", "white", false, 3, 6));
+    pieces.push(new Piece("/images/wP.svg", "pawn", "white", false, 4, 6));
+    pieces.push(new Piece("/images/wP.svg", "pawn", "white", false, 5, 6));
+    pieces.push(new Piece("/images/wP.svg", "pawn", "white", false, 6, 6));
+    pieces.push(new Piece("/images/wP.svg", "pawn", "white", false, 7, 6));
+    pieces.push(new Piece("/images/wR.svg", "rook", "white", false, 0, 7));
+    pieces.push(new Piece("/images/wR.svg", "rook", "white", false, 7, 7));
+    pieces.push(new Piece("/images/wN.svg", "knight", "white", false, 1, 7));
+    pieces.push(new Piece("/images/wN.svg", "knight", "white", false, 6, 7));
+    pieces.push(new Piece("/images/wB.svg", "bishop", "white", false, 2, 7));
+    pieces.push(new Piece("/images/wB.svg", "bishop", "white", false, 5, 7));
+    pieces.push(new Piece("/images/wQ.svg", "queen", "white", false, 3, 7));
+    pieces.push(new Piece("/images/wK.svg", "king", "white", false, 4, 7));
 
-    pieces.push(new Piece("/images/bP.svg", "pawn", "black", 0, 1));
-    pieces.push(new Piece("/images/bP.svg", "pawn", "black", 1, 1));
-    pieces.push(new Piece("/images/bP.svg", "pawn", "black", 2, 1));
-    pieces.push(new Piece("/images/bP.svg", "pawn", "black", 3, 1));
-    pieces.push(new Piece("/images/bP.svg", "pawn", "black", 4, 1));
-    pieces.push(new Piece("/images/bP.svg", "pawn", "black", 5, 1));
-    pieces.push(new Piece("/images/bP.svg", "pawn", "black", 6, 1));
-    pieces.push(new Piece("/images/bP.svg", "pawn", "black", 7, 1));
-    pieces.push(new Piece("/images/bR.svg", "rook", "black", 0, 0));
-    pieces.push(new Piece("/images/bR.svg", "rook", "black", 7, 0));
-    pieces.push(new Piece("/images/bN.svg", "knight", "black", 1, 0));
-    pieces.push(new Piece("/images/bN.svg", "knight", "black", 6, 0));
-    pieces.push(new Piece("/images/bB.svg", "bishop", "black", 2, 0));
-    pieces.push(new Piece("/images/bB.svg", "bishop", "black", 5, 0));
-    pieces.push(new Piece("/images/bQ.svg", "queen", "black", 3, 0));
-    pieces.push(new Piece("/images/bK.svg", "king", "black", 4, 0));
+    pieces.push(new Piece("/images/bP.svg", "pawn", "black", false, 0, 1));
+    pieces.push(new Piece("/images/bP.svg", "pawn", "black", false, 1, 1));
+    pieces.push(new Piece("/images/bP.svg", "pawn", "black", false, 2, 1));
+    pieces.push(new Piece("/images/bP.svg", "pawn", "black", false, 3, 1));
+    pieces.push(new Piece("/images/bP.svg", "pawn", "black", false, 4, 1));
+    pieces.push(new Piece("/images/bP.svg", "pawn", "black", false, 5, 1));
+    pieces.push(new Piece("/images/bP.svg", "pawn", "black", false, 6, 1));
+    pieces.push(new Piece("/images/bP.svg", "pawn", "black", false, 7, 1));
+    pieces.push(new Piece("/images/bR.svg", "rook", "black", false, 0, 0));
+    pieces.push(new Piece("/images/bR.svg", "rook", "black", false, 7, 0));
+    pieces.push(new Piece("/images/bN.svg", "knight", "black", false, 1, 0));
+    pieces.push(new Piece("/images/bN.svg", "knight", "black", false, 6, 0));
+    pieces.push(new Piece("/images/bB.svg", "bishop", "black", false, 2, 0));
+    pieces.push(new Piece("/images/bB.svg", "bishop", "black", false, 5, 0));
+    pieces.push(new Piece("/images/bQ.svg", "queen", "black", false, 3, 0));
+    pieces.push(new Piece("/images/bK.svg", "king", "black", false, 4, 0));
 
     return pieces;
   };
@@ -74,8 +75,9 @@ export default function ChessBoard(props) {
   };
 
   const grabPiece = (e) => {
-    selectedPieceRef.current = e.target;
-
+    if(e.nativeEvent.button != 0) return;
+    
+    e.target.classList.contains("mark") ? selectedPieceRef.current = e.target.parentNode : selectedPieceRef.current = e.target;
     const piece = selectedPieceRef.current;
     const chessboard = chessboardRef.current;
 
@@ -129,14 +131,7 @@ export default function ChessBoard(props) {
       piece.style.left = "0px";
       piece.style.top = "0px";
     } else if (row < 8 && col < 8 && row >= 0 && col >= 0) {
-      
-      pieces.forEach((piece) => {
-        if (piece.x == currentPiece.x && piece.y == currentPiece.y) {
-          piece.x = col;
-          piece.y = row;
-        }
-      });
-      
+
       soundsRef.current[0].play();
       setLastMove([{ x: currentPiece.x, y: currentPiece.y }, { x: col, y: row }]);
 
@@ -187,6 +182,7 @@ export default function ChessBoard(props) {
       onMouseUp={(e) => letPiece(e)}
       onMouseMove={(e) => movePiece(e)}
       onMouseDown={(e) => grabPiece(e)}
+      onContextMenu={(e) => e.preventDefault()}
       className="grid grid-rows-[8] grid-cols-8 aspect-square h-[90%] min-h-[384px] max-h-[384px] md:max-h-max cursor-pointer">
       {board}
     </div>

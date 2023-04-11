@@ -1,4 +1,4 @@
-import Image from "next/image";
+import { useState, useEffect } from 'react';
 
 export default function Square(props) {
   const [oldPosition, newPosition] = props.lastMove;
@@ -8,8 +8,15 @@ export default function Square(props) {
   const currentPiece = props.currentPiece;
   const image = props.image;
   
+  const [mark, setMark] = useState(false);
+
+  useEffect(() => {
+    setMark(false);
+  },[currentPiece])
+
   return (
     <div
+      onContextMenu={() => setMark(!mark)}
       className={`relative flex justify-center items-center
       ${
         (i + j) % 2 == 1
@@ -33,11 +40,12 @@ export default function Square(props) {
       }
       `}>
       {image && (
-        <div
-          style={{ backgroundImage: `url(${image})` }}
-          className={`piece w-full h-full z-20`}></div>
+        <div style={{ backgroundImage: `url(${image})` }} className={`piece w-full h-full z-20`}>
+          {mark && (
+            <div className={`mark w-full h-full z-30 rounded-full absolute border-[6px] border-lime-700/60`}></div>
+          )}
+        </div>
       )}
-
       {i == 7 ? (
         <div className="absolute ml-1 bottom-0 left-0 text-xs md:text-sm">
           {xAxis[j]}
