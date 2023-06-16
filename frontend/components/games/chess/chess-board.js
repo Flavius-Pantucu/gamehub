@@ -74,43 +74,118 @@ export default function ChessBoard(props) {
     }
   };
 
+  const calculatePawnMoves = (i, j, color) => {
+    const legalMoves = [];
+    if (color == "white") {
+      let move = pieces.filter((piece) => piece.x == j && piece.y == i - 1).length == 0;
+      if (move) {
+        legalMoves.push({ x: j, y: i - 1 });
+        move = pieces.filter((piece) => piece.x == j && piece.y == i - 2).length == 0;
+        if (i == 6 && move) legalMoves.push({ x: j, y: i - 2 });
+      }
+
+      let capture = pieces.filter(
+        (piece) => (piece.x == j - 1 || piece.x == j + 1) && piece.y == i - 1 && piece.color == "black"
+      );
+      if (capture.length > 0) {
+        capture.forEach((piece) => {
+          legalMoves.push({ x: piece.x, y: piece.y });
+        }, legalMoves);
+      }
+    } else if (color == "black") {
+      let condition = pieces.filter((piece) => piece.x == j && piece.y == i + 1).length == 0;
+      if (condition) {
+        legalMoves.push({ x: j, y: i + 1 });
+        condition = pieces.filter((piece) => piece.x == j && piece.y == i + 2).length == 0;
+        if (i == 1 && condition) legalMoves.push({ x: j, y: i + 2 });
+      }
+
+      let capture = pieces.filter(
+        (piece) => (piece.x == j - 1 || piece.x == j + 1) && piece.y == i + 1 && piece.color == "white"
+      );
+      if (capture.length > 0) {
+        capture.forEach((piece) => {
+          legalMoves.push({ x: piece.x, y: piece.y });
+        }, legalMoves);
+      }
+    } else return [];
+    // enpassant check
+    return legalMoves;
+  };
+
+  const calculateLegalMoves = (i, j) => {
+    var moves = [];
+    pieces.forEach((piece) => {
+      if (piece.x == j && piece.y == i) {
+        switch (piece.type) {
+          case "pawn":
+            moves = calculatePawnMoves(i, j, piece.color);
+            break;
+          case "rook":
+            console.log(piece.type, piece.color);
+            break;
+          case "knight":
+            console.log(piece.type, piece.color);
+            break;
+          case "bishop":
+            console.log(piece.type, piece.color);
+            break;
+          case "queen":
+            console.log(piece.type, piece.color);
+            break;
+          case "king":
+            console.log(piece.type, piece.color);
+            break;
+        }
+      }
+    }, moves);
+    return moves;
+  };
+
   const grabPiece = (e) => {
-    if(e.nativeEvent.button != 0) return;
-    
-    e.target.classList.contains("mark") ? selectedPieceRef.current = e.target.parentNode : selectedPieceRef.current = e.target;
+    if (e.nativeEvent.button != 0) return;
+    e.target.classList.contains("mark")
+      ? (selectedPieceRef.current = e.target.parentNode)
+      : (selectedPieceRef.current = e.target);
     const piece = selectedPieceRef.current;
     const chessboard = chessboardRef.current;
-
     if (piece.classList.contains("piece")) {
       const x = e.clientX - piece.parentNode.offsetLeft - piece.offsetWidth / 2;
       const y = e.clientY - piece.parentNode.offsetTop - piece.offsetHeight / 2;
 
-      const row = Math.floor(
-        (e.clientY - chessboard.offsetTop) / piece.offsetHeight
-      );
-      const col = Math.floor(
-        (e.clientX - chessboard.offsetLeft) / piece.offsetWidth
-      );
+      const row = Math.floor((e.clientY - chessboard.offsetTop) / (piece.offsetHeight + 4));
+      const col = Math.floor((e.clientX - chessboard.offsetLeft) / (piece.offsetWidth + 4));
       setCurrentPiece({ x: col, y: row });
 
       piece.style.position = "absolute";
       piece.style.left = x + "px";
       piece.style.top = y + "px";
       piece.style.zIndex = 9999;
+
+      legalMovesRef.current = calculateLegalMoves(row, col);
+      setLegalMoves([...legalMovesRef.current]);
     } else selectedPieceRef.current = null;
   };
 
   const movePiece = (e) => {
     if (selectedPieceRef.current == null || chessboardRef == null) return;
-
     const piece = selectedPieceRef.current;
+    const board = piece.parentNode.parentNode;
 
     const x = e.clientX - piece.parentNode.offsetLeft - piece.offsetWidth / 2;
     const y = e.clientY - piece.parentNode.offsetTop - piece.offsetHeight / 2;
 
-    piece.style.position = "absolute";
-    piece.style.left = x + "px";
-    piece.style.top = y + "px";
+    if (board.offsetWidth < e.clientX - board.offsetLeft || e.clientX - board.offsetLeft < 0) {
+      piece.style.position = "relative";
+      piece.style.left = "0px";
+      piece.style.top = "0px";
+      selectedPieceRef.current = null;
+      setCurrentPiece({ x: null, y: null });
+    } else {
+      piece.style.position = "absolute";
+      piece.style.left = x + "px";
+      piece.style.top = y + "px";
+    }
   };
 
   const letPiece = (e) => {
@@ -119,39 +194,47 @@ export default function ChessBoard(props) {
     const piece = selectedPieceRef.current;
     const chessboard = chessboardRef.current;
 
-    const row = Math.floor(
-      (e.clientY - chessboard.offsetTop) / piece.offsetHeight
-    );
-    const col = Math.floor(
-      (e.clientX - chessboard.offsetLeft) / piece.offsetWidth
-    );
+    if (e.nativeEvent.button == 0) {
+      const row = Math.floor((e.clientY - chessboard.offsetTop) / piece.offsetHeight);
+      const col = Math.floor((e.clientX - chessboard.offsetLeft) / piece.offsetWidth);
+      if (legalMovesRef.current.filter((move) => move.x == col && move.y == row).length == 0) {
+        piece.style.position = "relative";
+        piece.style.left = "0px";
+        piece.style.top = "0px";
+      } else if (row == currentPiece.y && col == currentPiece.x) {
+        piece.style.position = "relative";
+        piece.style.left = "0px";
+        piece.style.top = "0px";
+      } else if (row < 8 && col < 8 && row >= 0 && col >= 0) {
+        soundsRef.current[0].play();
+        setLastMove([
+          { x: currentPiece.x, y: currentPiece.y },
+          { x: col, y: row },
+        ]);
 
-    if (row == currentPiece.y && col == currentPiece.x) {
-      piece.style.position = "relative";
-      piece.style.left = "0px";
-      piece.style.top = "0px";
-    } else if (row < 8 && col < 8 && row >= 0 && col >= 0) {
-
-      soundsRef.current[0].play();
-      setLastMove([{ x: currentPiece.x, y: currentPiece.y }, { x: col, y: row }]);
-
-      setPieces((value) => {
-        const pieces = value.map((piece) => {
-          if (piece.x == currentPiece.x && piece.y == currentPiece.y) {
-            piece.x = col;
-            piece.y = row;
-          }
-          return piece;
+        setPieces((value) => {
+          const pieces = value.map((piece) => {
+            if (piece.x == currentPiece.x && piece.y == currentPiece.y) {
+              piece.x = col;
+              piece.y = row;
+            }
+            return piece;
+          });
+          return pieces;
         });
-        return pieces;
-      });
 
-      setCurrentPiece({ x: null, y: null });
-    } else {
+        setCurrentPiece({ x: null, y: null });
+      } else {
+        piece.style.position = "relative";
+        piece.style.left = "0px";
+        piece.style.top = "0px";
+      }
+    } else if (e.nativeEvent.button == 2) {
       piece.style.position = "relative";
       piece.style.left = "0px";
       piece.style.top = "0px";
     }
+
     selectedPieceRef.current = null;
   };
 
@@ -161,11 +244,16 @@ export default function ChessBoard(props) {
 
   const soundsRef = useRef(null);
   const chessboardRef = useRef(null);
+  const legalMovesRef = useRef(null);
   const selectedPieceRef = useRef(null);
 
   const [pieces, setPieces] = useState(addPieces());
   const [currentPiece, setCurrentPiece] = useState({ x: null, y: null });
-  const [lastMove, setLastMove] = useState([ { x: null, y: null }, { x: null, y: null } ]);
+  const [lastMove, setLastMove] = useState([
+    { x: null, y: null },
+    { x: null, y: null },
+  ]);
+  const [legalMoves, setLegalMoves] = useState([]);
 
   createBoard();
 
