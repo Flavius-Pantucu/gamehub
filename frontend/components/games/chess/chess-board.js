@@ -67,6 +67,7 @@ export default function ChessBoard(props) {
             image={image}
             coords={[i, j]}
             lastMove={lastMove}
+            legalMoves={legalMoves}
             currentPiece={currentPiece}
           />
         );
@@ -155,7 +156,11 @@ export default function ChessBoard(props) {
 
       const row = Math.floor((e.clientY - chessboard.offsetTop) / (piece.offsetHeight + 4));
       const col = Math.floor((e.clientX - chessboard.offsetLeft) / (piece.offsetWidth + 4));
-      setCurrentPiece({ x: col, y: row });
+      if (!pieces.filter((piece) => piece.x == col && piece.y == row && piece.color == playerTurnRef.current).length)
+        return;
+      currentPiece.x == col && currentPiece.y == row
+        ? setCurrentPiece({ x: col, y: row, retouch: true })
+        : setCurrentPiece({ x: col, y: row, retouch: false });
 
       piece.style.position = "absolute";
       piece.style.left = x + "px";
@@ -164,23 +169,33 @@ export default function ChessBoard(props) {
 
       legalMovesRef.current = calculateLegalMoves(row, col);
       setLegalMoves([...legalMovesRef.current]);
-    } else selectedPieceRef.current = null;
+    } else {
+      selectedPieceRef.current = null;
+      setCurrentPiece({ x: null, y: null, retouch: false });
+      setLegalMoves([]);
+    }
   };
 
   const movePiece = (e) => {
-    if (selectedPieceRef.current == null || chessboardRef == null) return;
+    if (
+      selectedPieceRef.current == null ||
+      chessboardRef == null ||
+      !pieces.filter(
+        (piece) => piece.x == currentPiece.x && piece.y == currentPiece.y && piece.color == playerTurnRef.current
+      ).length
+    )
+      return;
     const piece = selectedPieceRef.current;
     const board = piece.parentNode.parentNode;
 
     const x = e.clientX - piece.parentNode.offsetLeft - piece.offsetWidth / 2;
     const y = e.clientY - piece.parentNode.offsetTop - piece.offsetHeight / 2;
-
     if (board.offsetWidth < e.clientX - board.offsetLeft || e.clientX - board.offsetLeft < 0) {
       piece.style.position = "relative";
       piece.style.left = "0px";
       piece.style.top = "0px";
       selectedPieceRef.current = null;
-      setCurrentPiece({ x: null, y: null });
+      setCurrentPiece({ x: null, y: null, retouch: false });
     } else {
       piece.style.position = "absolute";
       piece.style.left = x + "px";
@@ -189,7 +204,13 @@ export default function ChessBoard(props) {
   };
 
   const letPiece = (e) => {
-    if (selectedPieceRef.current == null) return;
+    if (
+      selectedPieceRef.current == null ||
+      !pieces.filter(
+        (piece) => piece.x == currentPiece.x && piece.y == currentPiece.y && piece.color == playerTurnRef.current
+      ).length
+    )
+      return;
 
     const piece = selectedPieceRef.current;
     const chessboard = chessboardRef.current;
@@ -205,25 +226,37 @@ export default function ChessBoard(props) {
         piece.style.position = "relative";
         piece.style.left = "0px";
         piece.style.top = "0px";
+        if (currentPiece.retouch == true) {
+          setCurrentPiece({ x: null, y: null, retouch: false });
+          setLegalMoves([]);
+        }
       } else if (row < 8 && col < 8 && row >= 0 && col >= 0) {
-        soundsRef.current[0].play();
-        setLastMove([
-          { x: currentPiece.x, y: currentPiece.y },
-          { x: col, y: row },
-        ]);
-
+        const index = pieces.findIndex((piece) => piece.x == col && piece.y == row);
+        if (index != -1) {
+          pieces.splice(index, 1);
+          //to be added in captured pieces
+          soundsRef.current[2].play();
+        } else {
+          soundsRef.current[0].play();
+        }
         setPieces((value) => {
-          const pieces = value.map((piece) => {
+          const _pieces = value.map((piece) => {
             if (piece.x == currentPiece.x && piece.y == currentPiece.y) {
               piece.x = col;
               piece.y = row;
             }
             return piece;
           });
-          return pieces;
+          return _pieces;
         });
 
-        setCurrentPiece({ x: null, y: null });
+        setLastMove([
+          { x: currentPiece.x, y: currentPiece.y },
+          { x: col, y: row },
+        ]);
+        setCurrentPiece({ x: null, y: null, retouch: false });
+        setLegalMoves([]);
+        playerTurnRef.current == "white" ? (playerTurnRef.current = "black") : (playerTurnRef.current = "white");
       } else {
         piece.style.position = "relative";
         piece.style.left = "0px";
@@ -233,6 +266,8 @@ export default function ChessBoard(props) {
       piece.style.position = "relative";
       piece.style.left = "0px";
       piece.style.top = "0px";
+      setCurrentPiece({ x: null, y: null, retouch: false });
+      setLegalMoves([]);
     }
 
     selectedPieceRef.current = null;
@@ -246,14 +281,16 @@ export default function ChessBoard(props) {
   const chessboardRef = useRef(null);
   const legalMovesRef = useRef(null);
   const selectedPieceRef = useRef(null);
+  const playerTurnRef = useRef("white");
 
+  const [capturedPieces, setCapturedPieces] = useState([]);
+  const [legalMoves, setLegalMoves] = useState([]);
   const [pieces, setPieces] = useState(addPieces());
-  const [currentPiece, setCurrentPiece] = useState({ x: null, y: null });
+  const [currentPiece, setCurrentPiece] = useState({ x: null, y: null, retouch: false });
   const [lastMove, setLastMove] = useState([
     { x: null, y: null },
     { x: null, y: null },
   ]);
-  const [legalMoves, setLegalMoves] = useState([]);
 
   createBoard();
 
