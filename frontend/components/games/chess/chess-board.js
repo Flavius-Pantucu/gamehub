@@ -55,20 +55,24 @@ export default function ChessBoard(props) {
   const createBoard = () => {
     for (var i = 0; i < yAxis.length; i++) {
       for (var j = 0; j < xAxis.length; j++) {
-        let image = null;
-        pieces.forEach((piece) => {
-          if (piece.x == j && piece.y == i) image = piece.image;
+        let piece = { color: null, image: null };
+        pieces.forEach((p) => {
+          if (p.x == j && p.y == i) {
+            piece.image = p.image;
+            piece.color = p.color;
+          }
         });
 
         board.push(
           <Square
             key={`${i},${j}`}
             axis={[xAxis, yAxis]}
-            image={image}
+            piece={piece}
             coords={[i, j]}
             lastMove={lastMove}
             legalMoves={legalMoves}
             currentPiece={currentPiece}
+            currentPlayer={currentPlayer}
           />
         );
       }
@@ -269,6 +273,14 @@ export default function ChessBoard(props) {
     return moves;
   };
 
+  const canMove = (e, chessboard) => {
+    const square = e.target.classList.contains("dot") ? e.target.parentNode : e.target;
+    const row = Math.floor((e.clientY - chessboard.offsetTop) / square.offsetHeight);
+    const col = Math.floor((e.clientX - chessboard.offsetLeft) / square.offsetWidth);
+    const isLegal = legalMovesRef.current.filter((piece) => piece.x == col && piece.y == row).length == 1;
+    return isLegal;
+  };
+
   const grabPiece = (e) => {
     if (e.nativeEvent.button != 0) return;
     e.target.classList.contains("mark")
@@ -282,8 +294,10 @@ export default function ChessBoard(props) {
 
       const row = Math.floor((e.clientY - chessboard.offsetTop) / (piece.offsetHeight + 4));
       const col = Math.floor((e.clientX - chessboard.offsetLeft) / (piece.offsetWidth + 4));
+
       if (!pieces.filter((piece) => piece.x == col && piece.y == row && piece.color == playerTurnRef.current).length)
         return;
+
       currentPiece.x == col && currentPiece.y == row
         ? setCurrentPiece({ x: col, y: row, retouch: true })
         : setCurrentPiece({ x: col, y: row, retouch: false });
@@ -295,7 +309,7 @@ export default function ChessBoard(props) {
 
       legalMovesRef.current = calculateLegalMoves(row, col);
       setLegalMoves([...legalMovesRef.current]);
-    } else {
+    } else if (!canMove(e, chessboard)) {
       selectedPieceRef.current = null;
       setCurrentPiece({ x: null, y: null, retouch: false });
       setLegalMoves([]);
@@ -342,20 +356,25 @@ export default function ChessBoard(props) {
     const chessboard = chessboardRef.current;
 
     if (e.nativeEvent.button == 0) {
-      const row = Math.floor((e.clientY - chessboard.offsetTop) / piece.offsetHeight);
-      const col = Math.floor((e.clientX - chessboard.offsetLeft) / piece.offsetWidth);
+      const square = e.target.classList.contains("dot") ? e.target.parentNode : e.target;
+
+      const row = Math.floor((e.clientY - chessboard.offsetTop) / square.offsetHeight);
+      const col = Math.floor((e.clientX - chessboard.offsetLeft) / square.offsetWidth);
+
+      if (row == currentPiece.y && col == currentPiece.x && currentPiece.retouch == true) {
+        piece.style.position = "relative";
+        piece.style.left = "0px";
+        piece.style.top = "0px";
+        selectedPieceRef.current = null;
+        setCurrentPiece({ x: null, y: null, retouch: false });
+        setLegalMoves([]);
+        return;
+      }
+
       if (legalMovesRef.current.filter((move) => move.x == col && move.y == row).length == 0) {
         piece.style.position = "relative";
         piece.style.left = "0px";
         piece.style.top = "0px";
-      } else if (row == currentPiece.y && col == currentPiece.x) {
-        piece.style.position = "relative";
-        piece.style.left = "0px";
-        piece.style.top = "0px";
-        if (currentPiece.retouch == true) {
-          setCurrentPiece({ x: null, y: null, retouch: false });
-          setLegalMoves([]);
-        }
       } else if (row < 8 && col < 8 && row >= 0 && col >= 0) {
         const index = pieces.findIndex((piece) => piece.x == col && piece.y == row);
         if (index != -1) {
@@ -383,6 +402,7 @@ export default function ChessBoard(props) {
         setCurrentPiece({ x: null, y: null, retouch: false });
         setLegalMoves([]);
         playerTurnRef.current == "white" ? (playerTurnRef.current = "black") : (playerTurnRef.current = "white");
+        setCurrentPlayer(currentPlayer == "white" ? "black" : "white");
       } else {
         piece.style.position = "relative";
         piece.style.left = "0px";
@@ -399,6 +419,20 @@ export default function ChessBoard(props) {
     selectedPieceRef.current = null;
   };
 
+  const rightClickHandler = (e) => {
+    e.preventDefault();
+    if (selectedPieceRef.current == null) return;
+
+    const piece = selectedPieceRef.current;
+    piece.style.position = "relative";
+    piece.style.left = "0px";
+    piece.style.top = "0px";
+    selectedPieceRef.current = null;
+    setCurrentPiece({ x: null, y: null, retouch: false });
+    setLegalMoves([]);
+    return;
+  };
+
   const xAxis = ["a", "b", "c", "d", "e", "f", "g", "h"];
   const yAxis = ["1", "2", "3", "4", "5", "6", "7", "8"];
   const board = [];
@@ -410,13 +444,16 @@ export default function ChessBoard(props) {
   const playerTurnRef = useRef("white");
 
   const [capturedPieces, setCapturedPieces] = useState([]);
-  const [legalMoves, setLegalMoves] = useState([]);
-  const [pieces, setPieces] = useState(addPieces());
   const [currentPiece, setCurrentPiece] = useState({ x: null, y: null, retouch: false });
+  const [pieces, setPieces] = useState(addPieces());
+
+  const [legalMoves, setLegalMoves] = useState([]);
   const [lastMove, setLastMove] = useState([
     { x: null, y: null },
     { x: null, y: null },
   ]);
+
+  const [currentPlayer, setCurrentPlayer] = useState("white");
 
   createBoard();
 
@@ -433,8 +470,8 @@ export default function ChessBoard(props) {
       onMouseUp={(e) => letPiece(e)}
       onMouseMove={(e) => movePiece(e)}
       onMouseDown={(e) => grabPiece(e)}
-      onContextMenu={(e) => e.preventDefault()}
-      className="grid grid-rows-[8] grid-cols-8 aspect-square h-[90%] min-h-[384px] max-h-[384px] md:max-h-max cursor-pointer">
+      onContextMenu={(e) => rightClickHandler(e)}
+      className="grid grid-rows-[8] grid-cols-8 aspect-square h-[90%] min-h-[384px] max-h-[384px] md:max-h-max">
       {board}
     </div>
   );
