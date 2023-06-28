@@ -110,8 +110,134 @@ export default function ChessBoard(props) {
         }, legalMoves);
       }
     } else return [];
-    // enpassant check
+    // enpassant and promotion check
     return legalMoves;
+  };
+
+  const calculateKnightMoves = (i, j, color) => {
+    const legalMoves = [];
+
+    const x_neighbors = [-2, -1, 1, 2, 2, 1, -1, -2];
+    const y_neighbors = [-1, -2, -2, -1, 1, 2, 2, 1];
+
+    for (var n = 0; n < 8; n++) {
+      let move = pieces.filter((piece) => piece.x == j + x_neighbors[n] && piece.y == i + y_neighbors[n]).length == 0;
+      if (move) legalMoves.push({ x: j + x_neighbors[n], y: i + y_neighbors[n] });
+
+      let capture = pieces.filter(
+        (piece) => piece.x == j + x_neighbors[n] && piece.y == i + y_neighbors[n] && piece.color != color
+      );
+      if (capture.length > 0) legalMoves.push({ x: j + x_neighbors[n], y: i + y_neighbors[n] });
+    }
+
+    return legalMoves;
+  };
+
+  const calculateBishopMoves = (i, j, color) => {
+    const legalMoves = [];
+    for (var xAxis = j - 1, yAxis = i - 1; xAxis >= 0, yAxis >= 0; xAxis--, yAxis--) {
+      let move = pieces.filter((piece) => piece.x == xAxis && piece.y == yAxis).length == 0;
+      if (move) legalMoves.push({ x: xAxis, y: yAxis });
+
+      let capture = pieces.filter((piece) => piece.x == xAxis && piece.y == yAxis && piece.color != color);
+      if (capture.length > 0) legalMoves.push({ x: xAxis, y: yAxis });
+
+      if (capture.length > 0 || !(move || capture.length > 0)) break;
+    }
+    for (var xAxis = j + 1, yAxis = i + 1; xAxis < 8, yAxis < 8; xAxis++, yAxis++) {
+      let move = pieces.filter((piece) => piece.x == xAxis && piece.y == yAxis).length == 0;
+      if (move) legalMoves.push({ x: xAxis, y: yAxis });
+
+      let capture = pieces.filter((piece) => piece.x == xAxis && piece.y == yAxis && piece.color != color);
+      if (capture.length > 0) legalMoves.push({ x: xAxis, y: yAxis });
+
+      if (capture.length > 0 || !(move || capture.length > 0)) break;
+    }
+    for (var xAxis = j - 1, yAxis = i + 1; xAxis >= 0, yAxis < 8; xAxis--, yAxis++) {
+      let move = pieces.filter((piece) => piece.x == xAxis && piece.y == yAxis).length == 0;
+      if (move) legalMoves.push({ x: xAxis, y: yAxis });
+
+      let capture = pieces.filter((piece) => piece.x == xAxis && piece.y == yAxis && piece.color != color);
+      if (capture.length > 0) legalMoves.push({ x: xAxis, y: yAxis });
+
+      if (capture.length > 0 || !(move || capture.length > 0)) break;
+    }
+    for (var xAxis = j + 1, yAxis = i - 1; xAxis < 8, yAxis >= 0; xAxis++, yAxis--) {
+      let move = pieces.filter((piece) => piece.x == xAxis && piece.y == yAxis).length == 0;
+      if (move) legalMoves.push({ x: xAxis, y: yAxis });
+
+      let capture = pieces.filter((piece) => piece.x == xAxis && piece.y == yAxis && piece.color != color);
+      if (capture.length > 0) legalMoves.push({ x: xAxis, y: yAxis });
+
+      if (capture.length > 0 || !(move || capture.length > 0)) break;
+    }
+    return legalMoves;
+  };
+
+  const calculateRookMoves = (i, j, color) => {
+    const legalMoves = [];
+    for (var xAxis = j - 1; xAxis >= 0; xAxis--) {
+      let move = pieces.filter((piece) => piece.x == xAxis && piece.y == i).length == 0;
+      if (move) legalMoves.push({ x: xAxis, y: i });
+
+      let capture = pieces.filter((piece) => piece.x == xAxis && piece.y == i && piece.color != color);
+      if (capture.length > 0) legalMoves.push({ x: xAxis, y: i });
+
+      if (capture.length > 0 || !(move || capture.length > 0)) break;
+    }
+    for (var xAxis = j + 1; xAxis < 8; xAxis++) {
+      let move = pieces.filter((piece) => piece.x == xAxis && piece.y == i).length == 0;
+      if (move) legalMoves.push({ x: xAxis, y: i });
+
+      let capture = pieces.filter((piece) => piece.x == xAxis && piece.y == i && piece.color != color);
+      if (capture.length > 0) legalMoves.push({ x: xAxis, y: i });
+
+      if (capture.length > 0 || !(move || capture.length > 0)) break;
+    }
+    for (var yAxis = i + 1; yAxis < 8; yAxis++) {
+      let move = pieces.filter((piece) => piece.x == j && piece.y == yAxis).length == 0;
+      if (move) legalMoves.push({ x: j, y: yAxis });
+
+      let capture = pieces.filter((piece) => piece.x == j && piece.y == yAxis && piece.color != color);
+      if (capture.length > 0) legalMoves.push({ x: j, y: yAxis });
+
+      if (capture.length > 0 || !(move || capture.length > 0)) break;
+    }
+    for (var yAxis = i - 1; yAxis >= 0; yAxis--) {
+      let move = pieces.filter((piece) => piece.x == j && piece.y == yAxis).length == 0;
+      if (move) legalMoves.push({ x: j, y: yAxis });
+
+      let capture = pieces.filter((piece) => piece.x == j && piece.y == yAxis && piece.color != color);
+      if (capture.length > 0) legalMoves.push({ x: j, y: yAxis });
+
+      if (capture.length > 0 || !(move || capture.length > 0)) break;
+    }
+    return legalMoves;
+  };
+
+  const calculateQueenMoves = (i, j, color) => {
+    const b_legalMoves = [...calculateBishopMoves(i, j, color)];
+    const r_legalMoves = [...calculateRookMoves(i, j, color)];
+    return [...b_legalMoves, ...r_legalMoves];
+  };
+
+  const calculateKingMoves = (i, j, color) => {
+    const legalMoves = [];
+
+    const x_neighbors = [-1, 0, 1, 1, 1, 0, -1, -1];
+    const y_neighbors = [-1, -1, -1, 0, 1, 1, 1, 0];
+
+    for (var n = 0; n < 8; n++) {
+      let move = pieces.filter((piece) => piece.x == j + x_neighbors[n] && piece.y == i + y_neighbors[n]).length == 0;
+      if (move) legalMoves.push({ x: j + x_neighbors[n], y: i + y_neighbors[n] });
+
+      let capture = pieces.filter(
+        (piece) => piece.x == j + x_neighbors[n] && piece.y == i + y_neighbors[n] && piece.color != color
+      );
+      if (capture.length > 0) legalMoves.push({ x: j + x_neighbors[n], y: i + y_neighbors[n] });
+    }
+    return legalMoves;
+    //check castle previlieges
   };
 
   const calculateLegalMoves = (i, j) => {
@@ -123,19 +249,19 @@ export default function ChessBoard(props) {
             moves = calculatePawnMoves(i, j, piece.color);
             break;
           case "rook":
-            console.log(piece.type, piece.color);
+            moves = calculateRookMoves(i, j, piece.color);
             break;
           case "knight":
-            console.log(piece.type, piece.color);
+            moves = calculateKnightMoves(i, j, piece.color);
             break;
           case "bishop":
-            console.log(piece.type, piece.color);
+            moves = calculateBishopMoves(i, j, piece.color);
             break;
           case "queen":
-            console.log(piece.type, piece.color);
+            moves = calculateQueenMoves(i, j, piece.color);
             break;
           case "king":
-            console.log(piece.type, piece.color);
+            moves = calculateKingMoves(i, j, piece.color);
             break;
         }
       }
