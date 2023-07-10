@@ -83,39 +83,91 @@ export default function ChessBoard(props) {
   const calculatePawnMoves = (i, j, color) => {
     const legalMoves = [];
     if (color == "white") {
+      //checks how many squares are available to move
       let move = pieces.filter((piece) => piece.x == j && piece.y == i - 1).length == 0;
       if (move) {
-        legalMoves.push({ x: j, y: i - 1 });
+        legalMoves.push({ x: j, y: i - 1, empassant: false });
         move = pieces.filter((piece) => piece.x == j && piece.y == i - 2).length == 0;
-        if (i == 6 && move) legalMoves.push({ x: j, y: i - 2 });
+        if (i == 6 && move) legalMoves.push({ x: j, y: i - 2, empassant: false });
       }
 
+      //checks how many pieces are available to capture
       let capture = pieces.filter(
         (piece) => (piece.x == j - 1 || piece.x == j + 1) && piece.y == i - 1 && piece.color == "black"
       );
       if (capture.length > 0) {
         capture.forEach((piece) => {
-          legalMoves.push({ x: piece.x, y: piece.y });
+          legalMoves.push({ x: piece.x, y: piece.y, empassant: false });
         }, legalMoves);
       }
+
+      //checks for empassant moves
+      if (i == 3) {
+        let leftPawn = pieces.filter((piece) => piece.x == j - 1 && piece.y == i && piece.color == "black").length;
+        let rightPawn = pieces.filter((piece) => piece.x == j + 1 && piece.y == i && piece.color == "black").length;
+
+        if (
+          leftPawn == 1 &&
+          lastMove[0].y == i - 2 &&
+          lastMove[1].y == i &&
+          lastMove[0].x == j - 1 &&
+          lastMove[1].x == j - 1
+        )
+          legalMoves.push({ x: j - 1, y: i - 1, empassant: true });
+
+        if (
+          rightPawn == 1 &&
+          lastMove[0].y == i - 2 &&
+          lastMove[1].y == i &&
+          lastMove[0].x == j + 1 &&
+          lastMove[1].x == j + 1
+        )
+          legalMoves.push({ x: j + 1, y: i - 1, empassant: true });
+      }
     } else if (color == "black") {
+      //checks how many squares are available to move
       let condition = pieces.filter((piece) => piece.x == j && piece.y == i + 1).length == 0;
       if (condition) {
-        legalMoves.push({ x: j, y: i + 1 });
+        legalMoves.push({ x: j, y: i + 1, empassant: false });
         condition = pieces.filter((piece) => piece.x == j && piece.y == i + 2).length == 0;
-        if (i == 1 && condition) legalMoves.push({ x: j, y: i + 2 });
+        if (i == 1 && condition) legalMoves.push({ x: j, y: i + 2, empassant: false });
       }
 
+      //checks how many pieces are available to capture
       let capture = pieces.filter(
         (piece) => (piece.x == j - 1 || piece.x == j + 1) && piece.y == i + 1 && piece.color == "white"
       );
       if (capture.length > 0) {
         capture.forEach((piece) => {
-          legalMoves.push({ x: piece.x, y: piece.y });
+          legalMoves.push({ x: piece.x, y: piece.y, empassant: false });
         }, legalMoves);
       }
+
+      //checks for empassant moves
+      if (i == 4) {
+        let leftPawn = pieces.filter((piece) => piece.x == j - 1 && piece.y == i && piece.color == "white").length;
+        let rightPawn = pieces.filter((piece) => piece.x == j + 1 && piece.y == i && piece.color == "white").length;
+
+        if (
+          leftPawn == 1 &&
+          lastMove[0].y == i + 2 &&
+          lastMove[1].y == i &&
+          lastMove[0].x == j - 1 &&
+          lastMove[1].x == j - 1
+        )
+          legalMoves.push({ x: j - 1, y: i + 1, empassant: true });
+
+        if (
+          rightPawn == 1 &&
+          lastMove[0].y == i + 2 &&
+          lastMove[1].y == i &&
+          lastMove[0].x == j + 1 &&
+          lastMove[1].x == j + 1
+        )
+          legalMoves.push({ x: j + 1, y: i + 1, empassant: true });
+      }
     } else return [];
-    // enpassant and promotion check
+    //promotion check
     return legalMoves;
   };
 
@@ -380,13 +432,24 @@ export default function ChessBoard(props) {
         piece.style.left = "0px";
         piece.style.top = "0px";
       } else if (row < 8 && col < 8 && row >= 0 && col >= 0) {
-        const index = pieces.findIndex((piece) => piece.x == col && piece.y == row);
-        if (index != -1) {
+        const move = legalMovesRef.current.filter((move) => move.x == col && move.y == row)[0];
+        if (move.empassant == true) {
+          const index =
+            playerTurnRef.current == "black"
+              ? pieces.findIndex((piece) => piece.x == col && piece.y == row - 1)
+              : pieces.findIndex((piece) => piece.x == col && piece.y == row + 1);
           pieces.splice(index, 1);
           //to be added in captured pieces
           soundsRef.current[2].play();
         } else {
-          soundsRef.current[0].play();
+          const index = pieces.findIndex((piece) => piece.x == col && piece.y == row);
+          if (index != -1) {
+            pieces.splice(index, 1);
+            //to be added in captured pieces
+            soundsRef.current[2].play();
+          } else {
+            soundsRef.current[0].play();
+          }
         }
         setPieces((value) => {
           const _pieces = value.map((piece) => {
@@ -398,7 +461,6 @@ export default function ChessBoard(props) {
           });
           return _pieces;
         });
-
         setLastMove([
           { x: currentPiece.x, y: currentPiece.y },
           { x: col, y: row },
