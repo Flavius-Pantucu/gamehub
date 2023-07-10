@@ -9,19 +9,10 @@ export default function Square(props) {
   const currentPiece = props.currentPiece;
   const legalMoves = props.legalMoves;
   const piece = props.piece;
-
-  const [mark, setMark] = useState(false);
-
-  useEffect(() => {
-    setMark(false);
-  }, [currentPiece]);
+  const mark = props.mark;
 
   return (
     <div
-      onContextMenu={(e) => {
-        const current = e.target;
-        current.classList.contains("piece") ? "" : setMark(!mark);
-      }}
       className={`p-0.5 relative flex justify-center items-center
       ${piece.color == currentPlayer ? "cursor-pointer" : "cursor-default"}
       ${(i + j) % 2 == 1 ? "bg-[#f0d9b5] text-[#b58863]" : "bg-[#b58863] text-[#f0d9b5]"}

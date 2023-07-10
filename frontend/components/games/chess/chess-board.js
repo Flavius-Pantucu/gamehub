@@ -67,6 +67,7 @@ export default function ChessBoard(props) {
           <Square
             key={`${i},${j}`}
             axis={[xAxis, yAxis]}
+            mark={marks[8 * i + j]}
             piece={piece}
             coords={[i, j]}
             lastMove={lastMove}
@@ -289,6 +290,9 @@ export default function ChessBoard(props) {
     const piece = selectedPieceRef.current;
     const chessboard = chessboardRef.current;
     if (piece.classList.contains("piece")) {
+      marks.fill(false);
+      setMarks([...marks]);
+
       const x = e.clientX - piece.parentNode.offsetLeft - piece.offsetWidth / 2;
       const y = e.clientY - piece.parentNode.offsetTop - piece.offsetHeight / 2;
 
@@ -408,29 +412,37 @@ export default function ChessBoard(props) {
         piece.style.left = "0px";
         piece.style.top = "0px";
       }
-    } else if (e.nativeEvent.button == 2) {
-      piece.style.position = "relative";
-      piece.style.left = "0px";
-      piece.style.top = "0px";
-      setCurrentPiece({ x: null, y: null, retouch: false });
-      setLegalMoves([]);
-    }
-
+    } else if (e.nativeEvent.button == 2) return;
     selectedPieceRef.current = null;
   };
 
   const rightClickHandler = (e) => {
     e.preventDefault();
-    if (selectedPieceRef.current == null) return;
 
-    const piece = selectedPieceRef.current;
-    piece.style.position = "relative";
-    piece.style.left = "0px";
-    piece.style.top = "0px";
-    selectedPieceRef.current = null;
-    setCurrentPiece({ x: null, y: null, retouch: false });
-    setLegalMoves([]);
-    return;
+    if (selectedPieceRef.current == null) {
+      const chessboard = chessboardRef.current;
+
+      const squareWidth = e.target.className.includes("piece") ? e.target.offsetWidth + 4 : e.target.offsetWidth;
+      const squareHeight = e.target.className.includes("piece") ? e.target.offsetHeight + 4 : e.target.offsetHeight;
+
+      const row = Math.floor((e.clientY - chessboard.offsetTop) / squareHeight);
+      const col = Math.floor((e.clientX - chessboard.offsetLeft) / squareWidth);
+      const elem = 8 * row + col;
+
+      marks[elem] = marks[elem] == false ? true : false;
+      setMarks([...marks]);
+
+      setCurrentPiece({ x: null, y: null, retouch: false });
+      setLegalMoves([]);
+    } else {
+      const piece = selectedPieceRef.current;
+      piece.style.position = "relative";
+      piece.style.left = "0px";
+      piece.style.top = "0px";
+      selectedPieceRef.current = null;
+      setCurrentPiece({ x: null, y: null, retouch: false });
+      setLegalMoves([]);
+    }
   };
 
   const xAxis = ["a", "b", "c", "d", "e", "f", "g", "h"];
@@ -446,7 +458,7 @@ export default function ChessBoard(props) {
   const [capturedPieces, setCapturedPieces] = useState([]);
   const [currentPiece, setCurrentPiece] = useState({ x: null, y: null, retouch: false });
   const [pieces, setPieces] = useState(addPieces());
-
+  const [marks, setMarks] = useState(new Array(64).fill(false));
   const [legalMoves, setLegalMoves] = useState([]);
   const [lastMove, setLastMove] = useState([
     { x: null, y: null },
@@ -456,7 +468,6 @@ export default function ChessBoard(props) {
   const [currentPlayer, setCurrentPlayer] = useState("white");
 
   createBoard();
-
   useEffect(() => {
     soundsRef.current = new Array(3);
     soundsRef.current[0] = new Audio("/sounds/move.mp3");
