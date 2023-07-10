@@ -1,13 +1,13 @@
 import { useState, useEffect } from "react";
 
 export default function Square(props) {
-  const [oldPosition, newPosition] = props.lastMove;
   const [xAxis, yAxis] = props.axis;
   const [i, j] = props.coords;
 
   const currentPlayer = props.currentPlayer;
   const currentPiece = props.currentPiece;
   const legalMoves = props.legalMoves;
+  const lastMove = props.lastMove;
   const piece = props.piece;
   const mark = props.mark;
 
@@ -18,12 +18,12 @@ export default function Square(props) {
       ${(i + j) % 2 == 1 ? "bg-[#f0d9b5] text-[#b58863]" : "bg-[#b58863] text-[#f0d9b5]"}
       ${currentPiece.y == i && currentPiece.x == j ? "bg-[#f99161]" : ""}
       ${
-        !legalMoves.find((square) => square.x == j && square.y == i) && oldPosition.y == i && oldPosition.x == j
+        !legalMoves.find((square) => square.x == j && square.y == i) && lastMove.old_y == i && lastMove.old_x == j
           ? "bg-[#aba34c]"
           : ""
       }
       ${
-        !legalMoves.find((square) => square.x == j && square.y == i) && newPosition.y == i && newPosition.x == j
+        !legalMoves.find((square) => square.x == j && square.y == i) && lastMove.new_y == i && lastMove.new_x == j
           ? "bg-[#c0b74c]"
           : ""
       }

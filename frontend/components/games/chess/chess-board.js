@@ -80,15 +80,15 @@ export default function ChessBoard(props) {
     }
   };
 
-  const calculatePawnMoves = (i, j, color) => {
+  const calculatePawnMoves = (piece, i, j, color) => {
     const legalMoves = [];
     if (color == "white") {
       //checks how many squares are available to move
       let move = pieces.filter((piece) => piece.x == j && piece.y == i - 1).length == 0;
       if (move) {
-        legalMoves.push({ x: j, y: i - 1, empassant: false });
+        legalMoves.push({ piece: piece, x: j, y: i - 1, special: false });
         move = pieces.filter((piece) => piece.x == j && piece.y == i - 2).length == 0;
-        if (i == 6 && move) legalMoves.push({ x: j, y: i - 2, empassant: false });
+        if (i == 6 && move) legalMoves.push({ piece: piece, x: j, y: i - 2, special: false });
       }
 
       //checks how many pieces are available to capture
@@ -97,40 +97,39 @@ export default function ChessBoard(props) {
       );
       if (capture.length > 0) {
         capture.forEach((piece) => {
-          legalMoves.push({ x: piece.x, y: piece.y, empassant: false });
+          legalMoves.push({ piece: piece, x: piece.x, y: piece.y, special: false });
         }, legalMoves);
       }
 
-      //checks for empassant moves
       if (i == 3) {
         let leftPawn = pieces.filter((piece) => piece.x == j - 1 && piece.y == i && piece.color == "black").length;
         let rightPawn = pieces.filter((piece) => piece.x == j + 1 && piece.y == i && piece.color == "black").length;
 
         if (
           leftPawn == 1 &&
-          lastMove[0].y == i - 2 &&
-          lastMove[1].y == i &&
-          lastMove[0].x == j - 1 &&
-          lastMove[1].x == j - 1
+          lastMove.old_y == i - 2 &&
+          lastMove.new_y == i &&
+          lastMove.old_x == j - 1 &&
+          lastMove.new_x == j - 1
         )
-          legalMoves.push({ x: j - 1, y: i - 1, empassant: true });
+          legalMoves.push({ piece: piece, x: j - 1, y: i - 1, special: "empassant" });
 
         if (
           rightPawn == 1 &&
-          lastMove[0].y == i - 2 &&
-          lastMove[1].y == i &&
-          lastMove[0].x == j + 1 &&
-          lastMove[1].x == j + 1
+          lastMove.old_y == i - 2 &&
+          lastMove.new_y == i &&
+          lastMove.old_x == j + 1 &&
+          lastMove.new_x == j + 1
         )
-          legalMoves.push({ x: j + 1, y: i - 1, empassant: true });
+          legalMoves.push({ piece: piece, x: j + 1, y: i - 1, special: "empassant" });
       }
     } else if (color == "black") {
       //checks how many squares are available to move
       let condition = pieces.filter((piece) => piece.x == j && piece.y == i + 1).length == 0;
       if (condition) {
-        legalMoves.push({ x: j, y: i + 1, empassant: false });
+        legalMoves.push({ piece: piece, x: j, y: i + 1, special: false });
         condition = pieces.filter((piece) => piece.x == j && piece.y == i + 2).length == 0;
-        if (i == 1 && condition) legalMoves.push({ x: j, y: i + 2, empassant: false });
+        if (i == 1 && condition) legalMoves.push({ piece: piece, x: j, y: i + 2, special: false });
       }
 
       //checks how many pieces are available to capture
@@ -139,11 +138,10 @@ export default function ChessBoard(props) {
       );
       if (capture.length > 0) {
         capture.forEach((piece) => {
-          legalMoves.push({ x: piece.x, y: piece.y, empassant: false });
+          legalMoves.push({ piece: piece, x: piece.x, y: piece.y, special: false });
         }, legalMoves);
       }
 
-      //checks for empassant moves
       if (i == 4) {
         let leftPawn = pieces.filter((piece) => piece.x == j - 1 && piece.y == i && piece.color == "white").length;
         let rightPawn = pieces.filter((piece) => piece.x == j + 1 && piece.y == i && piece.color == "white").length;
@@ -155,7 +153,7 @@ export default function ChessBoard(props) {
           lastMove[0].x == j - 1 &&
           lastMove[1].x == j - 1
         )
-          legalMoves.push({ x: j - 1, y: i + 1, empassant: true });
+          legalMoves.push({ piece: piece, x: j - 1, y: i + 1, special: "empassant" });
 
         if (
           rightPawn == 1 &&
@@ -164,14 +162,14 @@ export default function ChessBoard(props) {
           lastMove[0].x == j + 1 &&
           lastMove[1].x == j + 1
         )
-          legalMoves.push({ x: j + 1, y: i + 1, empassant: true });
+          legalMoves.push({ piece: piece, x: j + 1, y: i + 1, special: "empassant" });
       }
     } else return [];
     //promotion check
     return legalMoves;
   };
 
-  const calculateKnightMoves = (i, j, color) => {
+  const calculateKnightMoves = (piece, i, j, color) => {
     const legalMoves = [];
 
     const x_neighbors = [-2, -1, 1, 2, 2, 1, -1, -2];
@@ -179,106 +177,107 @@ export default function ChessBoard(props) {
 
     for (var n = 0; n < 8; n++) {
       let move = pieces.filter((piece) => piece.x == j + x_neighbors[n] && piece.y == i + y_neighbors[n]).length == 0;
-      if (move) legalMoves.push({ x: j + x_neighbors[n], y: i + y_neighbors[n] });
+      if (move) legalMoves.push({ piece: piece, x: j + x_neighbors[n], y: i + y_neighbors[n], special: false });
 
       let capture = pieces.filter(
         (piece) => piece.x == j + x_neighbors[n] && piece.y == i + y_neighbors[n] && piece.color != color
       );
-      if (capture.length > 0) legalMoves.push({ x: j + x_neighbors[n], y: i + y_neighbors[n] });
+      if (capture.length > 0)
+        legalMoves.push({ piece: piece, x: j + x_neighbors[n], y: i + y_neighbors[n], special: false });
     }
 
     return legalMoves;
   };
 
-  const calculateBishopMoves = (i, j, color) => {
+  const calculateBishopMoves = (piece, i, j, color) => {
     const legalMoves = [];
     for (var xAxis = j - 1, yAxis = i - 1; xAxis >= 0, yAxis >= 0; xAxis--, yAxis--) {
       let move = pieces.filter((piece) => piece.x == xAxis && piece.y == yAxis).length == 0;
-      if (move) legalMoves.push({ x: xAxis, y: yAxis });
+      if (move) legalMoves.push({ piece: piece, x: xAxis, y: yAxis, special: false });
 
       let capture = pieces.filter((piece) => piece.x == xAxis && piece.y == yAxis && piece.color != color);
-      if (capture.length > 0) legalMoves.push({ x: xAxis, y: yAxis });
+      if (capture.length > 0) legalMoves.push({ piece: piece, x: xAxis, y: yAxis, special: false });
 
       if (capture.length > 0 || !(move || capture.length > 0)) break;
     }
     for (var xAxis = j + 1, yAxis = i + 1; xAxis < 8, yAxis < 8; xAxis++, yAxis++) {
       let move = pieces.filter((piece) => piece.x == xAxis && piece.y == yAxis).length == 0;
-      if (move) legalMoves.push({ x: xAxis, y: yAxis });
+      if (move) legalMoves.push({ piece: piece, x: xAxis, y: yAxis, special: false });
 
       let capture = pieces.filter((piece) => piece.x == xAxis && piece.y == yAxis && piece.color != color);
-      if (capture.length > 0) legalMoves.push({ x: xAxis, y: yAxis });
+      if (capture.length > 0) legalMoves.push({ piece: piece, x: xAxis, y: yAxis, special: false });
 
       if (capture.length > 0 || !(move || capture.length > 0)) break;
     }
     for (var xAxis = j - 1, yAxis = i + 1; xAxis >= 0, yAxis < 8; xAxis--, yAxis++) {
       let move = pieces.filter((piece) => piece.x == xAxis && piece.y == yAxis).length == 0;
-      if (move) legalMoves.push({ x: xAxis, y: yAxis });
+      if (move) legalMoves.push({ piece: piece, x: xAxis, y: yAxis, special: false });
 
       let capture = pieces.filter((piece) => piece.x == xAxis && piece.y == yAxis && piece.color != color);
-      if (capture.length > 0) legalMoves.push({ x: xAxis, y: yAxis });
+      if (capture.length > 0) legalMoves.push({ piece: piece, x: xAxis, y: yAxis, special: false });
 
       if (capture.length > 0 || !(move || capture.length > 0)) break;
     }
     for (var xAxis = j + 1, yAxis = i - 1; xAxis < 8, yAxis >= 0; xAxis++, yAxis--) {
       let move = pieces.filter((piece) => piece.x == xAxis && piece.y == yAxis).length == 0;
-      if (move) legalMoves.push({ x: xAxis, y: yAxis });
+      if (move) legalMoves.push({ piece: piece, x: xAxis, y: yAxis, special: false });
 
       let capture = pieces.filter((piece) => piece.x == xAxis && piece.y == yAxis && piece.color != color);
-      if (capture.length > 0) legalMoves.push({ x: xAxis, y: yAxis });
+      if (capture.length > 0) legalMoves.push({ piece: piece, x: xAxis, y: yAxis, special: false });
 
       if (capture.length > 0 || !(move || capture.length > 0)) break;
     }
     return legalMoves;
   };
 
-  const calculateRookMoves = (i, j, color) => {
+  const calculateRookMoves = (piece, i, j, color) => {
     const legalMoves = [];
     for (var xAxis = j - 1; xAxis >= 0; xAxis--) {
       let move = pieces.filter((piece) => piece.x == xAxis && piece.y == i).length == 0;
-      if (move) legalMoves.push({ x: xAxis, y: i });
+      if (move) legalMoves.push({ piece: piece, x: xAxis, y: i, special: false });
 
       let capture = pieces.filter((piece) => piece.x == xAxis && piece.y == i && piece.color != color);
-      if (capture.length > 0) legalMoves.push({ x: xAxis, y: i });
+      if (capture.length > 0) legalMoves.push({ piece: piece, x: xAxis, y: i, special: false });
 
       if (capture.length > 0 || !(move || capture.length > 0)) break;
     }
     for (var xAxis = j + 1; xAxis < 8; xAxis++) {
       let move = pieces.filter((piece) => piece.x == xAxis && piece.y == i).length == 0;
-      if (move) legalMoves.push({ x: xAxis, y: i });
+      if (move) legalMoves.push({ piece: piece, x: xAxis, y: i, special: false });
 
       let capture = pieces.filter((piece) => piece.x == xAxis && piece.y == i && piece.color != color);
-      if (capture.length > 0) legalMoves.push({ x: xAxis, y: i });
+      if (capture.length > 0) legalMoves.push({ piece: piece, x: xAxis, y: i, special: false });
 
       if (capture.length > 0 || !(move || capture.length > 0)) break;
     }
     for (var yAxis = i + 1; yAxis < 8; yAxis++) {
       let move = pieces.filter((piece) => piece.x == j && piece.y == yAxis).length == 0;
-      if (move) legalMoves.push({ x: j, y: yAxis });
+      if (move) legalMoves.push({ piece: piece, x: j, y: yAxis, special: false });
 
       let capture = pieces.filter((piece) => piece.x == j && piece.y == yAxis && piece.color != color);
-      if (capture.length > 0) legalMoves.push({ x: j, y: yAxis });
+      if (capture.length > 0) legalMoves.push({ piece: piece, x: j, y: yAxis, special: false });
 
       if (capture.length > 0 || !(move || capture.length > 0)) break;
     }
     for (var yAxis = i - 1; yAxis >= 0; yAxis--) {
       let move = pieces.filter((piece) => piece.x == j && piece.y == yAxis).length == 0;
-      if (move) legalMoves.push({ x: j, y: yAxis });
+      if (move) legalMoves.push({ piece: piece, x: j, y: yAxis, special: false });
 
       let capture = pieces.filter((piece) => piece.x == j && piece.y == yAxis && piece.color != color);
-      if (capture.length > 0) legalMoves.push({ x: j, y: yAxis });
+      if (capture.length > 0) legalMoves.push({ piece: piece, x: j, y: yAxis, special: false });
 
       if (capture.length > 0 || !(move || capture.length > 0)) break;
     }
     return legalMoves;
   };
 
-  const calculateQueenMoves = (i, j, color) => {
-    const b_legalMoves = [...calculateBishopMoves(i, j, color)];
-    const r_legalMoves = [...calculateRookMoves(i, j, color)];
+  const calculateQueenMoves = (piece, i, j, color) => {
+    const b_legalMoves = [...calculateBishopMoves(piece, i, j, color)];
+    const r_legalMoves = [...calculateRookMoves(piece, i, j, color)];
     return [...b_legalMoves, ...r_legalMoves];
   };
 
-  const calculateKingMoves = (i, j, color) => {
+  const calculateKingMoves = (piece, i, j, color) => {
     const legalMoves = [];
 
     const x_neighbors = [-1, 0, 1, 1, 1, 0, -1, -1];
@@ -286,15 +285,46 @@ export default function ChessBoard(props) {
 
     for (var n = 0; n < 8; n++) {
       let move = pieces.filter((piece) => piece.x == j + x_neighbors[n] && piece.y == i + y_neighbors[n]).length == 0;
-      if (move) legalMoves.push({ x: j + x_neighbors[n], y: i + y_neighbors[n] });
+      if (move) legalMoves.push({ piece: piece, x: j + x_neighbors[n], y: i + y_neighbors[n], special: false });
 
       let capture = pieces.filter(
         (piece) => piece.x == j + x_neighbors[n] && piece.y == i + y_neighbors[n] && piece.color != color
       );
-      if (capture.length > 0) legalMoves.push({ x: j + x_neighbors[n], y: i + y_neighbors[n] });
+      if (capture.length > 0)
+        legalMoves.push({ piece: piece, x: j + x_neighbors[n], y: i + y_neighbors[n], special: false });
+    }
+
+    const row = color == "white" ? 7 : 0;
+
+    const kingMove = movesHistory.filter((move) => move.piece == "king" && move.player == color).length != 0;
+
+    const leftRookMove =
+      movesHistory.filter(
+        (move) => move.piece == "rook" && move.player == color && move.old_x == 0 && move.old_y == row
+      ).length != 0;
+
+    const rightRookMove =
+      movesHistory.filter(
+        (move) => move.piece == "rook" && move.player == color && move.old_x == 7 && move.old_y == row
+      ).length != 0;
+
+    const leftSide =
+      pieces.filter(
+        (piece) =>
+          (piece.x == 1 && piece.y == row) || (piece.x == 2 && piece.y == row) || (piece.x == 3 && piece.y == row)
+      ).length != 0;
+
+    const rightSide =
+      pieces.filter((piece) => (piece.x == 5 && piece.y == row) || (piece.x == 6 && piece.y == row)).length != 0;
+
+    if (!(kingMove || leftRookMove || leftSide)) {
+      legalMoves.push({ piece: piece, x: j - 2, y: i, special: "long-castle" });
+    }
+
+    if (!(kingMove || rightRookMove || rightSide)) {
+      legalMoves.push({ piece: piece, x: j + 2, y: i, special: "short-castle" });
     }
     return legalMoves;
-    //check castle previlieges
   };
 
   const calculateLegalMoves = (i, j) => {
@@ -303,22 +333,22 @@ export default function ChessBoard(props) {
       if (piece.x == j && piece.y == i) {
         switch (piece.type) {
           case "pawn":
-            moves = calculatePawnMoves(i, j, piece.color);
+            moves = calculatePawnMoves(piece.type, i, j, piece.color);
             break;
           case "rook":
-            moves = calculateRookMoves(i, j, piece.color);
+            moves = calculateRookMoves(piece.type, i, j, piece.color);
             break;
           case "knight":
-            moves = calculateKnightMoves(i, j, piece.color);
+            moves = calculateKnightMoves(piece.type, i, j, piece.color);
             break;
           case "bishop":
-            moves = calculateBishopMoves(i, j, piece.color);
+            moves = calculateBishopMoves(piece.type, i, j, piece.color);
             break;
           case "queen":
-            moves = calculateQueenMoves(i, j, piece.color);
+            moves = calculateQueenMoves(piece.type, i, j, piece.color);
             break;
           case "king":
-            moves = calculateKingMoves(i, j, piece.color);
+            moves = calculateKingMoves(piece.type, i, j, piece.color);
             break;
         }
       }
@@ -433,7 +463,7 @@ export default function ChessBoard(props) {
         piece.style.top = "0px";
       } else if (row < 8 && col < 8 && row >= 0 && col >= 0) {
         const move = legalMovesRef.current.filter((move) => move.x == col && move.y == row)[0];
-        if (move.empassant == true) {
+        if (move.special == "empassant") {
           const index =
             playerTurnRef.current == "black"
               ? pieces.findIndex((piece) => piece.x == col && piece.y == row - 1)
@@ -441,6 +471,16 @@ export default function ChessBoard(props) {
           pieces.splice(index, 1);
           //to be added in captured pieces
           soundsRef.current[2].play();
+        } else if (move.special == "short-castle") {
+          const rookColor = playerTurnRef.current == "black" ? 0 : 7;
+          const index = pieces.findIndex((piece) => piece.x == 7 && piece.y == rookColor);
+          pieces[index].x -= 2;
+          soundsRef.current[1].play();
+        } else if (move.special == "long-castle") {
+          const rookColor = playerTurnRef.current == "black" ? 0 : 7;
+          const index = pieces.findIndex((piece) => piece.x == 0 && piece.y == rookColor);
+          pieces[index].x += 3;
+          soundsRef.current[1].play();
         } else {
           const index = pieces.findIndex((piece) => piece.x == col && piece.y == row);
           if (index != -1) {
@@ -461,10 +501,22 @@ export default function ChessBoard(props) {
           });
           return _pieces;
         });
-        setLastMove([
-          { x: currentPiece.x, y: currentPiece.y },
-          { x: col, y: row },
-        ]);
+
+        const playerMove = {
+          player: playerTurnRef.current,
+          piece: move.piece,
+          old_x: currentPiece.x,
+          old_y: currentPiece.y,
+          new_x: move.x,
+          new_y: move.y,
+          special: move.special,
+        };
+
+        movesHistory.push(playerMove);
+        setMovesHistory([...movesHistory]);
+        console.log(movesHistory);
+
+        setLastMove(playerMove);
         setCurrentPiece({ x: null, y: null, retouch: false });
         setLegalMoves([]);
         playerTurnRef.current == "white" ? (playerTurnRef.current = "black") : (playerTurnRef.current = "white");
@@ -522,6 +574,7 @@ export default function ChessBoard(props) {
   const [pieces, setPieces] = useState(addPieces());
   const [marks, setMarks] = useState(new Array(64).fill(false));
   const [legalMoves, setLegalMoves] = useState([]);
+  const [movesHistory, setMovesHistory] = useState([]);
   const [lastMove, setLastMove] = useState([
     { x: null, y: null },
     { x: null, y: null },
