@@ -1,5 +1,3 @@
-import { useState, useEffect } from "react";
-
 export default function Square(props) {
   const [xAxis, yAxis] = props.axis;
   const [i, j] = props.coords;
