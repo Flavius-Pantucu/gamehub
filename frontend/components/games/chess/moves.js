@@ -1,44 +1,64 @@
+import { Fragment, useRef, useEffect, useState } from "react";
+import Move from "./move.js";
 
-export default function Moves(props) {
-    const createList = (moveList) => {
-        for(var i = 0; i < moveList.length; i+=2) {
-            if(i + 1 >= moveList.length){
-                var move = (1 + i/2) + ". ";
-                if(moveList[i].special == 'empassant' || moveList[i].special == 'capture')
-                    move += whitePieces[moveList[i].piece] + xAxis[moveList[i].old_x] + "x" + xAxis[moveList[i].new_x] + yAxis[moveList[i].new_y];
-                else if(moveList[i].special == 'short-castle' || moveList[i].special == 'long-castle')
-                    moveList[i].special == 'short-castle' ? move += whitePieces[moveList[i].piece] + 'O-O' : move += whitePieces[moveList[i].piece] + 'O-O-O'; 
-                else
-                    move += whitePieces[moveList[i].piece] + xAxis[moveList[i].new_x] + yAxis[moveList[i].new_y];
-            } else{
-                var move = (1 + i/2) + ". ";
-                if(moveList[i].special == 'empassant' || moveList[i].special == 'capture')
-                    move += whitePieces[moveList[i].piece] + xAxis[moveList[i].old_x] + "x" + xAxis[moveList[i].new_x] + yAxis[moveList[i].new_y];
-                else if(moveList[i].special == 'short-castle' || moveList[i].special == 'long-castle')
-                    moveList[i].special == 'short-castle' ? move += whitePieces[moveList[i].piece] + 'O-O' : move += whitePieces[moveList[i].piece] + 'O-O-O'; 
-                else
-                    move += whitePieces[moveList[i].piece] + xAxis[moveList[i].new_x] + yAxis[moveList[i].new_y];
-                
-                move += " - ";
+export default function xMoves(props) {
+  const updateList = (moveList) => {
+    var newList = [];
+    for (var i = 0; i < moveList.length; i += 2) {
+      if (i % 2 == 0 && moveList.length > 0)
+        newList.push(
+          <Move
+            key={1 + Math.floor(i / 2)}
+            index={i}
+            white={moveList[i]}
+            black={moveList[i + 1]}
+          />
+        );
+      else
+        newList.push(
+          <Move
+            key={1 + Math.floor(i / 2)}
+            index={i}
+            white={moveList[i]}
+            black={null}
+          />
+        );
+    }
+    setMovesHistory(newList);
+    console.log(moveList);
+  };
 
-                if(moveList[i + 1].special == 'empassant' || moveList[i + 1].special == 'capture')
-                    move += blackPieces[moveList[i + 1].piece] + xAxis[moveList[i + 1].old_x] + "x" + xAxis[moveList[i + 1].new_x] + yAxis[moveList[i + 1].new_y];
-                else if(moveList[i + 1].special == 'short-castle' || moveList[i + 1].special == 'long-castle')
-                    moveList[i + 1].special == 'short-castle' ? move += blackPieces[moveList[i + 1].piece] + 'O-O' : move += blackPieces[moveList[i + 1].piece] + 'O-O-O'; 
-                else
-                    move += blackPieces[moveList[i + 1].piece] + xAxis[moveList[i + 1].new_x] + yAxis[moveList[i + 1].new_y];
-            }
-            moves.push(move);
-            moves.push((<br></br>))
-        }
-    } 
-    const whitePieces = {'king' : '\u{2654}', 'queen' : '\u{2655}', 'rook' : '\u{2656}', 'bishop' : '\u{2657}', 'knight' : '\u{2658}', 'pawn' : '\u{2659}'};
-    const blackPieces = {'king' : '\u{265A}', 'queen' : '\u{265B}', 'rook' : '\u{265C}', 'bishop' : '\u{265D}', 'knight' : '\u{265E}', 'pawn' : '\u{265F}'};
-    const xAxis = ["a", "b", "c", "d", "e", "f", "g", "h"];
-    const yAxis = ["8", "7", "6", "5", "4", "3", "2", "1"];
-    const moves = [];
+  const [movesHistory, setMovesHistory] = useState([]);
 
-    createList(props.moves);
+  useEffect(() => {
+    updateList(props.moves);
+  }, [props.moves]);
 
-    return (<><h1 className="text-white"> {moves}</h1></>);
+  return (
+    <>
+      <div className='bg-gray-700 w-64 h-[90%] min-h-[384px] max-h-[384px] md:max-h-max relative'>
+        <div className='h-[4%] min-h-[24px] text-gray-300 text-base font-medium bg-gray-600 border-b-gray-500 border-b-[1px] w-full grid justify-center content-center'>
+          <div>Analysis</div>
+        </div>
+        <div className='h-[88%] xl:h-[92%] overflow-scroll scroll-smooth overflow-x-hidden no-scrollbar'>
+          {movesHistory}
+        </div>
+
+        <div className='h-[4%] min-h-[32px] w-full absolute bottom-0 text-gray-300 text-2xl grid grid-cols-4 content-center'>
+          <div className='flex justify-center'>
+            <button>&#171;</button>
+          </div>
+          <div className='flex justify-center'>
+            <button>&#8249;</button>
+          </div>
+          <div className='flex justify-center'>
+            <button>&#8250;</button>
+          </div>
+          <div className='flex justify-center'>
+            <button>&#187;</button>
+          </div>
+        </div>
+      </div>
+    </>
+  );
 }

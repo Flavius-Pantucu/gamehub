@@ -59,6 +59,7 @@ export default function Chess(props) {
   };
 
   const createBoard = () => {
+    console.log(1);
     for (var i = 0; i < yAxis.length; i++) {
       for (var j = 0; j < xAxis.length; j++) {
         let piece = { color: null, image: null };
@@ -90,26 +91,42 @@ export default function Chess(props) {
     const legalMoves = [];
     if (color == "white") {
       //checks how many squares are available to move
-      let move = pieces.filter((piece) => piece.x == j && piece.y == i - 1).length == 0;
+      let move =
+        pieces.filter((piece) => piece.x == j && piece.y == i - 1).length == 0;
       if (move) {
         legalMoves.push({ piece: piece, x: j, y: i - 1, special: false });
-        move = pieces.filter((piece) => piece.x == j && piece.y == i - 2).length == 0;
-        if (i == 6 && move) legalMoves.push({ piece: piece, x: j, y: i - 2, special: false });
+        move =
+          pieces.filter((piece) => piece.x == j && piece.y == i - 2).length ==
+          0;
+        if (i == 6 && move)
+          legalMoves.push({ piece: piece, x: j, y: i - 2, special: false });
       }
 
       //checks how many pieces are available to capture
       let capture = pieces.filter(
-        (piece) => (piece.x == j - 1 || piece.x == j + 1) && piece.y == i - 1 && piece.color == "black"
+        (piece) =>
+          (piece.x == j - 1 || piece.x == j + 1) &&
+          piece.y == i - 1 &&
+          piece.color == "black"
       );
       if (capture.length > 0) {
         capture.forEach((_piece) => {
-          legalMoves.push({ piece: piece, x: _piece.x, y: _piece.y, special: "capture" });
+          legalMoves.push({
+            piece: piece,
+            x: _piece.x,
+            y: _piece.y,
+            special: "capture",
+          });
         }, legalMoves);
       }
 
       if (i == 3) {
-        let leftPawn = pieces.filter((piece) => piece.x == j - 1 && piece.y == i && piece.color == "black").length;
-        let rightPawn = pieces.filter((piece) => piece.x == j + 1 && piece.y == i && piece.color == "black").length;
+        let leftPawn = pieces.filter(
+          (piece) => piece.x == j - 1 && piece.y == i && piece.color == "black"
+        ).length;
+        let rightPawn = pieces.filter(
+          (piece) => piece.x == j + 1 && piece.y == i && piece.color == "black"
+        ).length;
 
         if (
           leftPawn == 1 &&
@@ -118,7 +135,12 @@ export default function Chess(props) {
           lastMove.old_x == j - 1 &&
           lastMove.new_x == j - 1
         )
-          legalMoves.push({ piece: piece, x: j - 1, y: i - 1, special: "empassant" });
+          legalMoves.push({
+            piece: piece,
+            x: j - 1,
+            y: i - 1,
+            special: "empassant",
+          });
 
         if (
           rightPawn == 1 &&
@@ -127,30 +149,51 @@ export default function Chess(props) {
           lastMove.old_x == j + 1 &&
           lastMove.new_x == j + 1
         )
-          legalMoves.push({ piece: piece, x: j + 1, y: i - 1, special: "empassant" });
+          legalMoves.push({
+            piece: piece,
+            x: j + 1,
+            y: i - 1,
+            special: "empassant",
+          });
       }
     } else if (color == "black") {
       //checks how many squares are available to move
-      let condition = pieces.filter((piece) => piece.x == j && piece.y == i + 1).length == 0;
+      let condition =
+        pieces.filter((piece) => piece.x == j && piece.y == i + 1).length == 0;
       if (condition) {
         legalMoves.push({ piece: piece, x: j, y: i + 1, special: false });
-        condition = pieces.filter((piece) => piece.x == j && piece.y == i + 2).length == 0;
-        if (i == 1 && condition) legalMoves.push({ piece: piece, x: j, y: i + 2, special: false });
+        condition =
+          pieces.filter((piece) => piece.x == j && piece.y == i + 2).length ==
+          0;
+        if (i == 1 && condition)
+          legalMoves.push({ piece: piece, x: j, y: i + 2, special: false });
       }
 
       //checks how many pieces are available to capture
       let capture = pieces.filter(
-        (piece) => (piece.x == j - 1 || piece.x == j + 1) && piece.y == i + 1 && piece.color == "white"
+        (piece) =>
+          (piece.x == j - 1 || piece.x == j + 1) &&
+          piece.y == i + 1 &&
+          piece.color == "white"
       );
       if (capture.length > 0) {
-        capture.forEach((piece) => {
-          legalMoves.push({ piece: piece, x: piece.x, y: piece.y, special: false });
+        capture.forEach((_piece) => {
+          legalMoves.push({
+            piece: piece,
+            x: _piece.x,
+            y: _piece.y,
+            special: "capture",
+          });
         }, legalMoves);
       }
 
       if (i == 4) {
-        let leftPawn = pieces.filter((piece) => piece.x == j - 1 && piece.y == i && piece.color == "white").length;
-        let rightPawn = pieces.filter((piece) => piece.x == j + 1 && piece.y == i && piece.color == "white").length;
+        let leftPawn = pieces.filter(
+          (piece) => piece.x == j - 1 && piece.y == i && piece.color == "white"
+        ).length;
+        let rightPawn = pieces.filter(
+          (piece) => piece.x == j + 1 && piece.y == i && piece.color == "white"
+        ).length;
 
         if (
           leftPawn == 1 &&
@@ -159,7 +202,12 @@ export default function Chess(props) {
           lastMove[0].x == j - 1 &&
           lastMove[1].x == j - 1
         )
-          legalMoves.push({ piece: piece, x: j - 1, y: i + 1, special: "empassant" });
+          legalMoves.push({
+            piece: piece,
+            x: j - 1,
+            y: i + 1,
+            special: "empassant",
+          });
 
         if (
           rightPawn == 1 &&
@@ -168,7 +216,12 @@ export default function Chess(props) {
           lastMove[0].x == j + 1 &&
           lastMove[1].x == j + 1
         )
-          legalMoves.push({ piece: piece, x: j + 1, y: i + 1, special: "empassant" });
+          legalMoves.push({
+            piece: piece,
+            x: j + 1,
+            y: i + 1,
+            special: "empassant",
+          });
       }
     } else return [];
     //promotion check
@@ -182,14 +235,32 @@ export default function Chess(props) {
     const y_neighbors = [-1, -2, -2, -1, 1, 2, 2, 1];
 
     for (var n = 0; n < 8; n++) {
-      let move = pieces.filter((piece) => piece.x == j + x_neighbors[n] && piece.y == i + y_neighbors[n]).length == 0;
-      if (move) legalMoves.push({ piece: piece, x: j + x_neighbors[n], y: i + y_neighbors[n], special: false });
+      let move =
+        pieces.filter(
+          (piece) =>
+            piece.x == j + x_neighbors[n] && piece.y == i + y_neighbors[n]
+        ).length == 0;
+      if (move)
+        legalMoves.push({
+          piece: piece,
+          x: j + x_neighbors[n],
+          y: i + y_neighbors[n],
+          special: false,
+        });
 
       let capture = pieces.filter(
-        (piece) => piece.x == j + x_neighbors[n] && piece.y == i + y_neighbors[n] && piece.color != color
+        (piece) =>
+          piece.x == j + x_neighbors[n] &&
+          piece.y == i + y_neighbors[n] &&
+          piece.color != color
       );
       if (capture.length > 0)
-        legalMoves.push({ piece: piece, x: j + x_neighbors[n], y: i + y_neighbors[n], special: false });
+        legalMoves.push({
+          piece: piece,
+          x: j + x_neighbors[n],
+          y: i + y_neighbors[n],
+          special: "capture",
+        });
     }
 
     return legalMoves;
@@ -197,39 +268,99 @@ export default function Chess(props) {
 
   const calculateBishopMoves = (piece, i, j, color) => {
     const legalMoves = [];
-    for (var xAxis = j - 1, yAxis = i - 1; xAxis >= 0, yAxis >= 0; xAxis--, yAxis--) {
-      let move = pieces.filter((piece) => piece.x == xAxis && piece.y == yAxis).length == 0;
-      if (move) legalMoves.push({ piece: piece, x: xAxis, y: yAxis, special: false });
+    for (
+      var xAxis = j - 1, yAxis = i - 1;
+      xAxis >= 0, yAxis >= 0;
+      xAxis--, yAxis--
+    ) {
+      let move =
+        pieces.filter((piece) => piece.x == xAxis && piece.y == yAxis).length ==
+        0;
+      if (move)
+        legalMoves.push({ piece: piece, x: xAxis, y: yAxis, special: false });
 
-      let capture = pieces.filter((piece) => piece.x == xAxis && piece.y == yAxis && piece.color != color);
-      if (capture.length > 0) legalMoves.push({ piece: piece, x: xAxis, y: yAxis, special: false });
-
-      if (capture.length > 0 || !(move || capture.length > 0)) break;
-    }
-    for (var xAxis = j + 1, yAxis = i + 1; xAxis < 8, yAxis < 8; xAxis++, yAxis++) {
-      let move = pieces.filter((piece) => piece.x == xAxis && piece.y == yAxis).length == 0;
-      if (move) legalMoves.push({ piece: piece, x: xAxis, y: yAxis, special: false });
-
-      let capture = pieces.filter((piece) => piece.x == xAxis && piece.y == yAxis && piece.color != color);
-      if (capture.length > 0) legalMoves.push({ piece: piece, x: xAxis, y: yAxis, special: false });
-
-      if (capture.length > 0 || !(move || capture.length > 0)) break;
-    }
-    for (var xAxis = j - 1, yAxis = i + 1; xAxis >= 0, yAxis < 8; xAxis--, yAxis++) {
-      let move = pieces.filter((piece) => piece.x == xAxis && piece.y == yAxis).length == 0;
-      if (move) legalMoves.push({ piece: piece, x: xAxis, y: yAxis, special: false });
-
-      let capture = pieces.filter((piece) => piece.x == xAxis && piece.y == yAxis && piece.color != color);
-      if (capture.length > 0) legalMoves.push({ piece: piece, x: xAxis, y: yAxis, special: false });
+      let capture = pieces.filter(
+        (piece) => piece.x == xAxis && piece.y == yAxis && piece.color != color
+      );
+      if (capture.length > 0)
+        legalMoves.push({
+          piece: piece,
+          x: xAxis,
+          y: yAxis,
+          special: "capture",
+        });
 
       if (capture.length > 0 || !(move || capture.length > 0)) break;
     }
-    for (var xAxis = j + 1, yAxis = i - 1; xAxis < 8, yAxis >= 0; xAxis++, yAxis--) {
-      let move = pieces.filter((piece) => piece.x == xAxis && piece.y == yAxis).length == 0;
-      if (move) legalMoves.push({ piece: piece, x: xAxis, y: yAxis, special: false });
+    for (
+      var xAxis = j + 1, yAxis = i + 1;
+      xAxis < 8, yAxis < 8;
+      xAxis++, yAxis++
+    ) {
+      let move =
+        pieces.filter((piece) => piece.x == xAxis && piece.y == yAxis).length ==
+        0;
+      if (move)
+        legalMoves.push({ piece: piece, x: xAxis, y: yAxis, special: false });
 
-      let capture = pieces.filter((piece) => piece.x == xAxis && piece.y == yAxis && piece.color != color);
-      if (capture.length > 0) legalMoves.push({ piece: piece, x: xAxis, y: yAxis, special: false });
+      let capture = pieces.filter(
+        (piece) => piece.x == xAxis && piece.y == yAxis && piece.color != color
+      );
+      if (capture.length > 0)
+        legalMoves.push({
+          piece: piece,
+          x: xAxis,
+          y: yAxis,
+          special: "capture",
+        });
+
+      if (capture.length > 0 || !(move || capture.length > 0)) break;
+    }
+    for (
+      var xAxis = j - 1, yAxis = i + 1;
+      xAxis >= 0, yAxis < 8;
+      xAxis--, yAxis++
+    ) {
+      let move =
+        pieces.filter((piece) => piece.x == xAxis && piece.y == yAxis).length ==
+        0;
+      if (move)
+        legalMoves.push({ piece: piece, x: xAxis, y: yAxis, special: false });
+
+      let capture = pieces.filter(
+        (piece) => piece.x == xAxis && piece.y == yAxis && piece.color != color
+      );
+      if (capture.length > 0)
+        legalMoves.push({
+          piece: piece,
+          x: xAxis,
+          y: yAxis,
+          special: "capture",
+        });
+
+      if (capture.length > 0 || !(move || capture.length > 0)) break;
+    }
+    for (
+      var xAxis = j + 1, yAxis = i - 1;
+      xAxis < 8, yAxis >= 0;
+      xAxis++, yAxis--
+    ) {
+      let move =
+        pieces.filter((piece) => piece.x == xAxis && piece.y == yAxis).length ==
+        0;
+      if (move)
+        legalMoves.push({ piece: piece, x: xAxis, y: yAxis, special: false });
+
+      let capture = pieces.filter(
+        (piece) => piece.x == xAxis && piece.y == yAxis && piece.color != color
+      );
+      if (capture.length > 0)
+        legalMoves.push({
+          piece: piece,
+          x: xAxis,
+          y: yAxis,
+          special: "capture",
+        });
 
       if (capture.length > 0 || !(move || capture.length > 0)) break;
     }
@@ -239,38 +370,58 @@ export default function Chess(props) {
   const calculateRookMoves = (piece, i, j, color) => {
     const legalMoves = [];
     for (var xAxis = j - 1; xAxis >= 0; xAxis--) {
-      let move = pieces.filter((piece) => piece.x == xAxis && piece.y == i).length == 0;
-      if (move) legalMoves.push({ piece: piece, x: xAxis, y: i, special: false });
+      let move =
+        pieces.filter((piece) => piece.x == xAxis && piece.y == i).length == 0;
+      if (move)
+        legalMoves.push({ piece: piece, x: xAxis, y: i, special: false });
 
-      let capture = pieces.filter((piece) => piece.x == xAxis && piece.y == i && piece.color != color);
-      if (capture.length > 0) legalMoves.push({ piece: piece, x: xAxis, y: i, special: false });
+      let capture = pieces.filter(
+        (piece) => piece.x == xAxis && piece.y == i && piece.color != color
+      );
+      if (capture.length > 0)
+        legalMoves.push({ piece: piece, x: xAxis, y: i, special: "capture" });
 
       if (capture.length > 0 || !(move || capture.length > 0)) break;
     }
     for (var xAxis = j + 1; xAxis < 8; xAxis++) {
-      let move = pieces.filter((piece) => piece.x == xAxis && piece.y == i).length == 0;
-      if (move) legalMoves.push({ piece: piece, x: xAxis, y: i, special: false });
+      let move =
+        pieces.filter((piece) => piece.x == xAxis && piece.y == i).length == 0;
+      if (move)
+        legalMoves.push({ piece: piece, x: xAxis, y: i, special: false });
 
-      let capture = pieces.filter((piece) => piece.x == xAxis && piece.y == i && piece.color != color);
-      if (capture.length > 0) legalMoves.push({ piece: piece, x: xAxis, y: i, special: false });
+      let capture = pieces.filter(
+        (piece) => piece.x == xAxis && piece.y == i && piece.color != color
+      );
+      if (capture.length > 0)
+        legalMoves.push({ piece: piece, x: xAxis, y: i, special: "capture" });
 
       if (capture.length > 0 || !(move || capture.length > 0)) break;
     }
     for (var yAxis = i + 1; yAxis < 8; yAxis++) {
-      let move = pieces.filter((piece) => piece.x == j && piece.y == yAxis).length == 0;
-      if (move) legalMoves.push({ piece: piece, x: j, y: yAxis, special: false });
+      let move =
+        pieces.filter((piece) => piece.x == j && piece.y == yAxis).length == 0;
+      if (move)
+        legalMoves.push({ piece: piece, x: j, y: yAxis, special: false });
 
-      let capture = pieces.filter((piece) => piece.x == j && piece.y == yAxis && piece.color != color);
-      if (capture.length > 0) legalMoves.push({ piece: piece, x: j, y: yAxis, special: false });
+      let capture = pieces.filter(
+        (piece) => piece.x == j && piece.y == yAxis && piece.color != color
+      );
+      if (capture.length > 0)
+        legalMoves.push({ piece: piece, x: j, y: yAxis, special: "capture" });
 
       if (capture.length > 0 || !(move || capture.length > 0)) break;
     }
     for (var yAxis = i - 1; yAxis >= 0; yAxis--) {
-      let move = pieces.filter((piece) => piece.x == j && piece.y == yAxis).length == 0;
-      if (move) legalMoves.push({ piece: piece, x: j, y: yAxis, special: false });
+      let move =
+        pieces.filter((piece) => piece.x == j && piece.y == yAxis).length == 0;
+      if (move)
+        legalMoves.push({ piece: piece, x: j, y: yAxis, special: false });
 
-      let capture = pieces.filter((piece) => piece.x == j && piece.y == yAxis && piece.color != color);
-      if (capture.length > 0) legalMoves.push({ piece: piece, x: j, y: yAxis, special: false });
+      let capture = pieces.filter(
+        (piece) => piece.x == j && piece.y == yAxis && piece.color != color
+      );
+      if (capture.length > 0)
+        legalMoves.push({ piece: piece, x: j, y: yAxis, special: "capture" });
 
       if (capture.length > 0 || !(move || capture.length > 0)) break;
     }
@@ -290,45 +441,84 @@ export default function Chess(props) {
     const y_neighbors = [-1, -1, -1, 0, 1, 1, 1, 0];
 
     for (var n = 0; n < 8; n++) {
-      let move = pieces.filter((piece) => piece.x == j + x_neighbors[n] && piece.y == i + y_neighbors[n]).length == 0;
-      if (move) legalMoves.push({ piece: piece, x: j + x_neighbors[n], y: i + y_neighbors[n], special: false });
+      let move =
+        pieces.filter(
+          (piece) =>
+            piece.x == j + x_neighbors[n] && piece.y == i + y_neighbors[n]
+        ).length == 0;
+      if (move)
+        legalMoves.push({
+          piece: piece,
+          x: j + x_neighbors[n],
+          y: i + y_neighbors[n],
+          special: false,
+        });
 
       let capture = pieces.filter(
-        (piece) => piece.x == j + x_neighbors[n] && piece.y == i + y_neighbors[n] && piece.color != color
+        (piece) =>
+          piece.x == j + x_neighbors[n] &&
+          piece.y == i + y_neighbors[n] &&
+          piece.color != color
       );
       if (capture.length > 0)
-        legalMoves.push({ piece: piece, x: j + x_neighbors[n], y: i + y_neighbors[n], special: false });
+        legalMoves.push({
+          piece: piece,
+          x: j + x_neighbors[n],
+          y: i + y_neighbors[n],
+          special: "capture",
+        });
     }
 
     const row = color == "white" ? 7 : 0;
 
-    const kingMove = movesHistory.filter((move) => move.piece == "king" && move.player == color).length != 0;
+    const kingMove =
+      movesHistory.filter(
+        (move) => move.piece == "king" && move.player == color
+      ).length != 0;
 
     const leftRookMove =
       movesHistory.filter(
-        (move) => move.piece == "rook" && move.player == color && move.old_x == 0 && move.old_y == row
+        (move) =>
+          move.piece == "rook" &&
+          move.player == color &&
+          move.old_x == 0 &&
+          move.old_y == row
       ).length != 0;
 
     const rightRookMove =
       movesHistory.filter(
-        (move) => move.piece == "rook" && move.player == color && move.old_x == 7 && move.old_y == row
+        (move) =>
+          move.piece == "rook" &&
+          move.player == color &&
+          move.old_x == 7 &&
+          move.old_y == row
       ).length != 0;
 
     const leftSide =
       pieces.filter(
         (piece) =>
-          (piece.x == 1 && piece.y == row) || (piece.x == 2 && piece.y == row) || (piece.x == 3 && piece.y == row)
+          (piece.x == 1 && piece.y == row) ||
+          (piece.x == 2 && piece.y == row) ||
+          (piece.x == 3 && piece.y == row)
       ).length != 0;
 
     const rightSide =
-      pieces.filter((piece) => (piece.x == 5 && piece.y == row) || (piece.x == 6 && piece.y == row)).length != 0;
+      pieces.filter(
+        (piece) =>
+          (piece.x == 5 && piece.y == row) || (piece.x == 6 && piece.y == row)
+      ).length != 0;
 
     if (!(kingMove || leftRookMove || leftSide)) {
       legalMoves.push({ piece: piece, x: j - 2, y: i, special: "long-castle" });
     }
 
     if (!(kingMove || rightRookMove || rightSide)) {
-      legalMoves.push({ piece: piece, x: j + 2, y: i, special: "short-castle" });
+      legalMoves.push({
+        piece: piece,
+        x: j + 2,
+        y: i,
+        special: "short-castle",
+      });
     }
     return legalMoves;
   };
@@ -363,10 +553,19 @@ export default function Chess(props) {
   };
 
   const canMove = (e, chessboard) => {
-    const square = e.target.classList.contains("dot") ? e.target.parentNode : e.target;
-    const row = Math.floor((e.clientY - chessboard.offsetTop) / square.offsetHeight);
-    const col = Math.floor((e.clientX - chessboard.offsetLeft) / square.offsetWidth);
-    const isLegal = legalMovesRef.current.filter((piece) => piece.x == col && piece.y == row).length == 1;
+    if (legalMovesRef.current == null) return false;
+    const square = e.target.classList.contains("dot")
+      ? e.target.parentNode
+      : e.target;
+    const row = Math.floor(
+      (e.clientY - chessboard.offsetTop) / square.offsetHeight
+    );
+    const col = Math.floor(
+      (e.clientX - chessboard.offsetLeft) / square.offsetWidth
+    );
+    const isLegal =
+      legalMovesRef.current.filter((piece) => piece.x == col && piece.y == row)
+        .length == 1;
     return isLegal;
   };
 
@@ -384,10 +583,21 @@ export default function Chess(props) {
       const x = e.clientX - piece.parentNode.offsetLeft - piece.offsetWidth / 2;
       const y = e.clientY - piece.parentNode.offsetTop - piece.offsetHeight / 2;
 
-      const row = Math.floor((e.clientY - chessboard.offsetTop) / (piece.offsetHeight + 4));
-      const col = Math.floor((e.clientX - chessboard.offsetLeft) / (piece.offsetWidth + 4));
+      const row = Math.floor(
+        (e.clientY - chessboard.offsetTop) / (piece.offsetHeight + 4)
+      );
+      const col = Math.floor(
+        (e.clientX - chessboard.offsetLeft) / (piece.offsetWidth + 4)
+      );
 
-      if (!pieces.filter((piece) => piece.x == col && piece.y == row && piece.color == playerTurnRef.current).length)
+      if (
+        !pieces.filter(
+          (piece) =>
+            piece.x == col &&
+            piece.y == row &&
+            piece.color == playerTurnRef.current
+        ).length
+      )
         return;
 
       currentPiece.x == col && currentPiece.y == row
@@ -413,7 +623,10 @@ export default function Chess(props) {
       selectedPieceRef.current == null ||
       chessboardRef == null ||
       !pieces.filter(
-        (piece) => piece.x == currentPiece.x && piece.y == currentPiece.y && piece.color == playerTurnRef.current
+        (piece) =>
+          piece.x == currentPiece.x &&
+          piece.y == currentPiece.y &&
+          piece.color == playerTurnRef.current
       ).length
     )
       return;
@@ -422,7 +635,10 @@ export default function Chess(props) {
 
     const x = e.clientX - piece.parentNode.offsetLeft - piece.offsetWidth / 2;
     const y = e.clientY - piece.parentNode.offsetTop - piece.offsetHeight / 2;
-    if (board.offsetWidth < e.clientX - board.offsetLeft || e.clientX - board.offsetLeft < 0) {
+    if (
+      board.offsetWidth < e.clientX - board.offsetLeft ||
+      e.clientX - board.offsetLeft < 0
+    ) {
       piece.style.position = "relative";
       piece.style.left = "0px";
       piece.style.top = "0px";
@@ -439,7 +655,10 @@ export default function Chess(props) {
     if (
       selectedPieceRef.current == null ||
       !pieces.filter(
-        (piece) => piece.x == currentPiece.x && piece.y == currentPiece.y && piece.color == playerTurnRef.current
+        (piece) =>
+          piece.x == currentPiece.x &&
+          piece.y == currentPiece.y &&
+          piece.color == playerTurnRef.current
       ).length
     )
       return;
@@ -448,12 +667,22 @@ export default function Chess(props) {
     const chessboard = chessboardRef.current;
 
     if (e.nativeEvent.button == 0) {
-      const square = e.target.classList.contains("dot") ? e.target.parentNode : e.target;
+      const square = e.target.classList.contains("dot")
+        ? e.target.parentNode
+        : e.target;
 
-      const row = Math.floor((e.clientY - chessboard.offsetTop) / square.offsetHeight);
-      const col = Math.floor((e.clientX - chessboard.offsetLeft) / square.offsetWidth);
+      const row = Math.floor(
+        (e.clientY - chessboard.offsetTop) / square.offsetHeight
+      );
+      const col = Math.floor(
+        (e.clientX - chessboard.offsetLeft) / square.offsetWidth
+      );
 
-      if (row == currentPiece.y && col == currentPiece.x && currentPiece.retouch == true) {
+      if (
+        row == currentPiece.y &&
+        col == currentPiece.x &&
+        currentPiece.retouch == true
+      ) {
         piece.style.position = "relative";
         piece.style.left = "0px";
         piece.style.top = "0px";
@@ -463,33 +692,47 @@ export default function Chess(props) {
         return;
       }
 
-      if (legalMovesRef.current.filter((move) => move.x == col && move.y == row).length == 0) {
+      if (
+        legalMovesRef.current.filter((move) => move.x == col && move.y == row)
+          .length == 0
+      ) {
         piece.style.position = "relative";
         piece.style.left = "0px";
         piece.style.top = "0px";
       } else if (row < 8 && col < 8 && row >= 0 && col >= 0) {
-        const move = legalMovesRef.current.filter((move) => move.x == col && move.y == row)[0];
-        console.log(move);
+        const move = legalMovesRef.current.filter(
+          (move) => move.x == col && move.y == row
+        )[0];
         if (move.special == "empassant") {
           const index =
             playerTurnRef.current == "black"
-              ? pieces.findIndex((piece) => piece.x == col && piece.y == row - 1)
-              : pieces.findIndex((piece) => piece.x == col && piece.y == row + 1);
+              ? pieces.findIndex(
+                  (piece) => piece.x == col && piece.y == row - 1
+                )
+              : pieces.findIndex(
+                  (piece) => piece.x == col && piece.y == row + 1
+                );
           pieces.splice(index, 1);
           //to be added in captured pieces
           soundsRef.current[2].play();
         } else if (move.special == "short-castle") {
           const rookColor = playerTurnRef.current == "black" ? 0 : 7;
-          const index = pieces.findIndex((piece) => piece.x == 7 && piece.y == rookColor);
+          const index = pieces.findIndex(
+            (piece) => piece.x == 7 && piece.y == rookColor
+          );
           pieces[index].x -= 2;
           soundsRef.current[1].play();
         } else if (move.special == "long-castle") {
           const rookColor = playerTurnRef.current == "black" ? 0 : 7;
-          const index = pieces.findIndex((piece) => piece.x == 0 && piece.y == rookColor);
+          const index = pieces.findIndex(
+            (piece) => piece.x == 0 && piece.y == rookColor
+          );
           pieces[index].x += 3;
           soundsRef.current[1].play();
         } else {
-          const index = pieces.findIndex((piece) => piece.x == col && piece.y == row);
+          const index = pieces.findIndex(
+            (piece) => piece.x == col && piece.y == row
+          );
           if (index != -1) {
             pieces.splice(index, 1);
             //to be added in captured pieces
@@ -525,7 +768,9 @@ export default function Chess(props) {
         setLastMove(playerMove);
         setCurrentPiece({ x: null, y: null, retouch: false });
         setLegalMoves([]);
-        playerTurnRef.current == "white" ? (playerTurnRef.current = "black") : (playerTurnRef.current = "white");
+        playerTurnRef.current == "white"
+          ? (playerTurnRef.current = "black")
+          : (playerTurnRef.current = "white");
         setCurrentPlayer(currentPlayer == "white" ? "black" : "white");
       } else {
         piece.style.position = "relative";
@@ -542,8 +787,12 @@ export default function Chess(props) {
     if (selectedPieceRef.current == null) {
       const chessboard = chessboardRef.current;
 
-      const squareWidth = e.target.className.includes("piece") ? e.target.offsetWidth + 4 : e.target.offsetWidth;
-      const squareHeight = e.target.className.includes("piece") ? e.target.offsetHeight + 4 : e.target.offsetHeight;
+      const squareWidth = e.target.className.includes("piece")
+        ? e.target.offsetWidth + 4
+        : e.target.offsetWidth;
+      const squareHeight = e.target.className.includes("piece")
+        ? e.target.offsetHeight + 4
+        : e.target.offsetHeight;
 
       const row = Math.floor((e.clientY - chessboard.offsetTop) / squareHeight);
       const col = Math.floor((e.clientX - chessboard.offsetLeft) / squareWidth);
@@ -565,7 +814,6 @@ export default function Chess(props) {
     }
   };
 
-  
   const xAxis = ["a", "b", "c", "d", "e", "f", "g", "h"];
   const yAxis = ["1", "2", "3", "4", "5", "6", "7", "8"];
   const board = [];
@@ -577,7 +825,11 @@ export default function Chess(props) {
   const playerTurnRef = useRef("white");
 
   const [capturedPieces, setCapturedPieces] = useState([]);
-  const [currentPiece, setCurrentPiece] = useState({ x: null, y: null, retouch: false });
+  const [currentPiece, setCurrentPiece] = useState({
+    x: null,
+    y: null,
+    retouch: false,
+  });
   const [pieces, setPieces] = useState(addPieces());
   const [marks, setMarks] = useState(new Array(64).fill(false));
   const [legalMoves, setLegalMoves] = useState([]);
@@ -600,59 +852,75 @@ export default function Chess(props) {
 
   return (
     <>
-      <div className="mx-auto h-full w-full lg:w-5/6 max-w-7xl px-2 mt-2 sm:px-6 lg:px-8 select-none">
-        <Menu as="div" className="relative inline-block">
+      <div className='mx-auto h-full w-full  px-2 mt-2 sm:px-6 lg:px-8 select-none'>
+        <Menu
+          as='div'
+          className='relative inline-block'
+        >
           <div>
             <Menu.Button
               className={`inline-flex text-2xl transition-all ease-in duration-300 ${
                 theme == "dark" ? "text-white" : "text-neutral-900"
-              }`}>
+              }`}
+            >
               Chess
-              <ChevronDownIcon className="ml-2 mt-2 h-5 w-5" />
+              <ChevronDownIcon className='ml-2 mt-2 h-5 w-5' />
             </Menu.Button>
           </div>
           <Transition
             as={Fragment}
-            enter="transition ease-in-out duration-300"
-            enterFrom="transform opacity-0 scale-0"
-            enterTo="transform opacity-100 scale-100"
-            leave="transition ease-in-out duration-300"
-            leaveFrom="transform opacity-100 scale-100"
-            leaveTo="transform opacity-0 scale-0">
+            enter='transition ease-in-out duration-300'
+            enterFrom='transform opacity-0 scale-0'
+            enterTo='transform opacity-100 scale-100'
+            leave='transition ease-in-out duration-300'
+            leaveFrom='transform opacity-100 scale-100'
+            leaveTo='transform opacity-0 scale-0'
+          >
             <Menu.Items
               className={`absolute left-0 mt-2 ml-4 w-40 origin-top rounded-md shadow ${
                 theme == "dark" ? "bg-slate-800" : "bg-slate-100"
-              }`}>
+              }`}
+            >
               <Menu.Item
                 className={` w-full cursor-pointer text-left rounded transition-colors ease-in-out duration-300 ${
                   theme == "dark"
                     ? "text-white hover:bg-gray-700"
                     : "text-neutral-600 hover:text-neutral-900 hover:bg-slate-300"
-                }`}>
-                <button className="text-sm ">New game (1P)</button>
+                }`}
+              >
+                <button className='text-sm '>New game (1P)</button>
               </Menu.Item>
               <Menu.Item
                 className={` w-full cursor-pointer text-left rounded transition-colors ease-in-out duration-300 ${
                   theme == "dark"
                     ? "text-white hover:bg-gray-700"
                     : "text-neutral-600 hover:text-neutral-900 hover:bg-slate-300"
-                }`}>
-                <button className="text-sm ">New game (2P)</button>
+                }`}
+              >
+                <button className='text-sm '>New game (2P)</button>
               </Menu.Item>
               <Menu.Item
                 className={` w-full cursor-pointer text-left rounded transition-colors ease-in-out duration-300 ${
                   theme == "dark"
                     ? "text-white hover:bg-gray-700"
                     : "text-neutral-600 hover:text-neutral-900 hover:bg-slate-300"
-                }`}>
-                <button className="text-sm ">Analysis</button>
+                }`}
+              >
+                <button className='text-sm '>Analysis</button>
               </Menu.Item>
             </Menu.Items>
           </Transition>
         </Menu>
-        <div className="flex justify-center h-4/6 mt-6 lg:h-5/6 lg:mt-0">
-          <ChessBoard board={board} chessboard={chessboardRef} grabPiece={grabPiece} letPiece={letPiece} movePiece={movePiece} rightClickHandler={rightClickHandler}/>
-          <Moves moves={movesHistory}/>
+        <div className='flex justify-center h-4/6 mt-6 lg:h-5/6 lg:mt-0 space-x-4'>
+          <ChessBoard
+            board={board}
+            chessboard={chessboardRef}
+            grabPiece={grabPiece}
+            letPiece={letPiece}
+            movePiece={movePiece}
+            rightClickHandler={rightClickHandler}
+          />
+          <Moves moves={movesHistory} />
         </div>
       </div>
     </>
